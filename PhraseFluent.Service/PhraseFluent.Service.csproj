@@ -9,5 +9,10 @@
   <ItemGroup>
     <ProjectReference Include="..\PhraseFluent.DataAccess\PhraseFluent.DataAccess.csproj" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="GTranslate" Version="2.1.6" />
+    <PackageReference Include="Azure.AI.OpenAI" Version="1.0.0-beta.5" />
+  </ItemGroup>
 
 </Project>

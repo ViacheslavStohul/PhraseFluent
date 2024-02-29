@@ -2,7 +2,7 @@
 
 namespace PhraseFluent.API.Controllers;
 
-internal class BaseController : Controller
+public class BaseController : Controller
 {
     
 }

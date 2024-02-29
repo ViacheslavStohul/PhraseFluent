@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using PhraseFluent.DataAccess;
+using PhraseFluent.Service;
 
 namespace PhraseFluent.API;
 
@@ -11,13 +12,6 @@ internal static class Program
         var builder = WebApplication.CreateBuilder(args);
         
         var configuration = builder.Configuration;
-
-        builder.Services.AddLogging(loggingBuilder =>
-        {
-            loggingBuilder.AddConfiguration(builder.Configuration.GetSection("Logging"));
-            loggingBuilder.AddConsole();
-            loggingBuilder.AddDebug();
-        });
         
         builder.Services.AddControllers();
         
@@ -40,6 +34,11 @@ internal static class Program
                     b.CommandTimeout(60);
                 });
         });
+
+        #region scopes
+
+        builder.Services.AddScoped<IWordService, WordService>();
+        #endregion
 
         var app = builder.Build();
         
