@@ -1,7 +1,10 @@
+using Azure;
+using Azure.AI.OpenAI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using PhraseFluent.DataAccess;
 using PhraseFluent.Service;
+using PhraseFluent.Service.Options;
 
 namespace PhraseFluent.API;
 
@@ -38,6 +41,14 @@ internal static class Program
         #region scopes
 
         builder.Services.AddScoped<IWordService, WordService>();
+        builder.Services.AddScoped<OpenAIClient>(provider =>
+        {
+            var aiSettings = configuration.GetSection("AiSettings");
+            var settings = new OpenAiSettings();
+            aiSettings.Bind(settings);
+
+            return new OpenAIClient(new Uri(settings.AiUrl), new AzureKeyCredential(settings.AiAzureKeyCredential));
+        });
         #endregion
 
         var app = builder.Build();
