@@ -49,7 +49,7 @@ internal static class Program
         app.UseHttpsRedirection();
         app.MapControllers();
 
-        app.MapGet("/", () => Results.Ok(configuration.GetValue<string>("AppSettings:HealthCheckText"))); //Health check
+        app.MapGet("/", () => Results.Ok("Ok")); //Health check
         
         
         using (var serviceScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope())
