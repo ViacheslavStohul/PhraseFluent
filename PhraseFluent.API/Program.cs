@@ -38,10 +38,12 @@ internal static class Program
                 });
         });
 
-        #region scopes
+        #region scopes and configuration
 
-        builder.Services.AddScoped<IWordService, WordService>();
-        builder.Services.AddScoped<OpenAIClient>(provider =>
+        builder.Services.Configure<MicrosoftTranslatorSettings>(builder.Configuration.GetSection("Translator"));
+
+        builder.Services.AddScoped<ITranslationService, TranslationService>();
+        builder.Services.AddScoped<OpenAIClient>(_ =>
         {
             var aiSettings = configuration.GetSection("AiSettings");
             var settings = new OpenAiSettings();

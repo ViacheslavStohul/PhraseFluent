@@ -1,31 +1,33 @@
-﻿
+﻿using Azure;
+using Azure.AI.Translation.Text;
 using Microsoft.AspNetCore.Mvc;
 using PhraseFluent.Service;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace PhraseFluent.API.Controllers;
 
-[Microsoft.AspNetCore.Components.Route("/word")]
-public class WordController(ILogger<WordController> logger, IWordService wordService) : BaseController
+[Route("/word")]
+public class WordController(ILogger<WordController> logger, ITranslationService translationService) : BaseController
 {
     [HttpGet]
-    [Route("/GetTranslation/{wordToTranslate}/{translateTo}")]
-    [SwaggerResponse(200, Description = "Get translation of the word")]
-    [SwaggerResponse(400, Description = "Error during translation")]
-    [Produces("application/json")]
-    public async Task<IActionResult> GetWordTranslation([FromRoute] string wordToTranslate, string translateTo = "en")
+    [Route("/languages")]
+    [SwaggerResponse(200, Description = "Gets all available translation languages")]
+    [SwaggerResponse(500, Description = "Error when getting languages")]
+    [Produces<Response<GetLanguagesResult>>]
+    public async Task<IActionResult> GetLanguages()
     {
         try
         {
-            var translationResult = await wordService.GetWordTranslation(wordToTranslate, translateTo);
+            var languages = await translationService.GetLanguages();
 
-            return Ok(translationResult);
+            return Ok(languages);
         }
         catch (Exception ex)
         {
-            logger.LogError("Error during translation: {Exception}", ex.Message);
+            logger.LogError("Error during getting languages: {Exception}", ex.Message);
 
-            return BadRequest();
+            return StatusCode(500, "Error getting languages");
         }
     }
+    
 }
