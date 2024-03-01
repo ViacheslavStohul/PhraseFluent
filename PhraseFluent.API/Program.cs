@@ -1,5 +1,3 @@
-using Azure;
-using Azure.AI.OpenAI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using PhraseFluent.DataAccess;
@@ -43,14 +41,6 @@ internal static class Program
         builder.Services.Configure<MicrosoftTranslatorSettings>(builder.Configuration.GetSection("Translator"));
 
         builder.Services.AddScoped<ITranslationService, TranslationService>();
-        builder.Services.AddScoped<OpenAIClient>(_ =>
-        {
-            var aiSettings = configuration.GetSection("AiSettings");
-            var settings = new OpenAiSettings();
-            aiSettings.Bind(settings);
-
-            return new OpenAIClient(new Uri(settings.AiUrl), new AzureKeyCredential(settings.AiAzureKeyCredential));
-        });
         #endregion
 
         var app = builder.Build();

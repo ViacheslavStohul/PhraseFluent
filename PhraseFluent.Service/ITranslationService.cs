@@ -6,5 +6,7 @@ namespace PhraseFluent.Service;
 
 public interface ITranslationService
 {
-    Task<Response<GetLanguagesResult>> GetLanguages();
+    Task<IEnumerable<SupportedLanguage>> GetLanguages();
+
+    Task<TranslationResult> GetWordTranslation(string wordToTranslate, string targetLanguage);
 }

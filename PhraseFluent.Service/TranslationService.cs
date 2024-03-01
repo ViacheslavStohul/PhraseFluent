@@ -12,15 +12,49 @@ public class TranslationService : ITranslationService
     
     public TranslationService(IOptions<MicrosoftTranslatorSettings> settings)
     {
-        AzureKeyCredential key = new(settings.Value.Key);
+        var translatorSettings = settings.Value;
+        
+        AzureKeyCredential key = new(translatorSettings.Key);
 
-        _client = new TextTranslationClient(key);
+        _client = new TextTranslationClient(key, translatorSettings.Region);
     }
     
-    public async Task<Response<GetLanguagesResult>> GetLanguages()
+    public async Task<IEnumerable<SupportedLanguage>> GetLanguages()
     {
-        var languages = await _client.GetLanguagesAsync();
+        var response = await _client.GetLanguagesAsync();
+        
+        ArgumentNullException.ThrowIfNull(response);
 
-        return languages;
+        var supportedLanguages = response.Value.Translation.Select(language => new SupportedLanguage
+        {
+            Name = language.Value.Name,
+            NativeName = language.Value.NativeName,
+            Key = language.Key
+        });
+
+        return supportedLanguages;
+    }
+
+    public async Task<TranslationResult> GetWordTranslation(string wordToTranslate, string targetLanguage)
+    {
+        var response = await _client.TranslateAsync(new[] { targetLanguage }, new[] { wordToTranslate }, toScript: "Latn");
+        ArgumentNullException.ThrowIfNull(response);
+        
+        var translatedTextItem = response.Value[0];
+        ArgumentNullException.ThrowIfNull(translatedTextItem);
+
+        var translationResult = translatedTextItem.Translations[0];
+
+        var translationResultResponse = new TranslationResult
+        {
+            Translation = new TranslatedWord
+            {
+                Text = translationResult.Text,
+                Transliteration = translationResult.Transliteration.Text
+            },
+            TranslatedFrom = translatedTextItem.DetectedLanguage.Language
+        };
+
+        return translationResultResponse;
     }
 }
