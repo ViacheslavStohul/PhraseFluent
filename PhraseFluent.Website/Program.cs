@@ -14,15 +14,16 @@ internal static class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        var tokenOptionsSection = builder.Configuration.GetSection("Authorization");
+        var configuration = builder.Configuration;
+        var services = builder.Services;
+        
+        var tokenOptionsSection = configuration.GetSection("Authorization");
         var tokenConfiguration = new TokenConfiguration();
         tokenOptionsSection.Bind(tokenConfiguration);
 
         var key = GenerateSecurityKey();
-        
-        var configuration = builder.Configuration;
 
-        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
                 options.TokenValidationParameters = new TokenValidationParameters
@@ -38,10 +39,10 @@ internal static class Program
                 };
             });
         
-        builder.Services.AddControllers();
+        services.AddControllers();
         
-        builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen(o =>
+        services.AddEndpointsApiExplorer();
+        services.AddSwaggerGen(o =>
         {
             o.SwaggerDoc("v1", new OpenApiInfo
             {
@@ -76,7 +77,7 @@ internal static class Program
             });
         });
 
-        builder.Services.AddDbContext<DataContext>(opt =>
+        services.AddDbContext<DataContext>(opt =>
         {
             opt.UseSqlServer(configuration.GetValue<string>("DataBase:ConnectionString"),
                 b => {
@@ -87,12 +88,12 @@ internal static class Program
 
         #region scopes and configuration
 
-        builder.Services.Configure<MicrosoftTranslatorSettings>(builder.Configuration.GetSection("Translator"));
-        builder.Services.Configure<TokenConfiguration>(tokenOptionsSection);
+        services.Configure<MicrosoftTranslatorSettings>(builder.Configuration.GetSection("Translator"));
+        services.Configure<TokenConfiguration>(tokenOptionsSection);
 
-        builder.Services.AddScoped<ITranslationService, TranslationService>();
-        builder.Services.AddScoped<IAuthorizationService, AuthorizationService>();
-        builder.Services.AddSingleton(key);
+        services.AddScoped<ITranslationService, TranslationService>();
+        services.AddScoped<IAuthorizationService, AuthorizationService>();
+        services.AddSingleton(key);
         #endregion
 
         var app = builder.Build();
