@@ -23,7 +23,7 @@ public class AuthorizationService(IOptions<TokenConfiguration> tokenConfiguratio
         
         var now = DateTime.UtcNow;
         var expiry = now.AddMinutes(_tokenConfiguration.ExpiryMinutes);
-        var expiresIn = new DateTimeOffset(expiry).ToUnixTimeSeconds();
+        var expiresIn = (int)(expiry - now).TotalSeconds;
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
@@ -40,7 +40,7 @@ public class AuthorizationService(IOptions<TokenConfiguration> tokenConfiguratio
         {
             AccessToken = tokenHandler.WriteToken(token),
             RefreshToken = GenerateRefreshToken(),
-            ExpiresAt = expiresIn
+            ExpiresIn = expiresIn
         };
 
         return tokenResponse;
