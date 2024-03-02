@@ -44,6 +44,8 @@ public class TranslationService : ITranslationService
         ArgumentNullException.ThrowIfNull(translatedTextItem);
 
         var translationResult = translatedTextItem.Translations[0];
+        
+        var otherTranslations = await _client.LookupDictionaryEntriesAsync(translatedTextItem.DetectedLanguage.Language, targetLanguage, wordToTranslate);
 
         var translationResultResponse = new TranslationResult
         {
@@ -54,6 +56,19 @@ public class TranslationService : ITranslationService
             },
             TranslatedFrom = translatedTextItem.DetectedLanguage.Language
         };
+
+        if (!otherTranslations.HasValue) return translationResultResponse;
+
+        var dictionaryItems = (from dictionaryLookupItem in otherTranslations.Value
+            from translation in dictionaryLookupItem.Translations
+            select new OtherTranslation
+            {
+                Text = translation.NormalizedTarget,
+                Prefix = translation.PrefixWord,
+                Confidence = translation.Confidence
+            });
+
+        translationResultResponse.OtherTranslations = dictionaryItems;
 
         return translationResultResponse;
     }
