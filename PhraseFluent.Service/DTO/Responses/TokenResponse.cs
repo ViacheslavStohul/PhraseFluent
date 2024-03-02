@@ -6,5 +6,5 @@ public class TokenResponse
 
     public string RefreshToken { get; set; } = string.Empty;
     
-    public int ExpiresIn { get; set; }
+    public long ExpiresIn { get; set; }
 }
