@@ -51,7 +51,7 @@ internal static class Program
             });
             o.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
-                Description = "JWT Authorization header используя схему Bearer. Пример: \"Authorization: Bearer {token}\"",
+                Description = "JWT Authorization header using bearer scheme. Example: \"Authorization: Bearer {token}\"",
                 Name = "Authorization",
                 In = ParameterLocation.Header,
                 Type = SecuritySchemeType.ApiKey,
