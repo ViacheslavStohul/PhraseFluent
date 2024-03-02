@@ -1,5 +1,6 @@
 ﻿using Azure;
 using Azure.AI.Translation.Text;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Microsoft.Extensions.Options;
 using PhraseFluent.Service.DTO.Responses;
 using PhraseFluent.Service.Options;
@@ -52,7 +53,7 @@ public class TranslationService : ITranslationService
             Translation = new TranslatedWord
             {
                 Text = translationResult.Text,
-                Transliteration = translationResult.Transliteration.Text
+                Transliteration = translationResult.Transliteration?.Text
             },
             TranslatedFrom = translatedTextItem.DetectedLanguage.Language
         };
@@ -71,5 +72,38 @@ public class TranslationService : ITranslationService
         translationResultResponse.OtherTranslations = dictionaryItems;
 
         return translationResultResponse;
+    }
+
+    public async Task<IEnumerable<UsageExamplesResponse>> GetExamples(string word, string translatedWord, string languageFrom, string languageTo)
+    {
+        var textWithTranslation = new InputTextWithTranslation(word, translatedWord);
+        
+        var response = await _client.LookupDictionaryExamplesAsync(languageFrom, languageTo, textWithTranslation);
+        ArgumentNullException.ThrowIfNull(response);
+
+        var exampleResponse = new List<UsageExamplesResponse>();
+
+        foreach (var dictionaryExampleItem in response.Value)
+        {
+            if (dictionaryExampleItem == null) continue;
+
+            exampleResponse.AddRange(dictionaryExampleItem.Examples.Select(example => new UsageExamplesResponse
+            {
+                TranslatedExample = new UsageExample
+                {
+                    Prefix = example.TargetPrefix,
+                    Term = example.TargetTerm,
+                    Suffix = example.TargetSuffix
+                },
+                NativeLanguageExample = new UsageExample
+                {
+                    Prefix = example.SourcePrefix,
+                    Term = example.SourceTerm,
+                    Suffix = example.SourceSuffix
+                }
+            }));
+        }
+
+        return exampleResponse;
     }
 }

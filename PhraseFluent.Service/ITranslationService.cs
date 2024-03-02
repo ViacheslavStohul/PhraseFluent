@@ -9,4 +9,6 @@ public interface ITranslationService
     Task<IEnumerable<SupportedLanguage>> GetLanguages();
 
     Task<TranslationResult> GetWordTranslation(string wordToTranslate, string targetLanguage);
+
+    Task<IEnumerable<UsageExamplesResponse>> GetExamples(string word, string translatedWord, string languageFrom, string languageTo);
 }

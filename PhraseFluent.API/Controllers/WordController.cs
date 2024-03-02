@@ -49,5 +49,25 @@ public class WordController(ILogger<WordController> logger, ITranslationService 
             return BadRequest();
         }
     }
-    
+
+    [HttpGet]
+    [Route("/examples/{sourceWord}/{targetWord}/{sourceLanguage}/{targetLanguage}")]
+    [SwaggerResponse(200, Description = "Returns examples of the word in given language")]
+    [SwaggerResponse(400, Description = "Error getting examples")]
+    [Produces<IEnumerable<UsageExamplesResponse>>]
+    public async Task<IActionResult> GetExamples([FromRoute] string sourceWord, [FromRoute] string targetWord, [FromRoute] string sourceLanguage, [FromRoute] string targetLanguage)
+    {
+        try
+        {
+            var examples = await translationService.GetExamples(sourceWord, targetWord, sourceLanguage, targetLanguage);
+
+            return Ok(examples);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError("Error getting word examples: {Exception}", ex.Message);
+
+            return BadRequest();
+        }
+    }
 }
