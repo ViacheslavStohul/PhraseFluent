@@ -31,7 +31,7 @@ internal static class Program
         {
             opt.UseSqlServer(configuration.GetValue<string>("DataBase:ConnectionString"),
                 b => {
-                    b.MigrationsAssembly("PhraseFluent.API");
+                    b.MigrationsAssembly("PhraseFluent.Website");
                     b.CommandTimeout(60);
                 });
         });
