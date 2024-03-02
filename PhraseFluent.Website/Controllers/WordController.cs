@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PhraseFluent.Service;
 using PhraseFluent.Service.DTO.Responses;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace PhraseFluent.API.Controllers;
 
+[Authorize]
 [Route("/word")]
 public class WordController(ILogger<WordController> logger, ITranslationService translationService) : BaseController
 {

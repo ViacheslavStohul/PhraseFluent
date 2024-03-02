@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using PhraseFluent.DataAccess;
 using PhraseFluent.Service;
@@ -11,8 +13,30 @@ internal static class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+
+        var tokenOptionsSection = builder.Configuration.GetSection("Authorization");
+        var tokenConfiguration = new TokenConfiguration();
+        tokenOptionsSection.Bind(tokenConfiguration);
+
+        var key = GenerateSecurityKey();
         
         var configuration = builder.Configuration;
+
+        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = key,
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidIssuer = tokenConfiguration.Issuer,
+                    ValidAudience = tokenConfiguration.Audience,
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero
+                };
+            });
         
         builder.Services.AddControllers();
         
@@ -24,6 +48,31 @@ internal static class Program
                 Title = "Phrase fluent API documentation",
                 Version = "v1",
                 Description = "List of APIs"
+            });
+            o.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                Description = "JWT Authorization header используя схему Bearer. Пример: \"Authorization: Bearer {token}\"",
+                Name = "Authorization",
+                In = ParameterLocation.Header,
+                Type = SecuritySchemeType.ApiKey,
+                Scheme = "Bearer"
+            });
+            o.AddSecurityRequirement(new OpenApiSecurityRequirement()
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        },
+                        Scheme = "oauth2",
+                        Name = "Bearer",
+                        In = ParameterLocation.Header,
+                    },
+                    new List<string>()
+                }
             });
         });
 
@@ -39,8 +88,11 @@ internal static class Program
         #region scopes and configuration
 
         builder.Services.Configure<MicrosoftTranslatorSettings>(builder.Configuration.GetSection("Translator"));
+        builder.Services.Configure<TokenConfiguration>(tokenOptionsSection);
 
         builder.Services.AddScoped<ITranslationService, TranslationService>();
+        builder.Services.AddScoped<IAuthorizationService, AuthorizationService>();
+        builder.Services.AddSingleton(key);
         #endregion
 
         var app = builder.Build();
@@ -63,5 +115,13 @@ internal static class Program
         }
         
         app.Run();
+    }
+    
+    private static SymmetricSecurityKey GenerateSecurityKey()
+    {
+        var key = new byte[64];
+        using var rng = System.Security.Cryptography.RandomNumberGenerator.Create();
+        rng.GetBytes(key);
+        return new SymmetricSecurityKey(key);
     }
 }
