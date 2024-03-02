@@ -40,7 +40,7 @@ public class AuthorizationService(IOptions<TokenConfiguration> tokenConfiguratio
         {
             AccessToken = tokenHandler.WriteToken(token),
             RefreshToken = GenerateRefreshToken(),
-            ExpiresIn = expiresIn
+            ExpiresAt = expiresIn
         };
 
         return tokenResponse;
