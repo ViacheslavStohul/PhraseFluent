@@ -1,6 +1,5 @@
 ﻿using Azure;
 using Azure.AI.Translation.Text;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Microsoft.Extensions.Options;
 using PhraseFluent.Service.DTO.Responses;
 using PhraseFluent.Service.Options;
