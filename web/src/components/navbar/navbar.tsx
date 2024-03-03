@@ -1,10 +1,11 @@
 import React from 'react';
 import './navbar.scss';
+import { NavLink } from 'react-router-dom';
 function Navbar() {
   return (
     <nav>
       <div>Logo</div>
-      <div>Sign in</div>
+      <NavLink to='/authorization' end>Sign in</NavLink>
     </nav>
   );
 }

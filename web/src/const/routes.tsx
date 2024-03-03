@@ -12,7 +12,7 @@ const children: RouteObject[] = [
       ),
     children: [
       {
-        lazy: () => import('../components/layouts/main-layout/body-card/body-card').then(
+        lazy: () => import('../components/layouts/body-card/body-card').then(
           (module) => ({
             Component: module.default
           })),
@@ -34,8 +34,32 @@ const children: RouteObject[] = [
             ),
           }
         ] 
-      }
+      },
     ],
+  },
+  {
+    lazy: () => import('../components/layouts/form-card/form-card').then(
+      (module) => ({
+        Component: module.default
+      })),
+    children: [
+      {
+        path: 'authorization',
+        lazy: () => import('../components/pages/authorization/authorization').then(
+          (module) => ({
+            Component: module.default
+          })
+        )
+      },
+      {
+        path: '*',
+        lazy: () => import('../components/pages/authorization/authorization').then(
+          (module) => ({
+            Component: module.default
+          })
+        ),
+      }
+    ]
   },
   {
     path: '*',
