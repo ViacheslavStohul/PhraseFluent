@@ -1,0 +1,12 @@
+@import '../../scss/variables.scss';
+
+nav {
+  height: $nav-height;
+  background-color: $nav-color;
+  color: $font-nav-color;
+  padding: 5px 20px;
+  display: flex;
+  flex-direction:row;
+  justify-content: space-between;
+  align-items: center;
+}
