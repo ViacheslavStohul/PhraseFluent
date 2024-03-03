@@ -1,0 +1,45 @@
+@import '../../../scss/variables.scss';
+
+.input-field {
+  color: inherit;
+  width: 100%;
+
+  label {
+    color: $font-color-light;
+    transition: 0.2s ease;
+  }
+
+  &:has(input:hover){
+    label {
+      color: $second-color;
+    }
+  }
+
+  &:has(input:focus){
+    label {
+      color: $nav-color;
+    }
+  }
+}
+
+input[type='number'],input[type='text'],input[type='date'],input[type='email'] {
+  font-family: 'Merriweather', sans-serif;
+  padding: 5px 0;
+  background-color: $bg-primary-color;
+  color: $font-color;
+  border: none;
+  border-bottom: 2px solid $border-color;
+  transition: 0.2s ease;
+  width: 100%;
+  resize: none;
+  position: relative;
+
+  &:hover {
+    border-bottom: 2px solid $second-color !important;
+  }
+
+  &:focus {
+    border-bottom: 2px solid $nav-color !important;
+  }
+
+}

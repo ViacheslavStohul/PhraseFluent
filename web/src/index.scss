@@ -1,6 +1,12 @@
 @import './scss/variables.scss';
 @import url('https://fonts.googleapis.com/css2?family=Madimi+One&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap');
 
+*,
+*:focus,
+*:hover {
+  outline: none;
+}
+
 html {
   width: 100vw;
   height: 100vh;
@@ -35,13 +41,18 @@ h1,h2,h3,h4,h5,h6 {
   margin: 0;
 }
 
+label {
+  font-size: 0.9em;
+  font-weight: 500;
+}
+
 button {
   font-size: 1em;
   border-radius: 4px;
   display: flex;
   flex-direction: row;
   gap: 5px;
-  padding: 10px 35px;
+  padding: 15px 50px;
   color: $font-second-color;
   background-color: $second-color;
   border: none;
@@ -53,3 +64,4 @@ button {
     filter:brightness(1.2);
   }
 }
+
