@@ -1,0 +1,19 @@
+@import '../../../scss/variables.scss';
+
+.toast-manager {
+  position:absolute;
+  top: 20px;
+  right: 20px;
+  height: calc(100% - 20px);
+
+  .toast-body {
+    top: 0;
+    position: sticky;
+  }
+}
+
+#root:has(nav) {
+  .toast-body {
+    top: $nav-height;
+  }
+}

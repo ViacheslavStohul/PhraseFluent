@@ -1,21 +1,22 @@
 import React, { useState, createContext, useCallback } from "react";
-import { ToastType } from "../enum/toast";
+import { ToastType } from "../../enum/toast";
+import ToastManager from "./toast-manager/toast-manager";
 
 
-export interface Toast {
+export interface IToast {
   id: number;
   name: string;
   text: string;
   type: ToastType;
 }
 
-const ToastContext = createContext<any>(null);
+export const ToastContext = createContext<any>(null);
 
 export const ToastProvider = (
   { children }: {
   children: React.ReactNode;
 }) => {
-  const [toasts, setToasts] = useState<Toast[]>([]);
+  const [toasts, setToasts] = useState<IToast[]>([]);
 
   const removeToast = useCallback((id: number) => {
     setToasts(prev => prev.filter(toast => toast.id === id));
@@ -30,6 +31,7 @@ export const ToastProvider = (
   return (
     <ToastContext.Provider value={{ toasts, addToast, removeToast }}>
       {children}
+      <ToastManager />
     </ToastContext.Provider>
   );
 };
