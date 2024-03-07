@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { FC, ReactNode, useState } from 'react';
+import React, { FC, ReactNode, useEffect, useState } from 'react';
 
 interface AppProps {
   children: ReactNode;
@@ -9,12 +9,14 @@ const InterceptorManager: FC<AppProps> = (
 
   const [init, setInit] = useState(false);
 
-  axios.interceptors.request.use((config) => {
-    config.baseURL = `localhost:7121/`;
-    return config;
-  });
+  useEffect(() => {
+    axios.interceptors.request.use((config) => {
+      config.baseURL = 'https://localhost:7121';
+      return config;
+    });
 
-  setInit(true);
+    setInit(true);
+  },[]);
 
   return (
     <>
