@@ -11,7 +11,7 @@ const InterceptorManager: FC<AppProps> = (
 
   useEffect(() => {
     axios.interceptors.request.use((config) => {
-      config.baseURL = 'https://localhost:7121';
+      config.baseURL = 'https://localhost:44346';
       return config;
     });
 
