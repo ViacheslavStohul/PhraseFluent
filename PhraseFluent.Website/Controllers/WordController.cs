@@ -7,11 +7,11 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace PhraseFluent.API.Controllers;
 
 [Authorize]
-[Route("/api/word")]
+[Route("api/word")]
 public class WordController(ILogger<WordController> logger, ITranslationService translationService) : BaseController
 {
     [HttpGet]
-    [Route("/languages")]
+    [Route("languages")]
     [SwaggerResponse(200, Description = "Gets all available translation languages")]
     [SwaggerResponse(500, Description = "Error when getting languages")]
     [Produces<IEnumerable<SupportedLanguage>>]
@@ -32,7 +32,7 @@ public class WordController(ILogger<WordController> logger, ITranslationService 
     }
 
     [HttpGet]
-    [Route("/translate/{wordToTranslate}/{to}")]
+    [Route("translate/{wordToTranslate}/{to}")]
     [SwaggerResponse(200, Description = "Returns translation of the word")]
     [SwaggerResponse(500, Description = "Error while translation")]
     [Produces<TranslationResult>]
@@ -53,7 +53,7 @@ public class WordController(ILogger<WordController> logger, ITranslationService 
     }
 
     [HttpGet]
-    [Route("/examples/{sourceWord}/{targetWord}/{sourceLanguage}/{targetLanguage}")]
+    [Route("examples/{sourceWord}/{targetWord}/{sourceLanguage}/{targetLanguage}")]
     [SwaggerResponse(200, Description = "Returns examples of the word in given language")]
     [SwaggerResponse(400, Description = "Error getting examples")]
     [Produces<IEnumerable<UsageExamplesResponse>>]

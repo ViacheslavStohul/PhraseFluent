@@ -7,10 +7,10 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace PhraseFluent.API.Controllers;
 
-[Route("/api/auth")]
+[Route("api/auth")]
 public class AuthorizationController(ILogger<WordController> logger, IAuthorizationService authorizationService) : BaseController
 {
-    [Route("/token")]
+    [Route("token")]
     [HttpPost]
     [SwaggerResponse(200, "Returns access and refresh token")]
     [SwaggerResponse(400, "Error getting response")]
@@ -29,7 +29,7 @@ public class AuthorizationController(ILogger<WordController> logger, IAuthorizat
         }
     }
     
-    [Route("/register")]
+    [Route("register")]
     [HttpPost]
     [SwaggerResponse(200, "Returns access and refresh token")]
     [SwaggerResponse(400, "Error registing user")]
@@ -53,7 +53,7 @@ public class AuthorizationController(ILogger<WordController> logger, IAuthorizat
         }
     }
     
-    [Route("/token/refresh")]
+    [Route("token/refresh")]
     [HttpPost]
     [SwaggerResponse(200, "Returns access and refresh token")]
     [SwaggerResponse(400, "Error refreshing token")]
