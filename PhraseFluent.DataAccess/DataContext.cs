@@ -10,4 +10,33 @@ public class DataContext(DbContextOptions<DataContext> options) : DbContext(opti
     public virtual DbSet<User> Users { get; set; }
     
     public virtual DbSet<UserSession> UserSessions { get; set; }
+
+    public async Task<int> Initialize()
+    {
+        var changesRowsCount = 0;
+        using (var transaction = await Database.BeginTransactionAsync())
+        {
+            try
+            {
+                var scriptsDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Migrations", "Scripts");
+                var scriptFiles = Directory.GetFiles(scriptsDirectory, "*.sql");
+
+                foreach (var scriptFile in scriptFiles)
+                {
+                    var scriptContent = await File.ReadAllTextAsync(scriptFile);
+                    await Database.ExecuteSqlRawAsync(scriptContent);
+                    changesRowsCount += await SaveChangesAsync();
+                }
+
+                await transaction.CommitAsync();
+            }
+            catch
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
+        }
+
+        return changesRowsCount;
+    }
 }

@@ -126,11 +126,10 @@ internal static class Program
         
         using (var serviceScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope())
         {
-            using (var context = serviceScope.ServiceProvider.GetService<DataContext>())
-            {
-                //context?.Database.Migrate();
-            }
+            var context = serviceScope.ServiceProvider.GetService<DataContext>();
+            var result = context?.Initialize().Result;
         }
+
         
         app.Run();
     }
