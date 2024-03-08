@@ -39,6 +39,14 @@ internal static class Program
                 };
             });
         
+        services.AddCors(options =>
+        {
+            options.AddPolicy("AllowSpecificOrigin",
+                conf => conf.WithOrigins("http://localhost:44346")
+                    .AllowAnyMethod()
+                    .AllowAnyHeader());
+        });
+        
         services.AddControllers();
         
         services.AddEndpointsApiExplorer();
