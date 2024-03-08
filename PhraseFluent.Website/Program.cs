@@ -42,7 +42,7 @@ internal static class Program
         services.AddCors(options =>
         {
             options.AddPolicy("AllowSpecificOrigin",
-                conf => conf.WithOrigins("http://localhost:44346")
+                conf => conf.WithOrigins("http://localhost:3000")
                     .AllowAnyMethod()
                     .AllowAnyHeader());
         });
@@ -110,6 +110,11 @@ internal static class Program
         app.UseSwaggerUI();
 
         app.UseHttpsRedirection();
+
+        app.UseCors("AllowSpecificOrigin");
+
+        app.UseRouting();
+
         app.MapControllers();
 
         app.MapGet("/", () => Results.Ok("Ok")); //Health check
