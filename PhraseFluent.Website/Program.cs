@@ -118,6 +118,8 @@ internal static class Program
         app.UseCors("AllowSpecificOrigin");
 
         app.UseRouting();
+        
+        app.UseAuthorization();
 
         app.MapControllers();
 

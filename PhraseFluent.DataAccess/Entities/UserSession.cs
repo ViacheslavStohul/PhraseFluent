@@ -16,5 +16,5 @@ public class UserSession : BaseId
     public bool Redeemed { get; set; }
 
     [ForeignKey(nameof(UserId))]
-    public User User;
+    public User User { get; set; }
 }

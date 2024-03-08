@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc;
 using PhraseFluent.Service;
 using PhraseFluent.Service.DTO.Requests;
 using PhraseFluent.Service.DTO.Responses;
@@ -39,6 +40,11 @@ public class AuthorizationController(ILogger<WordController> logger, IAuthorizat
         {
             var token = await authorizationService.RegisterUser(userData);
             return Ok(token);
+        }
+        catch (ValidationException ex)
+        {
+            logger.LogError("Error creating token {Exception}", ex.Message);
+            return BadRequest(ex.Message);
         }
         catch (Exception ex)
         {

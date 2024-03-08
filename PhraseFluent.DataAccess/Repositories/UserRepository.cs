@@ -15,7 +15,7 @@ public class UserRepository(DataContext dataContext) : BaseRepository(dataContex
     /// <returns><c>true</c> if the username is occupied, <c>false</c> otherwise.</returns>
     public bool IsUserNameOccupied(string username)
     {
-        return _dataContext.Users.Any(x => x.Username.Equals(username, StringComparison.CurrentCultureIgnoreCase));
+        return _dataContext.Users.Any(x => x.Username.ToLower() == username.ToLower());
     }
 
     /// <summary>
@@ -39,7 +39,7 @@ public class UserRepository(DataContext dataContext) : BaseRepository(dataContex
     /// <returns>A <see cref="Task"/> representing the asynchronous operation. The result is a nullable <see cref="UserSession"/> object if found, otherwise <c>null</c>.</returns>
     public async Task<UserSession?> GetSessionByRefreshToken(string refreshToken)
     {
-        var session = await _dataContext.UserSessions.AsNoTracking().Include(x => x.User)
+        var session = await _dataContext.UserSessions.Include(x => x.User)
             .FirstOrDefaultAsync(x => x.RefreshToken == refreshToken);
 
         return session;

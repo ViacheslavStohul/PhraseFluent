@@ -12,7 +12,7 @@ using PhraseFluent.DataAccess;
 namespace PhraseFluent.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240308193845_UserAndUserSession")]
+    [Migration("20240308205724_UserAndUserSession")]
     partial class UserAndUserSession
     {
         /// <inheritdoc />
@@ -89,7 +89,20 @@ namespace PhraseFluent.API.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("UserSessions");
+                });
+
+            modelBuilder.Entity("PhraseFluent.DataAccess.Entities.UserSession", b =>
+                {
+                    b.HasOne("PhraseFluent.DataAccess.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }

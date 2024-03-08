@@ -40,7 +40,7 @@ public partial class AuthorizationService(
         
         IsValidPassword(userToCreate.Password);
 
-        if (!userRepository.IsUserNameOccupied(userToCreate.Username))
+        if (userRepository.IsUserNameOccupied(userToCreate.Username))
         {
             throw new ValidationException($"Username {userToCreate.Username} is occupied");
         }
@@ -62,7 +62,6 @@ public partial class AuthorizationService(
             RefreshToken = token.RefreshToken,
             JwtId = tokenId,
             RefreshTokenExpiration = DateTime.Now.AddDays(_tokenConfiguration.RefreshTokenExpirationDays),
-            User = userEntity,
             Redeemed = false
         };
         
@@ -104,7 +103,6 @@ public partial class AuthorizationService(
             RefreshToken = token.RefreshToken,
             JwtId = tokenId,
             RefreshTokenExpiration = DateTime.Now.AddDays(_tokenConfiguration.RefreshTokenExpirationDays),
-            User = user
         };
         
         userRepository.Add(userSession);
@@ -138,15 +136,19 @@ public partial class AuthorizationService(
 
         if (storedToken == null)
             throw new SecurityTokenException("Invalid refresh token");
+
+        if (storedToken.Redeemed)
+            throw new SecurityTokenException("Refresh token already used");
+
         
         var jwtId = principal.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti)?.ToString();
 
-        var userUuid = principal.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sub)?.ToString();
+        var userUuid = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-        if (jwtId == null || userUuid == null || storedToken.User.Uuid.ToString() != userUuid ||
-            storedToken.JwtId != jwtId || DateTime.Now > storedToken.RefreshTokenExpiration)
+        if (jwtId == null || userUuid == null || !string.Equals(storedToken.User.Uuid.ToString(), userUuid, StringComparison.CurrentCultureIgnoreCase) ||
+            !string.Equals("jti: " + storedToken.JwtId, jwtId, StringComparison.CurrentCultureIgnoreCase) || DateTime.Now > storedToken.RefreshTokenExpiration)
         {
-            throw new SecurityTokenException("Invalid refresh token");
+            throw new SecurityTokenException("Invalid access token");
         }
 
         var newJwtId = Guid.NewGuid().ToString();
@@ -160,10 +162,13 @@ public partial class AuthorizationService(
             RefreshToken = token.RefreshToken,
             JwtId = newJwtId,
             RefreshTokenExpiration = DateTime.Now.AddDays(_tokenConfiguration.RefreshTokenExpirationDays),
-            User = storedToken.User
         };
         
         userRepository.Add(userSession);
+
+        storedToken.Redeemed = true;
+        
+        userRepository.Update(storedToken);
 
         await userRepository.SaveChangesAsync();
 
