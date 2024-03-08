@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using PhraseFluent.DataAccess;
+using PhraseFluent.DataAccess.Repositories;
+using PhraseFluent.DataAccess.Repositories.Interfaces;
 using PhraseFluent.Service;
 using PhraseFluent.Service.Options;
 
@@ -101,6 +103,8 @@ internal static class Program
 
         services.AddScoped<ITranslationService, TranslationService>();
         services.AddScoped<IAuthorizationService, AuthorizationService>();
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IBaseRepository, BaseRepository>();
         services.AddSingleton(key);
         #endregion
 
@@ -124,7 +128,7 @@ internal static class Program
         {
             using (var context = serviceScope.ServiceProvider.GetService<DataContext>())
             {
-                context?.Database.Migrate();
+                //context?.Database.Migrate();
             }
         }
         

@@ -1,23 +1,188 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿using System.ComponentModel.DataAnnotations;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text.RegularExpressions;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using PhraseFluent.DataAccess.Entities;
+using PhraseFluent.DataAccess.Repositories.Interfaces;
 using PhraseFluent.Service.DTO.Responses;
+using PhraseFluent.Service.DTO.Services;
+using PhraseFluent.Service.Extensions;
 using PhraseFluent.Service.Options;
 
 namespace PhraseFluent.Service;
 
-public class AuthorizationService(IOptions<TokenConfiguration> tokenConfiguration, SymmetricSecurityKey signingKey) : IAuthorizationService
+public partial class AuthorizationService(
+    IOptions<TokenConfiguration> tokenConfiguration,
+    IUserRepository userRepository,
+    SymmetricSecurityKey signingKey) : IAuthorizationService
 {
     private readonly TokenConfiguration _tokenConfiguration = tokenConfiguration.Value;
+    
+    /// <summary>
+    /// Registers a new user in the system.
+    /// </summary>
+    /// <param name="userToCreate">The user to create.</param>
+    /// <returns>The token response for the registered user.</returns>
+    /// <exception cref="ValidationException">Thrown if the passwords don't match.</exception>
+    public async Task<TokenResponse> RegisterUser(CreatedUser userToCreate)
+    {
+        if (userToCreate.Password != userToCreate.RepeatedPassword)
+        {
+            throw new ValidationException("Passwords dont match");
+        }
 
-    public TokenResponse GetToken()
+        if (userToCreate.Username.Length < 6 || userToCreate.Username.Contains(' '))
+        {
+            throw new ValidationException("Username cannot contain spaces and has to be at least 8 digits");
+        }
+        
+        IsValidPassword(userToCreate.Password);
+
+        if (!userRepository.IsUserNameOccupied(userToCreate.Username))
+        {
+            throw new ValidationException($"Username {userToCreate.Username} is occupied");
+        }
+        
+        User userEntity = userToCreate;
+        
+        userRepository.Add(userEntity);
+
+        await userRepository.SaveChangesAsync();
+
+        var tokenId = Guid.NewGuid().ToString();
+
+        var token = GetToken(userEntity.Uuid, tokenId);
+
+        var userSession = new UserSession
+        {
+            Uuid = Guid.NewGuid(),
+            UserId = userEntity.Id,
+            RefreshToken = token.RefreshToken,
+            JwtId = tokenId,
+            RefreshTokenExpiration = DateTime.Now.AddDays(_tokenConfiguration.RefreshTokenExpirationDays),
+            User = userEntity,
+            Redeemed = false
+        };
+        
+        userRepository.Add(userSession);
+
+        await userRepository.SaveChangesAsync();
+
+        return token;
+    }
+
+    /// <summary>
+    /// Authorizes a client user based on the provided client data.
+    /// </summary>
+    /// <param name="clientData">The client data used for authorization.</param>
+    /// <returns>The token response if successful.</returns>
+    /// <exception cref="ValidationException">Thrown if the client data is invalid.</exception>
+    public async Task<TokenResponse> Authorize(AuthorizedUser clientData)
+    {
+        var user = await userRepository.GetUserByUsername(clientData.Username);
+
+        if (user == null)
+        {
+            throw new ValidationException($"Unknown username {clientData.Username}");
+        }
+
+        if (!clientData.Password.IsHashStringsEqual(user.ClientSecret))
+        {
+            throw new ValidationException($"Passwords don't match for {clientData.Username}");
+        }
+
+        var tokenId = Guid.NewGuid().ToString();
+
+        var token = GetToken(user.Uuid, tokenId);
+
+        var userSession = new UserSession
+        {
+            Uuid = Guid.NewGuid(),
+            UserId = user.Id,
+            RefreshToken = token.RefreshToken,
+            JwtId = tokenId,
+            RefreshTokenExpiration = DateTime.Now.AddDays(_tokenConfiguration.RefreshTokenExpirationDays),
+            User = user
+        };
+        
+        userRepository.Add(userSession);
+
+        await userRepository.SaveChangesAsync();
+
+        return token;
+    }
+
+    /// <summary>
+    /// Refreshes the access token by validating the provided access token and refresh token
+    /// </summary>
+    /// <param name="accessToken">The access token to be refreshed</param>
+    /// <param name="refreshToken">The refresh token associated with the access token</param>
+    /// <returns>The refreshed access token</returns>
+    public async Task<TokenResponse> RefreshTokens(string accessToken, string refreshToken)
+    {
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var validationParameters = GetValidationParameters();
+
+        var principal = tokenHandler.ValidateToken(accessToken, validationParameters, out var securityToken);
+
+        if (securityToken is not JwtSecurityToken jwtSecurityToken ||
+            !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256,
+                StringComparison.InvariantCultureIgnoreCase))
+        {
+            throw new SecurityTokenException("Invalid token");
+        }
+
+        var storedToken = await userRepository.GetSessionByRefreshToken(refreshToken);
+
+        if (storedToken == null)
+            throw new SecurityTokenException("Invalid refresh token");
+        
+        var jwtId = principal.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti)?.ToString();
+
+        var userUuid = principal.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sub)?.ToString();
+
+        if (jwtId == null || userUuid == null || storedToken.User.Uuid.ToString() != userUuid ||
+            storedToken.JwtId != jwtId || DateTime.Now > storedToken.RefreshTokenExpiration)
+        {
+            throw new SecurityTokenException("Invalid refresh token");
+        }
+
+        var newJwtId = Guid.NewGuid().ToString();
+        
+        var token = GetToken(storedToken.User.Uuid, newJwtId);
+
+        var userSession = new UserSession
+        {
+            Uuid = Guid.NewGuid(),
+            UserId = storedToken.User.Id,
+            RefreshToken = token.RefreshToken,
+            JwtId = newJwtId,
+            RefreshTokenExpiration = DateTime.Now.AddDays(_tokenConfiguration.RefreshTokenExpirationDays),
+            User = storedToken.User
+        };
+        
+        userRepository.Add(userSession);
+
+        await userRepository.SaveChangesAsync();
+
+        return token;
+    }
+    
+    /// <summary>
+    /// Generates a new token for the specified user.
+    /// </summary>
+    /// <param name="userUuid">The unique identifier of the user.</param>
+    /// <param name="jwtId">The unique identifier of JWT token that will be created.</param>
+    /// <returns>A TokenResponse object containing the access token, refresh token, and expiration time.</returns>
+    private TokenResponse GetToken(Guid userUuid, string jwtId)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         var claims = new List<Claim>
         {
-            //new Claim(JwtRegisteredClaimNames.Sub, user.Username),
-            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new(JwtRegisteredClaimNames.Sub, userUuid.ToString()),
+            new(JwtRegisteredClaimNames.Jti, jwtId),
             new(JwtRegisteredClaimNames.Iat, DateTimeOffset.Now.ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64),
         };
         
@@ -45,7 +210,36 @@ public class AuthorizationService(IOptions<TokenConfiguration> tokenConfiguratio
 
         return tokenResponse;
     }
-    
+
+    /// <summary>
+    /// Get the validation parameters for token validation.
+    /// </summary>
+    /// <returns>A new instance of <see cref="TokenValidationParameters"/> with the required validation settings.</returns>
+    private TokenValidationParameters GetValidationParameters()
+    {
+        return new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = signingKey,
+            ValidateIssuer = true,
+            ValidIssuer = _tokenConfiguration.Issuer,
+            ValidateAudience = true,
+            ValidAudience = _tokenConfiguration.Audience,
+            ValidateLifetime = false,
+            ClockSkew = TimeSpan.Zero
+        };
+    }
+
+    /// <summary>
+    /// Generates a refresh token using a cryptographic random number generator
+    /// </summary>
+    /// <returns>
+    /// A string representing the generated refresh token
+    /// </returns>
+    /// <remarks>
+    /// This method generates a refresh token by creating a byte array of length 32 using a cryptographic random number generator.
+    /// The byte array is then converted to a base64 string representation and returned.
+    /// </remarks>
     private static string GenerateRefreshToken()
     {
         var randomNumber = new byte[32];
@@ -53,4 +247,35 @@ public class AuthorizationService(IOptions<TokenConfiguration> tokenConfiguratio
         rng.GetBytes(randomNumber);
         return Convert.ToBase64String(randomNumber);
     }
+
+    /// <summary>
+    /// Validates whether the provided password is valid based on the specified constraints.
+    /// </summary>
+    /// <param name="password">The password to validate.</param>
+    /// <exception cref="ValidationException">
+    /// Thrown when the password is empty, less than 8 characters long, contains spaces, does not contain at least 1 capital letter, or does not contain at least 1 digit.
+    /// </exception>
+    private static void IsValidPassword(string password)
+    {
+        if (string.IsNullOrWhiteSpace(password))
+            throw new ValidationException("Password cannot be empty");
+
+        if (password.Length < 8)
+            throw new ValidationException("Password must be at least 8 digits");
+        
+        if (password.Contains(' '))
+            throw new ValidationException("Password must not contain space");
+
+        if (!LettersConstraint().IsMatch(password))
+            throw new ValidationException("Password must contain at least 1 capital letter");
+
+        if (!DigitsConstraint().IsMatch(password))
+            throw new ValidationException("Password must contain at least 1 digit");
+    }
+
+    [GeneratedRegex("[A-Z]")]
+    private static partial Regex LettersConstraint();
+    
+    [GeneratedRegex("[0-9]")]
+    private static partial Regex DigitsConstraint();
 }

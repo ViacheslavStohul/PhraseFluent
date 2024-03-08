@@ -7,7 +7,7 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace PhraseFluent.API.Controllers;
 
 [Authorize]
-[Route("/word")]
+[Route("/api/word")]
 public class WordController(ILogger<WordController> logger, ITranslationService translationService) : BaseController
 {
     [HttpGet]
@@ -62,7 +62,6 @@ public class WordController(ILogger<WordController> logger, ITranslationService 
         try
         {
             var examples = await translationService.GetExamples(sourceWord, targetWord, sourceLanguage, targetLanguage);
-
             return Ok(examples);
         }
         catch (Exception ex)
