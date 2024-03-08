@@ -45,13 +45,16 @@ CREATE TABLE [UserSessions]
     [RefreshTokenExpiration] datetime2        NOT NULL,
     [Redeemed]               bit              NOT NULL,
     [Uuid]                   uniqueidentifier NOT NULL,
-    CONSTRAINT [PK_UserSessions] PRIMARY KEY ([Id])
+    CONSTRAINT [PK_UserSessions] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_UserSessions_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id]) ON DELETE CASCADE
     );
 
 CREATE UNIQUE INDEX [IX_Users_Username] ON [Users] ([Username]);
 
+CREATE INDEX [IX_UserSessions_UserId] ON [UserSessions] ([UserId]);
+
 INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
-VALUES (N'20240308193845_UserAndUserSession', N'8.0.2');
+VALUES (N'20240308205724_UserAndUserSession', N'8.0.2');
 
 INSERT INTO [ReleaseHistory] ([ReleaseId], [ProductVersion])
 VALUES (@ReleaseIdentifier, '0.0.0.1');
