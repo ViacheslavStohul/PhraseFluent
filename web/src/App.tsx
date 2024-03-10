@@ -1,14 +1,13 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import InterceptorManager from './components/layouts/interceptor-manager/interceptor-manager';
-import { ToastProvider } from './context/toast/toasts';
+import ToastManager from './context/toast/toast-manager/toast-manager';
 
 function App() {
   return (
     <InterceptorManager>
-      <ToastProvider>
         <Outlet/>
-      </ToastProvider>
+      <ToastManager/>
     </InterceptorManager>
   );
 }

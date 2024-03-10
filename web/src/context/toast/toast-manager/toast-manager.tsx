@@ -1,10 +1,13 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import './toast-manager.scss';
-import { IToast, ToastContext } from '../toasts';
 import Toast from '../toast/toast';
+import { selectToasts } from '../../../store/slice/toast';
+import { useSelector } from 'react-redux';
+import { IToast } from '../../../components/interfaces/toast';
 
 const ToastManager = () => {
-  const {toasts} = useContext(ToastContext);
+  const toasts = useSelector(selectToasts);
+  
   return (
     <div className='toast-manager'>
         {toasts && toasts.map((toast: IToast) => 

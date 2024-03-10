@@ -1,27 +1,28 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import './toast.scss';
-import { IToast, ToastContext } from '../toasts';
 import { ToastType } from '../../../enum/toast';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../../store';
+import { IToast } from '../../../components/interfaces/toast';
 import CloseSVG from '../../../components/svg/close';
+import { removeToast } from '../../../store/slice/toast';
 
 const Toast = ({toast}:{toast:IToast}) => {
-  const {removeToast} = useContext(ToastContext);
+  const dispatch = useDispatch<AppDispatch>();
   const duration = 6000;
 
   useEffect(() => {
-    if (removeToast){
     const timer = setTimeout(() => {
-      removeToast(toast.id);
+      dispatch(removeToast(toast.id));
     }, duration);
 
     return () => {
       clearTimeout(timer);
     };
-    }
-  }, [removeToast, toast, duration]);
+  }, [dispatch, toast, duration]);
 
   const remove = () => {
-    removeToast(toast.id);
+    dispatch(removeToast(toast.id));
   }
 
   return (
