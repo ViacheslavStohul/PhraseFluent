@@ -1,24 +1,25 @@
 import React, { useState } from 'react';
-import './authorization.scss';
+import './registration.scss';
 import { InputFieldComponent } from '../../fields/input-field/input-field';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../../store';
 import { AuthActions } from '../../../store/slice/auth';
-import { IAuth } from '../../interfaces/auth';
+import { IRegister } from '../../interfaces/auth';
 
-const initialState: IAuth = {
+const initialState: IRegister = {
   username: '',
-  password: ''
+  password: '',
+  repeatedPassword: ''
 }
 
-const Authorization = () => {
+const Registration = () => {
   const dispatch = useDispatch<AppDispatch>();
 
-  const [form, setForm] = useState<IAuth>(initialState);
+  const [form, setForm] = useState<IRegister>(initialState);
 
 
   const submit = () => {
-    dispatch(AuthActions.authFetch(form));
+    dispatch(AuthActions.registerFetch(form));
   }
 
   const handleChange = (
@@ -33,8 +34,8 @@ const Authorization = () => {
 
 
   return (
-    <form className='authorization'>    
-      <h2>Login</h2>
+    <form className='registration'>    
+      <h2>Registration</h2>
       <div className='fields'>
       <InputFieldComponent 
         labelText='Username'
@@ -47,6 +48,14 @@ const Authorization = () => {
         type="password" 
         name="password"
         changed={(value) => handleChange('password', value)}/>
+      <InputFieldComponent 
+        labelText='Repeat password' 
+        value={form.repeatedPassword}
+        type="password" 
+        name="repeatedPassword"
+        changed={(value) => handleChange('repeatedPassword', value)}/>
+        {form.password !== form.repeatedPassword && 
+        <div className='error-message'>Passwords must be the same</div>}
       </div>
       <button
       type='button'
@@ -57,4 +66,4 @@ const Authorization = () => {
   );
 }
 
-export default Authorization;
+export default Registration;

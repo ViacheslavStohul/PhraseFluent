@@ -23,6 +23,7 @@ const AuthSlice = createSlice({
     }),
     registerSuccess: create.reducer<ITokenState>((state, action) => {
       state.loading = false;
+      localStorage.setItem('token', JSON.stringify(action.payload));
       state.accessToken = action.payload.accessToken;
       state.refreshToken = action.payload.refreshToken;
       state.expiresIn = action.payload.expiresIn;
@@ -32,6 +33,7 @@ const AuthSlice = createSlice({
     }),
     authSuccess: create.reducer<ITokenState>((state, action) => {
       state.loading = false;
+      localStorage.setItem('token', JSON.stringify(action.payload));
       state.accessToken = action.payload.accessToken;
       state.refreshToken = action.payload.refreshToken;
       state.expiresIn = action.payload.expiresIn;
@@ -41,9 +43,17 @@ const AuthSlice = createSlice({
     }),
     refreshSuccess: create.reducer<ITokenState>((state, action) => {
       state.loading = false;
+      localStorage.setItem('token', JSON.stringify(action.payload));
       state.accessToken = action.payload.accessToken;
       state.refreshToken = action.payload.refreshToken;
       state.expiresIn = action.payload.expiresIn;
+    }),
+    logout: create.reducer<void>((state) => {
+      state.loading = false;
+      state.accessToken = undefined;
+      state.refreshToken = undefined;
+      state.expiresIn = undefined;
+      localStorage.removeItem('token');
     }),
   }),
   selectors: {
@@ -64,6 +74,7 @@ type AuthUnionType = ReturnType<
   | typeof AuthActions.authSuccess
   | typeof AuthActions.refreshFetch
   | typeof AuthActions.refreshSuccess
+  | typeof AuthActions.logout
 >;
 
 export {

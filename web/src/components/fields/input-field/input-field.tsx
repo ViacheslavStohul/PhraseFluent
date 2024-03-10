@@ -11,12 +11,13 @@ export interface IInputFieldProps {
   placeholder?: string;
   regex?: RegExp;
   focus?: boolean;
+  name: string;
 }
 
 export const InputFieldComponent = (
   props: IInputFieldProps
 ): React.JSX.Element => {
-  const { labelText, value, changed, readonly, type, isRequired, placeholder, regex, focus } =
+  const { labelText, value, changed, readonly, type, isRequired, placeholder, regex, focus, name } =
     props;
   const inputRef = useRef<HTMLInputElement|null>(null);
 
@@ -51,6 +52,7 @@ export const InputFieldComponent = (
       type={type ?? 'text'}
       id={labelText}
       value={value}
+      name={name}
       onChange={onChange}
       readOnly={readonly}
       required={isRequired}

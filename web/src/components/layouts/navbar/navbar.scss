@@ -14,4 +14,10 @@ nav {
     color: $font-second-color;
     text-decoration: none;
   }
+
+  .nav-block {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+  }
 }

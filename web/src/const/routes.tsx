@@ -52,6 +52,14 @@ const children: RouteObject[] = [
         )
       },
       {
+        path: 'registration',
+        lazy: () => import('../components/pages/registration/registration').then(
+          (module) => ({
+            Component: module.default
+          })
+        )
+      },
+      {
         path: '*',
         lazy: () => import('../components/pages/authorization/authorization').then(
           (module) => ({
