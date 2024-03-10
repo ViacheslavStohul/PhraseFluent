@@ -3,8 +3,8 @@ import './toast.scss';
 import { ToastType } from '../../../enum/toast';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../../store';
-import { IToast } from '../../../components/interfaces/toast';
-import CloseSVG from '../../../components/svg/close';
+import { IToast } from '../../interfaces/toast';
+import CloseSVG from '../../svg/close';
 import { removeToast } from '../../../store/slice/toast';
 
 const Toast = ({toast}:{toast:IToast}) => {

@@ -3,11 +3,11 @@ import './toast-manager.scss';
 import Toast from '../toast/toast';
 import { selectToasts } from '../../../store/slice/toast';
 import { useSelector } from 'react-redux';
-import { IToast } from '../../../components/interfaces/toast';
+import { IToast } from '../../interfaces/toast';
 
 const ToastManager = () => {
   const toasts = useSelector(selectToasts);
-  
+
   return (
     <div className='toast-manager'>
         {toasts && toasts.map((toast: IToast) => 
