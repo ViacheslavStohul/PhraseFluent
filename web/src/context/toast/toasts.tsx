@@ -19,12 +19,12 @@ export const ToastProvider = (
   const [toasts, setToasts] = useState<IToast[]>([]);
 
   const removeToast = useCallback((id: number) => {
-    setToasts(prev => prev.filter(toast => toast.id === id));
+    setToasts(prev => prev.filter(toast => toast.id !== id));
   },[]);
 
   const addToast = useCallback((name: string, text: string, type: ToastType) => {
     setToasts(prev => {
-      return [{id: (Math.random()*1000), name, text, type},...prev];
+      return [{id: Math.floor(Math.random()*1000000), name, text, type},...prev];
     });
   },[]);
 

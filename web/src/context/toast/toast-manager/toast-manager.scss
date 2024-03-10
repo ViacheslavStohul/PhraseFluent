@@ -1,19 +1,13 @@
 @import '../../../scss/variables.scss';
 
 .toast-manager {
-  position:absolute;
+  position:fixed;
   top: 20px;
   right: 20px;
-  height: calc(100% - 20px);
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 
-  .toast-body {
-    top: 0;
-    position: sticky;
-  }
-}
-
-#root:has(nav) {
-  .toast-body {
-    top: $nav-height;
-  }
 }
