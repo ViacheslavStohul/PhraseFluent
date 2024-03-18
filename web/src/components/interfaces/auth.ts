@@ -15,4 +15,5 @@ export interface ITokenState {
 
 export interface TokenState extends ITokenState {
   loading: boolean;
+  username?: string;
 }

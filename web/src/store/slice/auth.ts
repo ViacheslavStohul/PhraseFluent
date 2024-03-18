@@ -21,22 +21,24 @@ const AuthSlice = createSlice({
     registerFetch: create.reducer<IRegister>((state, _) => {
       state.loading = true;
     }),
-    registerSuccess: create.reducer<ITokenState>((state, action) => {
+    registerSuccess: create.reducer<{token:ITokenState, username: string}>((state, action) => {
       state.loading = false;
-      localStorage.setItem('token', JSON.stringify(action.payload));
-      state.accessToken = action.payload.accessToken;
-      state.refreshToken = action.payload.refreshToken;
-      state.expiresIn = action.payload.expiresIn;
+      localStorage.setItem('token', JSON.stringify(action.payload.token));
+      state.accessToken = action.payload.token.accessToken;
+      state.refreshToken = action.payload.token.refreshToken;
+      state.expiresIn = action.payload.token.expiresIn;
+      state.username = action.payload.username;
     }),
     authFetch: create.reducer<IAuth>((state, _) => {
       state.loading = true;
     }),
-    authSuccess: create.reducer<ITokenState>((state, action) => {
+    authSuccess: create.reducer<{token:ITokenState, username: string}>((state, action) => {
       state.loading = false;
-      localStorage.setItem('token', JSON.stringify(action.payload));
-      state.accessToken = action.payload.accessToken;
-      state.refreshToken = action.payload.refreshToken;
-      state.expiresIn = action.payload.expiresIn;
+      localStorage.setItem('token', JSON.stringify(action.payload.token));
+      state.accessToken = action.payload.token.accessToken;
+      state.refreshToken = action.payload.token.refreshToken;
+      state.expiresIn = action.payload.token.expiresIn;
+      state.username = action.payload.username;
     }),
     refreshFetch: create.reducer<ITokenState>((state, _) => {
       state.loading = true;
@@ -53,6 +55,7 @@ const AuthSlice = createSlice({
       state.accessToken = undefined;
       state.refreshToken = undefined;
       state.expiresIn = undefined;
+      state.username = undefined;
       localStorage.removeItem('token');
     }),
   }),
@@ -61,6 +64,7 @@ const AuthSlice = createSlice({
     selectToken: (state) => state.accessToken,
     selectRefreshToken: (state) => state.refreshToken,
     selectExpiresIn: (state) => state.expiresIn,
+    selectUsername: (state) => state.username
   }
 });
 

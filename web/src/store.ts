@@ -9,7 +9,7 @@ const epicMiddleware = createEpicMiddleware();
 export const middleware = [epicMiddleware];
 
 export const rootReducers = combineReducers({
-  token: AuthSlice.reducer,
+  auth: AuthSlice.reducer,
   toasts: toastSlice.reducer
 });
 
@@ -21,4 +21,3 @@ export const store = configureStore({
 epicMiddleware.run(combineEpics(authEpics));
 
 export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;

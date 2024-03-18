@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './registration.scss';
 import { InputFieldComponent } from '../../fields/input-field/input-field';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../../../store';
-import { AuthActions } from '../../../store/slice/auth';
+import { useDispatch, useSelector } from 'react-redux';
+import { AuthActions, AuthSelectors } from '../../../store/slice/auth';
 import { IRegister } from '../../interfaces/auth';
+import { useNavigate } from 'react-router-dom';
 
 const initialState: IRegister = {
   username: '',
@@ -13,14 +13,21 @@ const initialState: IRegister = {
 }
 
 const Registration = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useDispatch();
+  const user = useSelector(AuthSelectors.selectUsername);
+  const navigate = useNavigate();
 
   const [form, setForm] = useState<IRegister>(initialState);
-
 
   const submit = () => {
     dispatch(AuthActions.registerFetch(form));
   }
+
+  useEffect(()=>{
+    if (user) {
+      navigate('/');
+    }
+  },[user,navigate]);
 
   const handleChange = (
     key: string,
