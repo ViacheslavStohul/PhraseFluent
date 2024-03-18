@@ -19,5 +19,11 @@ nav {
     display: flex;
     flex-direction: row;
     gap: 15px;
+
+    > * {
+      display: flex;
+      flex-direction: row;
+     align-items: center;
+    }
   }
 }

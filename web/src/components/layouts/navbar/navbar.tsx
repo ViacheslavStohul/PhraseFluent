@@ -4,6 +4,7 @@ import { NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { AuthActions, AuthSelectors } from '../../../store/slice/auth';
 import LogoSVG from '../../svg/logo';
+import User from './user/user';
 
 const Navbar = () => {
   const user = useSelector(AuthSelectors.selectUsername);
@@ -19,7 +20,7 @@ const Navbar = () => {
       <div className='nav-block'>
         { user ? 
           <>
-          <div>{user}</div>
+          <User/>
           <div onClick={logout} className='pointer'>Log out</div>
           </>
           :

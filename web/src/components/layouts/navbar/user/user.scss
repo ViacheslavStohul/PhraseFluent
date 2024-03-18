@@ -1,0 +1,14 @@
+@import '../../../../scss/variables.scss';
+
+.user {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  align-items: center;
+  font-size: 0.9rem;
+
+  img {
+    border-radius:50%;
+    height: calc($nav-height - 15px);
+  }
+}
