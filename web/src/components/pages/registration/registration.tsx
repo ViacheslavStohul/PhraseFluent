@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AuthActions, AuthSelectors } from '../../../store/slice/auth';
 import { IRegister } from '../../interfaces/auth';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const initialState: IRegister = {
   username: '',
@@ -14,6 +15,7 @@ const initialState: IRegister = {
 
 const Registration = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const user = useSelector(AuthSelectors.selectUsername);
   const navigate = useNavigate();
 
@@ -42,21 +44,21 @@ const Registration = () => {
 
   return (
     <form className='registration'>    
-      <h2>Registration</h2>
+      <h2>{t("registration")}</h2>
       <div className='fields'>
       <InputFieldComponent 
-        labelText='Username'
+        labelText={t("username")}
         name='username'
         value={form.username}
         changed={(value) => handleChange('username', value)}/>
       <InputFieldComponent 
-        labelText='Password' 
+        labelText={t("password")}
         value={form.password}
         type="password" 
         name="password"
         changed={(value) => handleChange('password', value)}/>
       <InputFieldComponent 
-        labelText='Repeat password' 
+        labelText={t("repeatPassword")}
         value={form.repeatedPassword}
         type="password" 
         name="repeatedPassword"
@@ -67,7 +69,7 @@ const Registration = () => {
       <button
       type='button'
       onClick = {submit}>
-        Login
+        {t("register")}
       </button>
     </form>
   );

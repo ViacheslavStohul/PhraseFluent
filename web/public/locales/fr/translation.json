@@ -1,0 +1,11 @@
+{
+  "signup": "S'inscrire",
+  "signin": "Se connecter",
+  "logout": "Se déconnecter",
+  "registration": "Inscription",
+  "login": "Connexion",
+  "password": "Mot de passe",
+  "repeatPassword": "Répéter le mot de passe",
+  "username": "Nom d'utilisateur",
+  "register": "S'inscrire"
+  }

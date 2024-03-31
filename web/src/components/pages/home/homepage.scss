@@ -1,0 +1,17 @@
+@import '../../../scss/variables.scss';
+
+.homepage {
+  position: relative;
+  padding-top: calc(100vw / 7 + 100px);
+}
+
+.home-image {
+  position: absolute;
+  width: calc(100% + 2 * #{$padding});
+  height: calc(100vw / 7 + 100px);
+  border-radius: 10px 10px 0 0;
+  object-fit: cover;
+  top: calc(-1 * #{$padding});
+  left: calc(-1 * #{$padding});
+  right: calc(-1 * #{$padding});
+}

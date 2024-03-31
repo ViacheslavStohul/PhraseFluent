@@ -5,9 +5,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AuthActions, AuthSelectors } from '../../../store/slice/auth';
 import LogoSVG from '../../svg/logo';
 import User from './user/user';
+import { useTranslation } from 'react-i18next';
+
 
 const Navbar = () => {
   const user = useSelector(AuthSelectors.selectUsername);
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const logout = () => {
@@ -25,8 +28,8 @@ const Navbar = () => {
           </>
           :
           <>
-          <NavLink to='/registration' end>Sign up</NavLink>
-          <NavLink to='/authorization' end>Sign in</NavLink>
+          <NavLink to='/registration' end>{t("signup")}</NavLink>
+          <NavLink to='/authorization' end>{t("signin")}</NavLink>
           </>
         }
       </div>

@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AuthActions, AuthSelectors } from '../../../store/slice/auth';
 import { IAuth } from '../../interfaces/auth';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const initialState: IAuth = {
   username: '',
@@ -13,6 +14,7 @@ const initialState: IAuth = {
 
 const Authorization = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const user = useSelector(AuthSelectors.selectUsername);
   const navigate = useNavigate();
 
@@ -41,15 +43,15 @@ const Authorization = () => {
 
   return (
     <form className='authorization'>    
-      <h2>Login</h2>
+      <h2>{t("login")}</h2>
       <div className='fields'>
       <InputFieldComponent 
-        labelText='Username'
+        labelText={t("username")}
         name='username'
         value={form.username}
         changed={(value) => handleChange('username', value)}/>
       <InputFieldComponent 
-        labelText='Password' 
+        labelText={t("password")}
         value={form.password}
         type="password" 
         name="password"
@@ -58,7 +60,7 @@ const Authorization = () => {
       <button
       type='button'
       onClick = {submit}>
-        Login
+        {t("signin")}
       </button>
     </form>
   );
