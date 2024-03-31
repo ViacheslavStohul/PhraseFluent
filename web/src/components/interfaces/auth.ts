@@ -13,7 +13,7 @@ export interface ITokenState {
   expiresIn?: number;
 }
 
-export interface TokenState extends ITokenState {
+export interface AuthState {
   loading: boolean;
   username?: string;
 }
