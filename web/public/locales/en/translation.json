@@ -8,5 +8,7 @@
   "repeatPassword": "Repeat password",
   "username": "Username",
   "register": "Register",
-  "homepage": "Welcome to PhraseFluent, where language learning meets innovation! Dive into a world of linguistic exploration and enhance your fluency in many languages with interactive tools. Start your journey today and unlock the power of multilingual communication with PhraseFluent!"
+  "homepage-greeting": "Welcome to PhraseFluent, where language learning meets innovation!",
+  "homepage-text": "Dive into a world of linguistic exploration and enhance your fluency in many languages with interactive tools. Start your journey today and unlock the power of multilingual communication with PhraseFluent!",
+  "get-started": "Get Started Now!"
 }

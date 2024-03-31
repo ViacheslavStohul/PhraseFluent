@@ -2,16 +2,19 @@
 
 .homepage {
   position: relative;
-  padding-top: calc(100vw / 7 + 100px);
+  padding: 50px 50% 50px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
 }
 
 .home-image {
   position: absolute;
-  width: calc(100% + 2 * #{$padding});
-  height: calc(100vw / 7 + 100px);
-  border-radius: 10px 10px 0 0;
+  width: calc(50% + #{$padding});
+  height: calc(100% + 2 * #{$padding});
+  border-radius: 0 10px 10px 0;
   object-fit: cover;
   top: calc(-1 * #{$padding});
-  left: calc(-1 * #{$padding});
+  bottom: calc(-1 * #{$padding});
   right: calc(-1 * #{$padding});
 }

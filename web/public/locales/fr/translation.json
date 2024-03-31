@@ -7,5 +7,7 @@
   "password": "Mot de passe",
   "repeatPassword": "Répéter le mot de passe",
   "username": "Nom d'utilisateur",
-  "register": "S'inscrire"
+  "register": "S'inscrire",
+  "homepage-greeting": "Bienvenue sur PhraseFluent, où l'apprentissage des langues rencontre l'innovation!",
+  "homepage-text": "Plongez dans un monde d'exploration linguistique et améliorez votre fluidité dans de nombreuses langues avec des outils interactifs. Commencez votre voyage dès aujourd'hui et débloquez la puissance de la communication multilingue avec PhraseFluent!"
   }

@@ -1,4 +1,5 @@
 @import './scss/variables.scss';
+@import './scss/select.scss';
 @import url('https://fonts.googleapis.com/css2?family=Madimi+One&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap');
 
 *,
@@ -55,16 +56,23 @@ button {
   flex-direction: row;
   gap: 5px;
   padding: 15px 50px;
+  width: max-content;
+  flex-wrap: nowrap;
   color: $font-second-color;
   background-color: $second-color;
   border: none;
   cursor: pointer;
   transition: 0.2s ease-in-out;
   font-family: 'Merriweather', sans-serif;
+  text-decoration: none !important;
 
   &:hover {
     filter:brightness(1.2);
   }
+}
+
+a{
+  text-decoration: none;
 }
 
 .error-message {
