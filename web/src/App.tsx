@@ -15,7 +15,7 @@ function App() {
 
   return (
     <InterceptorManager>
-        <Outlet/>
+      <Outlet/>
       <ToastManager/>
     </InterceptorManager>
   );
