@@ -13,7 +13,7 @@ namespace PhraseFluent.API;
 
 internal static class Program
 {
-    public async static Task Main(string[] args)
+    public static async Task Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
 
