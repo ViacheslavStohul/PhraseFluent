@@ -26,7 +26,7 @@ Open command prompt and navigate to the root of this project.
 
 To create initial migration modify settings `Platform.DatabaseType` to `MsSql` and use command:
 ```
-dotnet ef migrations add "MsSqlInitial"  -o Migrations
+dotnet ef migrations add "MySqlInitial"  -o Migrations
 ```
 
 To generate script use the following commmand:

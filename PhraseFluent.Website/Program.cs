@@ -90,7 +90,7 @@ internal static class Program
 
         services.AddDbContext<DataContext>(opt =>
         {
-            opt.UseSqlServer(configuration.GetValue<string>("DataBase:ConnectionString"),
+            opt.UseMySQL(configuration.GetValue<string>("DataBase:ConnectionString") ?? throw new InvalidOperationException(),
                 b => {
                     b.MigrationsAssembly("PhraseFluent.Website");
                     b.CommandTimeout(60);
