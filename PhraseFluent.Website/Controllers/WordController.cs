@@ -8,7 +8,7 @@ namespace PhraseFluent.API.Controllers;
 
 [Authorize]
 [Route("api/word")]
-public class WordController(ILogger<WordController> logger, ITranslationService translationService) : BaseController
+public class WordController(ITranslationService translationService) : BaseController
 {
     [HttpGet]
     [Route("languages")]
@@ -16,19 +16,10 @@ public class WordController(ILogger<WordController> logger, ITranslationService 
     [SwaggerResponse(500, Description = "Error when getting languages")]
     [Produces<IEnumerable<SupportedLanguage>>]
     public async Task<IActionResult> GetLanguages()
-    {
-        try
-        {
-            var languages = await translationService.GetLanguages();
+    { 
+        var languages = await translationService.GetLanguages();
 
-            return Ok(languages);
-        }
-        catch (Exception ex)
-        {
-            logger.LogError("Error during getting languages: {Exception}", ex.Message);
-
-            return StatusCode(500);
-        }
+        return Ok(languages);
     }
 
     [HttpGet]
@@ -38,18 +29,9 @@ public class WordController(ILogger<WordController> logger, ITranslationService 
     [Produces<TranslationResult>]
     public async Task<IActionResult> GetTranslation([FromRoute] string wordToTranslate, [FromRoute] string to)
     {
-        try
-        {
-            var translation = await translationService.GetWordTranslation(wordToTranslate, to);
-            
-            return Ok(translation);
-        }
-        catch (Exception ex)
-        {
-            logger.LogError("Error during getting languages: {Exception}", ex.Message);
+        var translation = await translationService.GetWordTranslation(wordToTranslate, to);
 
-            return BadRequest();
-        }
+        return Ok(translation);
     }
 
     [HttpGet]
@@ -57,18 +39,10 @@ public class WordController(ILogger<WordController> logger, ITranslationService 
     [SwaggerResponse(200, Description = "Returns examples of the word in given language")]
     [SwaggerResponse(400, Description = "Error getting examples")]
     [Produces<IEnumerable<UsageExamplesResponse>>]
-    public async Task<IActionResult> GetExamples([FromRoute] string sourceWord, [FromRoute] string targetWord, [FromRoute] string sourceLanguage, [FromRoute] string targetLanguage)
+    public async Task<IActionResult> GetExamples([FromRoute] string sourceWord, [FromRoute] string targetWord,
+        [FromRoute] string sourceLanguage, [FromRoute] string targetLanguage)
     {
-        try
-        {
-            var examples = await translationService.GetExamples(sourceWord, targetWord, sourceLanguage, targetLanguage);
-            return Ok(examples);
-        }
-        catch (Exception ex)
-        {
-            logger.LogError("Error getting word examples: {Exception}", ex.Message);
-
-            return BadRequest();
-        }
+        var examples = await translationService.GetExamples(sourceWord, targetWord, sourceLanguage, targetLanguage);
+        return Ok(examples);
     }
 }

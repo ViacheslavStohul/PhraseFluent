@@ -8,6 +8,7 @@ using PhraseFluent.DataAccess.Entities;
 using PhraseFluent.DataAccess.Repositories.Interfaces;
 using PhraseFluent.Service.DTO.Responses;
 using PhraseFluent.Service.DTO.Services;
+using PhraseFluent.Service.Exceptions;
 using PhraseFluent.Service.Extensions;
 using PhraseFluent.Service.Options;
 
@@ -30,19 +31,19 @@ public partial class AuthorizationService(
     {
         if (userToCreate.Password != userToCreate.RepeatedPassword)
         {
-            throw new ValidationException("Passwords dont match");
+            throw new ForbiddenException("Passwords dont match");
         }
 
         if (userToCreate.Username.Length < 6 || userToCreate.Username.Contains(' '))
         {
-            throw new ValidationException("Username cannot contain spaces and has to be at least 8 digits");
+            throw new ForbiddenException("Username cannot contain spaces and has to be at least 8 digits");
         }
         
         IsValidPassword(userToCreate.Password);
 
         if (userRepository.IsUserNameOccupied(userToCreate.Username))
         {
-            throw new ValidationException($"Username {userToCreate.Username} is occupied");
+            throw new ForbiddenException($"Username {userToCreate.Username} is occupied");
         }
         
         User userEntity = userToCreate;
@@ -84,12 +85,12 @@ public partial class AuthorizationService(
 
         if (user == null)
         {
-            throw new ValidationException($"Unknown username {clientData.Username}");
+            throw new ForbiddenException($"Unknown username {clientData.Username}");
         }
 
         if (!clientData.Password.IsHashStringsEqual(user.ClientSecret))
         {
-            throw new ValidationException($"Passwords don't match for {clientData.Username}");
+            throw new ForbiddenException($"Passwords don't match for {clientData.Username}");
         }
 
         var tokenId = Guid.NewGuid().ToString();
@@ -129,16 +130,16 @@ public partial class AuthorizationService(
             !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256,
                 StringComparison.InvariantCultureIgnoreCase))
         {
-            throw new SecurityTokenException("Invalid token");
+            throw new ForbiddenException("Invalid token");
         }
 
         var storedToken = await userRepository.GetSessionByRefreshToken(refreshToken);
 
         if (storedToken == null)
-            throw new SecurityTokenException("Invalid refresh token");
+            throw new ForbiddenException("Invalid refresh token");
 
         if (storedToken.Redeemed)
-            throw new SecurityTokenException("Refresh token already used");
+            throw new ForbiddenException("Refresh token already used");
 
         
         var jwtId = principal.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti)?.ToString();
@@ -148,7 +149,7 @@ public partial class AuthorizationService(
         if (jwtId == null || userUuid == null || !string.Equals(storedToken.User.Uuid.ToString(), userUuid, StringComparison.CurrentCultureIgnoreCase) ||
             !string.Equals("jti: " + storedToken.JwtId, jwtId, StringComparison.CurrentCultureIgnoreCase) || DateTime.Now > storedToken.RefreshTokenExpiration)
         {
-            throw new SecurityTokenException("Invalid access token");
+            throw new ForbiddenException("Invalid access token");
         }
 
         var newJwtId = Guid.NewGuid().ToString();
@@ -263,19 +264,19 @@ public partial class AuthorizationService(
     private static void IsValidPassword(string password)
     {
         if (string.IsNullOrWhiteSpace(password))
-            throw new ValidationException("Password cannot be empty");
+            throw new ForbiddenException("Password cannot be empty");
 
         if (password.Length < 8)
-            throw new ValidationException("Password must be at least 8 digits");
+            throw new ForbiddenException("Password must be at least 8 digits");
         
         if (password.Contains(' '))
-            throw new ValidationException("Password must not contain space");
+            throw new ForbiddenException("Password must not contain space");
 
         if (!LettersConstraint().IsMatch(password))
-            throw new ValidationException("Password must contain at least 1 capital letter");
+            throw new ForbiddenException("Password must contain at least 1 capital letter");
 
         if (!DigitsConstraint().IsMatch(password))
-            throw new ValidationException("Password must contain at least 1 digit");
+            throw new ForbiddenException("Password must contain at least 1 digit");
     }
 
     [GeneratedRegex("[A-Z]")]

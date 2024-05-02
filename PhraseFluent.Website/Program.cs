@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using PhraseFluent.API.ExceptionHandling;
 using PhraseFluent.DataAccess;
 using PhraseFluent.DataAccess.Repositories;
 using PhraseFluent.DataAccess.Repositories.Interfaces;
@@ -12,7 +13,7 @@ namespace PhraseFluent.API;
 
 internal static class Program
 {
-    public static void Main(string[] args)
+    public async static Task Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
 
@@ -123,15 +124,15 @@ internal static class Program
 
         app.MapControllers();
 
-        app.MapGet("/", () => Results.Ok("Ok")); //Health check
-        
+        app.MapGet("/", () => Results.Ok("Ok"));
+
+        app.UseExceptionHandling();
         
         using (var serviceScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope())
         {
             var context = serviceScope.ServiceProvider.GetService<DataContext>();
-            var result = context?.Initialize().Result;
+            await context?.Database.MigrateAsync()!;
         }
-
         
         app.Run();
     }
