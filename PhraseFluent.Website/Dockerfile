@@ -1,5 +1,7 @@
-﻿FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-USER $APP_UID
+#See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
+
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+USER app
 WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
@@ -10,14 +12,14 @@ WORKDIR /src
 COPY ["PhraseFluent.Website/PhraseFluent.Website.csproj", "PhraseFluent.Website/"]
 COPY ["PhraseFluent.Service/PhraseFluent.Service.csproj", "PhraseFluent.Service/"]
 COPY ["PhraseFluent.DataAccess/PhraseFluent.DataAccess.csproj", "PhraseFluent.DataAccess/"]
-RUN dotnet restore "PhraseFluent.Website/PhraseFluent.Website.csproj"
+RUN dotnet restore "./PhraseFluent.Website/PhraseFluent.Website.csproj"
 COPY . .
 WORKDIR "/src/PhraseFluent.Website"
-RUN dotnet build "PhraseFluent.Website.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "./PhraseFluent.Website.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "PhraseFluent.Website.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./PhraseFluent.Website.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app

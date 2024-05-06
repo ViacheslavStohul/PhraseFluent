@@ -6,9 +6,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>PhraseFluent.API</RootNamespace>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <UserSecretsId>682d0f74-9386-40e7-a218-2e5fee98fc86</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.6" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.5.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.2">
@@ -19,12 +21,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PhraseFluent.Service\PhraseFluent.Service.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="..\.dockerignore">
-      <Link>.dockerignore</Link>
-    </Content>
   </ItemGroup>
 
 </Project>
