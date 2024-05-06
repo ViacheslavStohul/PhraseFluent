@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import './toast.scss';
 import { ToastType } from '../../../enum/toast';
 import { useDispatch } from 'react-redux';
-import { IToast } from '../../interfaces/toast';
+import { IToast } from '../../../interfaces/toast';
 import CloseSVG from '../../svg/close';
 import { removeToast } from '../../../store/slice/toast';
 

@@ -3,7 +3,7 @@ import './toast-manager.scss';
 import Toast from '../toast/toast';
 import { selectToasts } from '../../../store/slice/toast';
 import { useSelector } from 'react-redux';
-import { IToast } from '../../interfaces/toast';
+import { IToast } from '../../../interfaces/toast';
 
 const ToastManager = () => {
   const toasts = useSelector(selectToasts);

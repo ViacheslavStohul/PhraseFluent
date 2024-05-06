@@ -1,5 +1,5 @@
 import { Epic, combineEpics, ofType } from "redux-observable";
-import { map, switchMap } from "rxjs";
+import { mergeMap, of, switchMap } from "rxjs";
 import * as AuthService from "../../service/auth.service";
 import { AuthActions } from "../slice/auth";
 import { callErrorToast, callToast } from "../slice/toast";
@@ -12,7 +12,7 @@ const AuthFetchEpic: Epic<any> = (action$) =>
     switchMap((action) =>
       AuthService.Auth(action.payload)
         .then(({data}) => {
-          return AuthActions.authSuccess({token: data, username:action.payload.username});
+          return AuthActions.authSuccess(data);
         })
         .catch((error) => callErrorToast({name: error.code, text: error.message}))
     )
@@ -24,7 +24,7 @@ const RegisterFetchEpic: Epic<any> = (action$) =>
     switchMap((action) =>
       AuthService.Register(action.payload)
         .then(({data}) => {
-          return AuthActions.registerSuccess({token: data, username:action.payload.username});
+          return AuthActions.registerSuccess(data);
         })
         .catch((error) => callErrorToast({name: error.code, text: error.message}))
     )
@@ -33,17 +33,39 @@ const RegisterFetchEpic: Epic<any> = (action$) =>
 const RegisterSuccessEpic: Epic<any> = (action$) =>
   action$.pipe(
     ofType(AuthActions.registerSuccess.type),
-    map(() =>
-      callToast({name: 'Successful registration', text: 'You registered successfully', type: ToastType.Success})
-    ),
+    mergeMap(() =>
+      of(
+        callToast({
+          name: 'Successful registration',
+          text: 'You registered successfully',
+          type: ToastType.Success,
+        }),
+        AuthActions.getUserFetch()
+      )
+    )
 );
 
 const AuthSuccessEpic: Epic<any> = (action$) =>
   action$.pipe(
     ofType(AuthActions.authSuccess.type),
-    map(() =>
-      callToast({name: 'Successful authorization', text: 'You authorized successfully', type: ToastType.Success})
-    ),
+    mergeMap(() =>
+      of(
+        callToast({name: 'Successful authorization', text: 'You authorized successfully', type: ToastType.Success}),
+        AuthActions.getUserFetch()
+      )
+    )
+);
+
+const getUserFetchEpic: Epic<any> = (action$) =>
+  action$.pipe(
+    ofType(AuthActions.getUserFetch.type),
+    switchMap(() =>
+      AuthService.Get()
+        .then(({data}) => {
+          return AuthActions.getUserSuccess(data);
+        })
+        .catch((error) => callErrorToast({name: error.code, text: error.message}))
+    )
 );
 
 const RefreshFetchEpic: Epic<any> = (action$) =>
@@ -63,5 +85,6 @@ export const authEpics = combineEpics<any>(
   RegisterFetchEpic,
   RefreshFetchEpic,
   RegisterSuccessEpic,
-  AuthSuccessEpic
+  AuthSuccessEpic,
+  getUserFetchEpic
 );

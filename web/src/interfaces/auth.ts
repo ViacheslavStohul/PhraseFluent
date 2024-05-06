@@ -15,5 +15,12 @@ export interface ITokenState {
 
 export interface AuthState {
   loading: boolean;
-  username?: string;
+  user?: IUser;
+}
+
+export interface IUser {
+    uuid: string;
+    username: string;
+    imageUrl: string;
+    registrationDate: string;
 }

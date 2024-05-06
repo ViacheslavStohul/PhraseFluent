@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Language } from "../components/interfaces/lang";
+import { Language } from "../interfaces/lang";
 
 const baseUrl = '/api/word'
 

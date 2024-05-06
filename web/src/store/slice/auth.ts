@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { IAuth, IRegister, ITokenState, AuthState } from "../../components/interfaces/auth";
+import { AuthState, IAuth, IRegister, ITokenState, IUser } from "../../interfaces/auth";
 
 
 const initialState: AuthState = {loading:false};
@@ -11,18 +11,23 @@ const AuthSlice = createSlice({
     registerFetch: create.reducer<IRegister>((state, _) => {
       state.loading = true;
     }),
-    registerSuccess: create.reducer<{token:ITokenState, username: string}>((state, action) => {
+    registerSuccess: create.reducer<ITokenState>((state, action) => {
       state.loading = false;
-      localStorage.setItem('token', JSON.stringify(action.payload.token));
-      state.username = action.payload.username;
+      localStorage.setItem('token', JSON.stringify(action.payload));
     }),
     authFetch: create.reducer<IAuth>((state, _) => {
       state.loading = true;
     }),
-    authSuccess: create.reducer<{token:ITokenState, username: string}>((state, action) => {
+    authSuccess: create.reducer<ITokenState>((state, action) => {
       state.loading = false;
-      localStorage.setItem('token', JSON.stringify(action.payload.token));
-      state.username = action.payload.username;
+      localStorage.setItem('token', JSON.stringify(action.payload));
+    }),
+    getUserFetch: create.reducer<void>((state, _) => {
+      state.loading = true;
+    }),
+    getUserSuccess: create.reducer<IUser>((state, action) => {
+      state.loading = false;
+      state.user = action.payload;
     }),
     refreshFetch: create.reducer<ITokenState>((state, _) => {
       state.loading = true;
@@ -33,13 +38,13 @@ const AuthSlice = createSlice({
     }),
     logout: create.reducer<void>((state) => {
       state.loading = false;
-      state.username = undefined;
+      state.user = undefined;
       localStorage.removeItem('token');
     }),
   }),
   selectors: {
     selectAuthLoading: (state) => state.loading,
-    selectUsername: (state) => state.username
+    selectUser: (state) => state.user
   }
 });
 
@@ -51,6 +56,8 @@ type AuthUnionType = ReturnType<
   | typeof AuthActions.registerSuccess
   | typeof AuthActions.authFetch
   | typeof AuthActions.authSuccess
+  | typeof AuthActions.getUserFetch
+  | typeof AuthActions.getUserSuccess
   | typeof AuthActions.refreshFetch
   | typeof AuthActions.refreshSuccess
   | typeof AuthActions.logout
