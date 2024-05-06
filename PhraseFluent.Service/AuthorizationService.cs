@@ -47,10 +47,14 @@ public partial class AuthorizationService(
         {
             throw new ForbiddenException($"Username {userToCreate.Username} is occupied");
         }
-        
-        var userEntity = mapper.Map<User>(userToCreate);
 
-        userEntity.Uuid = Guid.NewGuid();
+        var userEntity = new User
+        {
+            Uuid = Guid.NewGuid(),
+            Username = userToCreate.Username,
+            ClientSecret = userToCreate.Password.Hash(),
+            RegistrationDate = DateTime.Now
+        };
         
         userRepository.Add(userEntity);
 
