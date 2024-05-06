@@ -2,12 +2,13 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text.RegularExpressions;
+using AutoMapper;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using PhraseFluent.DataAccess.Entities;
 using PhraseFluent.DataAccess.Repositories.Interfaces;
+using PhraseFluent.Service.DTO.Requests;
 using PhraseFluent.Service.DTO.Responses;
-using PhraseFluent.Service.DTO.Services;
 using PhraseFluent.Service.Exceptions;
 using PhraseFluent.Service.Extensions;
 using PhraseFluent.Service.Options;
@@ -17,7 +18,8 @@ namespace PhraseFluent.Service;
 public partial class AuthorizationService(
     IOptions<TokenConfiguration> tokenConfiguration,
     IUserRepository userRepository,
-    SymmetricSecurityKey signingKey) : IAuthorizationService
+    SymmetricSecurityKey signingKey,
+    IMapper mapper) : IAuthorizationService
 {
     private readonly TokenConfiguration _tokenConfiguration = tokenConfiguration.Value;
     
@@ -27,7 +29,7 @@ public partial class AuthorizationService(
     /// <param name="userToCreate">The user to create.</param>
     /// <returns>The token response for the registered user.</returns>
     /// <exception cref="ValidationException">Thrown if the passwords don't match.</exception>
-    public async Task<TokenResponse> RegisterUser(CreatedUser userToCreate)
+    public async Task<TokenResponse> RegisterUser(UserCreationRequest userToCreate)
     {
         if (userToCreate.Password != userToCreate.RepeatedPassword)
         {
@@ -46,7 +48,9 @@ public partial class AuthorizationService(
             throw new ForbiddenException($"Username {userToCreate.Username} is occupied");
         }
         
-        User userEntity = userToCreate;
+        var userEntity = mapper.Map<User>(userToCreate);
+
+        userEntity.Uuid = Guid.NewGuid();
         
         userRepository.Add(userEntity);
 
@@ -79,7 +83,7 @@ public partial class AuthorizationService(
     /// <param name="clientData">The client data used for authorization.</param>
     /// <returns>The token response if successful.</returns>
     /// <exception cref="ValidationException">Thrown if the client data is invalid.</exception>
-    public async Task<TokenResponse> Authorize(AuthorizedUser clientData)
+    public async Task<TokenResponse> Authorize(UserAuthorizationRequest clientData)
     {
         var user = await userRepository.GetUserByUsername(clientData.Username);
 

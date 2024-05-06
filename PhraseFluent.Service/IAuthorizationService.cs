@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using PhraseFluent.Service.DTO.Requests;
 using PhraseFluent.Service.DTO.Responses;
-using PhraseFluent.Service.DTO.Services;
 
 namespace PhraseFluent.Service;
 
@@ -13,7 +13,7 @@ public interface IAuthorizationService
     /// <returns>The token response for the registered user.</returns>
     /// <exception cref="ValidationException">Thrown if the passwords don't match.</exception>
     /// <exception cref="InvalidDataException">Thrown if username is occupied.</exception>
-    Task<TokenResponse> RegisterUser(CreatedUser userToCreate);
+    Task<TokenResponse> RegisterUser(UserCreationRequest userToCreate);
 
     /// <summary>
     /// Authorizes a client user based on the provided client data.
@@ -21,7 +21,7 @@ public interface IAuthorizationService
     /// <param name="clientData">The client data used for authorization.</param>
     /// <returns>The token response if successful.</returns>
     /// <exception cref="ValidationException">Thrown if the client data is invalid.</exception>
-    Task<TokenResponse> Authorize(AuthorizedUser clientData);
+    Task<TokenResponse> Authorize(UserAuthorizationRequest clientData);
 
     /// <summary>
     /// Refreshes the access token by validating the provided access token and refresh token

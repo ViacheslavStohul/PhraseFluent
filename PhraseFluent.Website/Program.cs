@@ -7,6 +7,7 @@ using PhraseFluent.DataAccess;
 using PhraseFluent.DataAccess.Repositories;
 using PhraseFluent.DataAccess.Repositories.Interfaces;
 using PhraseFluent.Service;
+using PhraseFluent.Service.AutoMapper;
 using PhraseFluent.Service.Options;
 
 namespace PhraseFluent.API;
@@ -106,6 +107,7 @@ internal static class Program
         services.AddScoped<IAuthorizationService, AuthorizationService>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IBaseRepository, BaseRepository>();
+        services.AddAutoMapper(typeof(AppMappingProfile));
         services.AddSingleton(key);
         #endregion
 
