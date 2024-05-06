@@ -2,7 +2,7 @@
 
 namespace PhraseFluent.DataAccess.Entities;
 
-public class CardOption : BaseId
+public class AnswerOption : BaseId
 {
     [StringLength(255)] public required string OptionText { get; set; }
 

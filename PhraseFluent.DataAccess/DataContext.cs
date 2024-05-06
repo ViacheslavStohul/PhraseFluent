@@ -10,4 +10,10 @@ public class DataContext(DbContextOptions<DataContext> options) : DbContext(opti
     public virtual DbSet<User> Users { get; set; }
     
     public virtual DbSet<UserSession> UserSessions { get; set; }
+    
+    public virtual DbSet<Test> Tests { get; set; }
+    
+    public virtual DbSet<Card> Cards { get; set; }
+    
+    public virtual DbSet<AnswerOption> AnswerOptions { get; set; }
 }

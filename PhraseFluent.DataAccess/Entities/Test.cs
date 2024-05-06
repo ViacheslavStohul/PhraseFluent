@@ -14,6 +14,8 @@ public class Test : BaseId
     [ForeignKey(nameof(CreatedBy))]
     public long UserId { get; set; }
     
+    public int CardsCount { get; set; }
+    
     public User CreatedBy { get; set; }
     
     public virtual ICollection<Card> Cards { get; set; }
