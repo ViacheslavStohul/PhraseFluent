@@ -105,8 +105,11 @@ internal static class Program
 
         services.AddScoped<ITranslationService, TranslationService>();
         services.AddScoped<IAuthorizationService, AuthorizationService>();
+        services.AddScoped<IUserService, UserService>();
+        
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IBaseRepository, BaseRepository>();
+        
         services.AddAutoMapper(typeof(AppMappingProfile));
         services.AddSingleton(key);
         #endregion
