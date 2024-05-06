@@ -94,12 +94,12 @@ public partial class AuthorizationService(
 
         if (user == null)
         {
-            throw new ForbiddenException($"Unknown username {clientData.Username}");
+            throw new ForbiddenException("Wrong username and password combination");
         }
 
         if (!clientData.Password.IsHashStringsEqual(user.ClientSecret))
         {
-            throw new ForbiddenException($"Passwords don't match for {clientData.Username}");
+            throw new ForbiddenException("Wrong username and password combination");
         }
 
         var tokenId = Guid.NewGuid().ToString();

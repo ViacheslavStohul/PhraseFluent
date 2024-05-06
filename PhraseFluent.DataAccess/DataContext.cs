@@ -8,7 +8,6 @@ namespace PhraseFluent.DataAccess;
 public class DataContext(DbContextOptions<DataContext> options) : DbContext(options)
 {
     public virtual DbSet<User> Users { get; set; }
-    
     public virtual DbSet<UserSession> UserSessions { get; set; }
     
     public virtual DbSet<Test> Tests { get; set; }
@@ -16,4 +15,8 @@ public class DataContext(DbContextOptions<DataContext> options) : DbContext(opti
     public virtual DbSet<Card> Cards { get; set; }
     
     public virtual DbSet<AnswerOption> AnswerOptions { get; set; }
+    
+    public virtual DbSet<AnswerAttempt> AnswerAttempts { get; set; }
+    
+    public virtual DbSet<TestAttempt> TestAttempts { get; set; }
 }

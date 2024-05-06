@@ -2,7 +2,7 @@
 
 namespace PhraseFluent.DataAccess.Entities;
 
-public class BaseId
+public abstract class BaseId
 {
     [Key]
     public long Id { get; set; }

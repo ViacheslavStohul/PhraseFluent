@@ -22,6 +22,8 @@ public class TestAttempt : BaseId
     
     public DateTimeOffset? EndDate { get; set; }
     
+    public ICollection<AnswerAttempt> AnswerAttempts { get; set; }
+    
     public Test Test { get; set; }
     
     public User User { get; set; }

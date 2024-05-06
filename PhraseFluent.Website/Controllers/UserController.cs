@@ -20,6 +20,7 @@ public class UserController (IUserService userService) : BaseController
     }
 
     [HttpGet]
+    [Route("get")]
     [SwaggerResponse(200, Description = "Gets user by id")]
     [Produces<UserResponse>]
     public async Task<IActionResult> GetUserByUuid([FromQuery] Guid? uuid)
