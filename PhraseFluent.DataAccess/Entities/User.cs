@@ -10,5 +10,7 @@ public class User : BaseId
     
     [StringLength(255)] public required string ClientSecret { get; set; }
     
+    [StringLength(255)] public string? ImageUrl { get; set; }
+    
     public required DateTime RegistrationDate { get; set; }
 }

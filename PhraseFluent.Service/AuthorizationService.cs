@@ -53,6 +53,7 @@ public partial class AuthorizationService(
             Uuid = Guid.NewGuid(),
             Username = userToCreate.Username,
             ClientSecret = userToCreate.Password.Hash(),
+            ImageUrl = userToCreate.ImageUrl,
             RegistrationDate = DateTime.Now
         };
         

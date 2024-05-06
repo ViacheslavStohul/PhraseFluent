@@ -1,9 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using PhraseFluent.DataAccess.Enums;
 
 namespace PhraseFluent.DataAccess.Entities;
 
 public class Card : BaseId
 {
     [StringLength(255)]
-    public string? Question { get; set; }
+    public required string Question { get; set; }
+    
+    public QuestionType QuestionType { get; set; }
 }
