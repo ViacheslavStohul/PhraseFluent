@@ -8,6 +8,7 @@ import Select from 'react-select';
 import * as langService from '../../../service/word.service';
 import { callErrorToast } from '../../../store/slice/toast';
 import { IOption } from '../../../interfaces/option';
+import Card from '../../layouts/card/card';
 
 const HomePage = () => {
 
@@ -22,8 +23,8 @@ const HomePage = () => {
       .then(languages=>{
         setLangs(languages.map(lang =>{
           return {
-            value: lang.key,
-            label: lang.nativeName + '(' + lang.name + ')'
+            value: lang.languageCode,
+            label: lang.nativeName + '(' + lang.title + ')'
           }
         }));
       })
@@ -39,6 +40,12 @@ const HomePage = () => {
   }
   
   return (
+    <>
+    {
+      user ?
+      <></>
+      :
+    <Card>
     <div className='homepage'>
       <img className='home-image' src='image.jpg' alt='phrase-fluent'/>
       <h1>{t("homepage-greeting")}</h1>
@@ -57,6 +64,9 @@ const HomePage = () => {
       </NavLink>
       }
     </div>
+    </Card>
+    }
+    </>
   );
 }
 

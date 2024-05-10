@@ -1,5 +1,6 @@
 export type Language = {
-  key: string;
-  name: string;
+  languageCode: string;
+  title: string;
   nativeName: string;
+  uuid: string;
 }
