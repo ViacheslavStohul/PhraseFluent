@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 
 
 const Navbar = () => {
-  const user = useSelector(AuthSelectors.selectUsername);
+  const user = useSelector(AuthSelectors.selectUser);
   const { t } = useTranslation();
   const dispatch = useDispatch();
 

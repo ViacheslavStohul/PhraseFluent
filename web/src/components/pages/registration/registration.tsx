@@ -3,9 +3,9 @@ import './registration.scss';
 import { InputFieldComponent } from '../../fields/input-field/input-field';
 import { useDispatch, useSelector } from 'react-redux';
 import { AuthActions, AuthSelectors } from '../../../store/slice/auth';
-import { IRegister } from '../../interfaces/auth';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { IRegister } from '../../../interfaces/auth';
 
 const initialState: IRegister = {
   username: '',
@@ -16,7 +16,7 @@ const initialState: IRegister = {
 const Registration = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const user = useSelector(AuthSelectors.selectUsername);
+  const user = useSelector(AuthSelectors.selectUser);
   const navigate = useNavigate();
 
   const [form, setForm] = useState<IRegister>(initialState);

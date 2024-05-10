@@ -3,9 +3,9 @@ import './authorization.scss';
 import { InputFieldComponent } from '../../fields/input-field/input-field';
 import { useDispatch, useSelector } from 'react-redux';
 import { AuthActions, AuthSelectors } from '../../../store/slice/auth';
-import { IAuth } from '../../interfaces/auth';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { IAuth } from '../../../interfaces/auth';
 
 const initialState: IAuth = {
   username: '',
@@ -15,7 +15,7 @@ const initialState: IAuth = {
 const Authorization = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const user = useSelector(AuthSelectors.selectUsername);
+  const user = useSelector(AuthSelectors.selectUser);
   const navigate = useNavigate();
 
   const [form, setForm] = useState<IAuth>(initialState);

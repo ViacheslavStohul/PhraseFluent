@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { IToast } from '../../components/interfaces/toast';
 import { ToastType } from '../../enum/toast';
+import { IToast } from '../../interfaces/toast';
 
 
 const initialState: {toasts: IToast[]} = {

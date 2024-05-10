@@ -7,11 +7,11 @@ import { AuthSelectors } from '../../../store/slice/auth';
 import Select from 'react-select';
 import * as langService from '../../../service/word.service';
 import { callErrorToast } from '../../../store/slice/toast';
-import { IOption } from '../../interfaces/option';
+import { IOption } from '../../../interfaces/option';
 
 const HomePage = () => {
 
-  const user = useSelector(AuthSelectors.selectUsername);
+  const user = useSelector(AuthSelectors.selectUser);
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const [langs, setLangs] = useState<IOption[]>([]);
