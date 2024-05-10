@@ -11,6 +11,7 @@ using PhraseFluent.Service.DTO.Requests;
 using PhraseFluent.Service.DTO.Responses;
 using PhraseFluent.Service.Exceptions;
 using PhraseFluent.Service.Extensions;
+using PhraseFluent.Service.Interfaces;
 using PhraseFluent.Service.Options;
 
 namespace PhraseFluent.Service;
@@ -43,7 +44,7 @@ public partial class AuthorizationService(
         
         IsValidPassword(userToCreate.Password);
 
-        if (userRepository.IsUserNameOccupied(userToCreate.Username))
+        if (userRepository.IsUserNameOccupied(userToCreate.Username.ToUpper()))
         {
             throw new ForbiddenException($"Username {userToCreate.Username} is occupied");
         }
@@ -52,6 +53,7 @@ public partial class AuthorizationService(
         {
             Uuid = Guid.NewGuid(),
             Username = userToCreate.Username,
+            NormalizedUsername = userToCreate.Username.ToUpper(),
             ClientSecret = userToCreate.Password.Hash(),
             ImageUrl = userToCreate.ImageUrl,
             RegistrationDate = DateTime.Now

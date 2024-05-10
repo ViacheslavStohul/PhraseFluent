@@ -3,6 +3,7 @@ using PhraseFluent.DataAccess.Entities;
 using PhraseFluent.DataAccess.Repositories.Interfaces;
 using PhraseFluent.Service.DTO.Responses;
 using PhraseFluent.Service.Exceptions;
+using PhraseFluent.Service.Interfaces;
 
 namespace PhraseFluent.Service;
 

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using PhraseFluent.Service;
 using PhraseFluent.Service.DTO.Requests;
 using PhraseFluent.Service.DTO.Responses;
+using PhraseFluent.Service.Interfaces;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace PhraseFluent.API.Controllers;

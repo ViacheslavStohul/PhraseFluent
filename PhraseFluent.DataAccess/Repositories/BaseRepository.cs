@@ -114,4 +114,15 @@ public class BaseRepository(DataContext dataContext) : IBaseRepository
     {
         return await dataContext.SaveChangesAsync();
     }
+
+    /// <summary>
+    /// Skips the specified number of items based on the page number and size.
+    /// </summary>
+    /// <param name="page">The page number.</param>
+    /// <param name="size">The number of items per page.</param>
+    /// <returns>The number of items to skip.</returns>
+    protected int SkipSize(int page, int size)
+    {
+        return (page - 1) * size;
+    }
 }

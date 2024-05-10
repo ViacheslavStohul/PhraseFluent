@@ -15,5 +15,5 @@ public class AnswerAttempt : BaseId
     
     public TestAttempt TestAttempt { get; set; }
     
-    public Card Card { get; set; }
+    public AnswerOption Card { get; set; }
 }

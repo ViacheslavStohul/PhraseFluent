@@ -1,7 +1,10 @@
-﻿using Azure;
+﻿using AutoMapper;
+using Azure;
 using Azure.AI.Translation.Text;
 using Microsoft.Extensions.Options;
+using PhraseFluent.DataAccess.Repositories.Interfaces;
 using PhraseFluent.Service.DTO.Responses;
+using PhraseFluent.Service.Interfaces;
 using PhraseFluent.Service.Options;
 
 namespace PhraseFluent.Service;
@@ -9,9 +12,13 @@ namespace PhraseFluent.Service;
 public class TranslationService : ITranslationService
 {
     private readonly TextTranslationClient _client;
+    private readonly ILanguageRepository _languageRepository;
+    private readonly IMapper _mapper;
     
-    public TranslationService(IOptions<MicrosoftTranslatorSettings> settings)
+    public TranslationService(IOptions<MicrosoftTranslatorSettings> settings, ILanguageRepository languageRepository, IMapper mapper)
     {
+        _languageRepository = languageRepository;
+        _mapper = mapper;
         var translatorSettings = settings.Value;
         
         AzureKeyCredential key = new(translatorSettings.Key);
@@ -23,22 +30,15 @@ public class TranslationService : ITranslationService
     /// Retrieves a list of supported languages for translation.
     /// </summary>
     /// <returns>
-    /// An asynchronous task that represents the operation. The task result contains an enumerable of SupportedLanguage objects, which represent the supported languages.
+    /// An asynchronous task that represents the operation. The task result contains an enumerable of LanguageResponse objects, which represent the supported languages.
     /// </returns>
-    public async Task<IEnumerable<SupportedLanguage>> GetLanguages()
+    public async Task<IEnumerable<LanguageResponse>> GetLanguages()
     {
-        var response = await _client.GetLanguagesAsync();
+        var languages = await _languageRepository.GetAll();
         
-        ArgumentNullException.ThrowIfNull(response);
+        var responses = languages.Select(_mapper.Map<LanguageResponse>).ToList();
 
-        var supportedLanguages = response.Value.Translation.Select(language => new SupportedLanguage
-        {
-            Name = language.Value.Name,
-            NativeName = language.Value.NativeName,
-            Key = language.Key
-        });
-
-        return supportedLanguages;
+        return responses;
     }
 
     /// <summary>
@@ -57,7 +57,7 @@ public class TranslationService : ITranslationService
 
         var translationResult = translatedTextItem.Translations[0];
         
-        var otherTranslations = await _client.LookupDictionaryEntriesAsync(translatedTextItem.DetectedLanguage.Language, targetLanguage, wordToTranslate);
+        var otherTranslations = await _client.LookupDictionaryEntriesAsync(translatedTextItem.DetectedLanguage.Language, targetLanguage.ToLower(), wordToTranslate);
 
         var translationResultResponse = new TranslationResult
         {
@@ -97,7 +97,7 @@ public class TranslationService : ITranslationService
     {
         var textWithTranslation = new InputTextWithTranslation(word, translatedWord);
         
-        var response = await _client.LookupDictionaryExamplesAsync(languageFrom, languageTo, textWithTranslation);
+        var response = await _client.LookupDictionaryExamplesAsync(languageFrom.ToLower(), languageTo.ToLower(), textWithTranslation);
         ArgumentNullException.ThrowIfNull(response);
 
         var exampleResponse = new List<UsageExamplesResponse>();

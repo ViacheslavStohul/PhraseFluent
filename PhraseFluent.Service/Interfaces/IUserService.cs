@@ -1,6 +1,6 @@
 ﻿using PhraseFluent.Service.DTO.Responses;
 
-namespace PhraseFluent.Service;
+namespace PhraseFluent.Service.Interfaces;
 
 public interface IUserService
 {

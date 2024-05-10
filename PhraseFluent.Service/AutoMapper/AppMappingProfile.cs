@@ -9,5 +9,8 @@ public class AppMappingProfile : Profile
     public AppMappingProfile()
     {
         CreateMap<User, UserResponse>();
+        CreateMap<Language, LanguageResponse>();
+        CreateMap<Test, TestResponse>();
+        CreateMap<Card, CardResponse>();
     }
 }

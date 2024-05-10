@@ -1,8 +1,6 @@
-﻿using Azure;
-using Azure.AI.Translation.Text;
-using PhraseFluent.Service.DTO.Responses;
+﻿using PhraseFluent.Service.DTO.Responses;
 
-namespace PhraseFluent.Service;
+namespace PhraseFluent.Service.Interfaces;
 
 public interface ITranslationService
 {
@@ -10,9 +8,9 @@ public interface ITranslationService
     /// Retrieves a list of supported languages for translation.
     /// </summary>
     /// <returns>
-    /// An asynchronous task that represents the operation. The task result contains an enumerable of SupportedLanguage objects, which represent the supported languages.
+    /// An asynchronous task that represents the operation. The task result contains an enumerable of LanguageResponse objects, which represent the supported languages.
     /// </returns>
-    Task<IEnumerable<SupportedLanguage>> GetLanguages();
+    Task<IEnumerable<LanguageResponse>> GetLanguages();
 
     /// <summary>
     /// Retrieves the translation of a word.

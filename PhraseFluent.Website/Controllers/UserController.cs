@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PhraseFluent.Service;
 using PhraseFluent.Service.DTO.Responses;
+using PhraseFluent.Service.Interfaces;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace PhraseFluent.API.Controllers;
@@ -11,7 +12,7 @@ namespace PhraseFluent.API.Controllers;
 public class UserController (IUserService userService) : BaseController
 {
     [HttpPut]
-    [Route("img")]
+    [Route("/img")]
     [SwaggerResponse(200, Description = "Changes user avatar")]
     public async Task<IActionResult> UpdateUserImage(string imageUrl)
     {
@@ -20,7 +21,7 @@ public class UserController (IUserService userService) : BaseController
     }
 
     [HttpGet]
-    [Route("get")]
+    [Route("/get")]
     [SwaggerResponse(200, Description = "Gets user by id")]
     [Produces<UserResponse>]
     public async Task<IActionResult> GetUserByUuid([FromQuery] Guid? uuid)

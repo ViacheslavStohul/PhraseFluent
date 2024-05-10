@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PhraseFluent.Service;
 using PhraseFluent.Service.DTO.Responses;
+using PhraseFluent.Service.Interfaces;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace PhraseFluent.API.Controllers;
@@ -14,7 +15,7 @@ public class WordController(ITranslationService translationService) : BaseContro
     [Route("languages")]
     [SwaggerResponse(200, Description = "Gets all available translation languages")]
     [SwaggerResponse(500, Description = "Error when getting languages")]
-    [Produces<IEnumerable<SupportedLanguage>>]
+    [Produces<IEnumerable<LanguageResponse>>]
     public async Task<IActionResult> GetLanguages()
     { 
         var languages = await translationService.GetLanguages();

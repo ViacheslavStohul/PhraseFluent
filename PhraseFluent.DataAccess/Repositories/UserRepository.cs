@@ -15,7 +15,7 @@ public class UserRepository(DataContext dataContext) : BaseRepository(dataContex
     /// <returns><c>true</c> if the username is occupied, <c>false</c> otherwise.</returns>
     public bool IsUserNameOccupied(string username)
     {
-        return _dataContext.Users.Any(x => x.Username.ToLower() == username.ToLower());
+        return _dataContext.Users.Any(x => x.NormalizedUsername == username);
     }
 
     /// <summary>

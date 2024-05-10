@@ -8,6 +8,7 @@ using PhraseFluent.DataAccess.Repositories;
 using PhraseFluent.DataAccess.Repositories.Interfaces;
 using PhraseFluent.Service;
 using PhraseFluent.Service.AutoMapper;
+using PhraseFluent.Service.Interfaces;
 using PhraseFluent.Service.Options;
 
 namespace PhraseFluent.API;
@@ -106,9 +107,12 @@ internal static class Program
         services.AddScoped<ITranslationService, TranslationService>();
         services.AddScoped<IAuthorizationService, AuthorizationService>();
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<ITestsService, TestsService>();
         
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IBaseRepository, BaseRepository>();
+        services.AddScoped<ITestRepository, TestRepository>();
+        services.AddScoped<ILanguageRepository, LanguageRepository>();
         
         services.AddAutoMapper(typeof(AppMappingProfile));
         services.AddSingleton(key);
@@ -137,6 +141,7 @@ internal static class Program
         {
             var context = serviceScope.ServiceProvider.GetService<DataContext>();
             await context?.Database.MigrateAsync()!;
+            await context?.Initialize()!;
         }
         
         app.Run();

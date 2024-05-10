@@ -6,7 +6,7 @@ namespace PhraseFluent.DataAccess.Entities;
 
 public class Card : BaseId
 {
-    [StringLength(255)]
+    [StringLength(3000)]
     public required string Question { get; set; }
     
     [ForeignKey(nameof(Test))]

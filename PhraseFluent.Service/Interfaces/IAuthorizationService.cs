@@ -2,7 +2,7 @@
 using PhraseFluent.Service.DTO.Requests;
 using PhraseFluent.Service.DTO.Responses;
 
-namespace PhraseFluent.Service;
+namespace PhraseFluent.Service.Interfaces;
 
 public interface IAuthorizationService
 {
