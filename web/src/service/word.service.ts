@@ -2,6 +2,7 @@ import axios from "axios";
 import { Language } from "../interfaces/lang";
 import { mapObjectToParams } from "../functions/params";
 import { Test } from "../interfaces/test";
+import { List } from "../interfaces/list";
 
 const baseUrl = '/api/word'
 
@@ -18,7 +19,7 @@ export interface ListRequest {
   Title?: string;
 }
 
-export const getList = async (request:ListRequest): Promise<Test[]> => {
+export const getList = async (request:ListRequest): Promise<List<Test>> => {
   const { data } = await axios.get(`/list?${mapObjectToParams(request)}`);
   return data;
 }
