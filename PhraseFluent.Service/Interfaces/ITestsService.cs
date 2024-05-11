@@ -9,5 +9,5 @@ public interface ITestsService
 
     Task<TestResponse> AddTest(AddTestRequest request, Guid userUuid);
 
-    Task<CardResponse> CreateCard(Guid? userId, AddCardRequest request);
+    Task<CardResponseWitCorrectAnswer> CreateCard(Guid? userId, AddCardRequest request);
 }

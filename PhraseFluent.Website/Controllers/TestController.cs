@@ -38,7 +38,7 @@ public class TestController (ITestsService testsService) : BaseController
     [HttpPost]
     [Route("/card/new")]
     [SwaggerResponse(201, "Adds a new card")]
-    [ProducesResponseType(typeof(CardResponse), 201)]
+    [ProducesResponseType(typeof(CardResponseWitCorrectAnswer), 201)]
     public async Task<IActionResult> AddCard([FromBody] AddCardRequest request)
     {
         var userId = UserId ?? Guid.Empty;

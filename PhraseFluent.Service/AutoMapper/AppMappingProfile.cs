@@ -12,8 +12,10 @@ public class AppMappingProfile : Profile
         CreateMap<User, UserResponse>();
         CreateMap<Language, LanguageResponse>();
         CreateMap<Test, TestResponse>();
-        CreateMap<Card, CardResponse>();
-        CreateMap<AnswerOption, AnswerOptionResponse>();
+        CreateMap<Card, CardResponseWitCorrectAnswer>();
+        CreateMap<Card, BaseCardResponse>();
+        CreateMap<AnswerOption, AnswerOptionResponseWitCorrectAnswer>();
+        CreateMap<AnswerOption, BaseAnswerOptionResponse>();
         CreateMap<PaginationHelper<Test>, PaginationResponse<TestResponse>>();
     }
 }

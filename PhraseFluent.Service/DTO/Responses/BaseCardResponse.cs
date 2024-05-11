@@ -2,7 +2,7 @@
 
 namespace PhraseFluent.Service.DTO.Responses;
 
-public class CardResponse
+public class BaseCardResponse
 {
     public Guid Uuid { get; set; }
     
@@ -10,5 +10,5 @@ public class CardResponse
     
     public QuestionType QuestionType { get; set; }
     
-    public ICollection<AnswerOptionResponse>? AnswerOptions { get; set; }
+    public virtual ICollection<BaseAnswerOptionResponse>? AnswerOptions { get; set; }
 }
