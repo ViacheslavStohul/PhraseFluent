@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PhraseFluent.DataAccess.Entities;
+using PhraseFluent.DataAccess.Helpers;
 using PhraseFluent.DataAccess.Repositories.Interfaces;
 
 namespace PhraseFluent.DataAccess.Repositories;
@@ -8,7 +9,7 @@ public class TestRepository(DataContext dataContext) : BaseRepository(dataContex
 {
     private readonly DataContext _dataContext = dataContext;
     
-    public async Task<IEnumerable<Test>> GetTestList(int page, int size, string? language, string? username, string? title)
+    public async Task<TestSearcHelper> GetTestList(int page, int size, string? language, string? username, string? title)
     {
         var toSkip = SkipSize(page, size);
         
@@ -35,13 +36,22 @@ public class TestRepository(DataContext dataContext) : BaseRepository(dataContex
         {
             query = query.Where(t => t.NormalizedTitle.Contains(title));
         }
+
+        var totalItems = query.Count();
+
+        if (totalItems == 0)
+        {
+            return new TestSearcHelper { Tests = Enumerable.Empty<Test>(), TotalItems = totalItems };
+        }
         
-        return await query
+        var items = await query
             .Skip(toSkip)
             .Take(size)
             .Include(x => x.CreatedBy)
             .Include(x => x.Language)
             .AsNoTracking()
             .ToListAsync();
+        
+        return new TestSearcHelper { Tests = items, TotalItems = totalItems };
     }
 }
