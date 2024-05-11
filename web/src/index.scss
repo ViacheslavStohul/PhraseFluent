@@ -88,3 +88,14 @@ a{
 .cls-2{
   fill:#97cfe8;
 }
+
+hr {
+    color: $font-color-light;
+    width: 100%; 
+    height: 1px; 
+    border: none;
+    background-color: $font-color-light;
+    opacity: 0.5;
+    margin: 0;
+    padding: 0; 
+}

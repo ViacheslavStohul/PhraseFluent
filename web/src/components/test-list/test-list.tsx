@@ -10,6 +10,7 @@ import * as langService from '../../service/word.service';
 import { InputFieldComponent } from '../fields/input-field/input-field';
 import { debounce } from 'lodash';
 import { Test } from '../../interfaces/test';
+import Card from '../layouts/card/card';
 
 interface TestListProps {
   user?: IUser;
@@ -56,17 +57,27 @@ const TestList:FC<TestListProps> = ({user}) => {
   const handleChange = debounce(handleSearch, 500);
   
   return (
-    <>
-     <InputFieldComponent 
-      labelText={t("search")}
-      name='search'
-      changed={handleChange}/>
-    <Select
-      classNamePrefix='select'
-      className='select'
-      aria-label='language'
-      options={langs}
-      onChange={(value) => selectLanguage(value?.value)}/>
+    <Card classes='card-column'>
+      <div className='test-list-header'>
+        <InputFieldComponent 
+          labelText={t("search")}
+          name='search'
+          changed={handleChange}/>
+        <div className='input-field'>
+        <label
+          className="label"
+        >
+          {t("language")}
+        </label>
+        <Select
+          classNamePrefix='select'
+          className='select'
+          aria-label='language'
+          options={langs}
+          onChange={(value) => selectLanguage(value?.value)}/>
+        </div>
+      </div>
+      <hr/>
       {
         tests.map(test => (
           <div key={test.title}>
@@ -75,7 +86,7 @@ const TestList:FC<TestListProps> = ({user}) => {
           </div>
         ))
       }
-    </>
+    </Card>
   );
 }
 

@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import React, { FC, ReactNode, useEffect, useState } from 'react';
 import { getToken } from '../../../functions/get-token';
 import { useDispatch, useSelector } from 'react-redux';
@@ -34,6 +34,13 @@ const InterceptorManager: FC<AppProps> = (
       }
       return config;
     });
+
+    axios.interceptors.response.use(
+      (response) => response,
+      (error: AxiosError) => {
+        return Promise.reject(error);
+      }
+    );
 
     setInit(InitStates.Init);
 

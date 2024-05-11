@@ -3,5 +3,14 @@
   &__control{
     width: fit-content;
     min-width: 200px;
+    min-height: 0px !important;
+  }
+
+  &__indicator {
+    padding: 0 8px !important;
+  }
+
+  &__input-container {
+    margin: 0 !important;
   }
 }
