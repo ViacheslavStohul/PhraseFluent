@@ -85,6 +85,8 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
                 throw new Exception("Invalid question type");
             case QuestionType.TestOneAnswer when request.AnswerOptions.Count(x => x.IsCorrect) > 1:
                 throw new ArgumentException("Only one correct answer allowed in this question type");
+            case QuestionType.TestManyAnswers or QuestionType.TestOneAnswer when request.AnswerOptions.Count < 2:
+                throw new ArgumentException("This type of question must have least 2 answer options");
         }
 
         await using var transaction = await testRepository.BeginTransactionAsync();
