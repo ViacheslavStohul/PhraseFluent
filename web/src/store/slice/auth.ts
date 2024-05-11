@@ -29,6 +29,14 @@ const AuthSlice = createSlice({
       state.loading = false;
       state.user = action.payload;
     }),
+    updateUserImageFetch: create.reducer<string>((state, _) => {
+      state.loading = false;
+    }),
+    updateUserImageSuccess: create.reducer<string>((state, action) => {
+      state.loading = false;
+      if (state.user)
+        state.user.imageUrl = action.payload;
+    }),
     refreshFetch: create.reducer<ITokenState>((state, _) => {
       state.loading = true;
     }),
@@ -58,6 +66,8 @@ type AuthUnionType = ReturnType<
   | typeof AuthActions.authSuccess
   | typeof AuthActions.getUserFetch
   | typeof AuthActions.getUserSuccess
+  | typeof AuthActions.updateUserImageFetch
+  | typeof AuthActions.updateUserImageSuccess
   | typeof AuthActions.refreshFetch
   | typeof AuthActions.refreshSuccess
   | typeof AuthActions.logout

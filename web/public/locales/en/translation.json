@@ -14,5 +14,11 @@
   "search": "Search",
   "language": "Language",
   "all-tests": "All Tests",
-  "create-test": "Create Test"
+  "my-tests": "My Tests",
+  "user-tests": "User Tests",
+  "create-test": "Create Test",
+  "cards": "Cards",
+  "by": "by",
+  "joined": "Joined",
+  "picture": "Profile picture"
 }

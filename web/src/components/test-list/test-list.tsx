@@ -43,7 +43,7 @@ const TestList:FC<TestListProps> = ({title, user}) => {
           }
         }));
       })
-      .catch((error) => dispatch(callErrorToast({name: error.code, text: error.message})))
+      .catch((error) => dispatch(callErrorToast({name: error.code, text: error.message})));
   },[dispatch])
 
   const selectLanguage = (option?: string | number) => {
