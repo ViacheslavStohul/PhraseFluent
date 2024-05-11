@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using PhraseFluent.DataAccess.Entities;
 using PhraseFluent.DataAccess.Repositories.Interfaces;
 
@@ -113,6 +114,18 @@ public class BaseRepository(DataContext dataContext) : IBaseRepository
     public async Task<int> SaveChangesAsync()
     {
         return await dataContext.SaveChangesAsync();
+    }
+
+    /// <summary>
+    /// Begins a new transaction asynchronously.
+    /// </summary>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the <see cref="IDbContextTransaction"/> that represents the transaction.</returns>
+    /// <remarks>
+    /// This method starts a new transaction on the database context.
+    /// </remarks>
+    public async Task<IDbContextTransaction> BeginTransactionAsync()
+    {
+        return await dataContext.Database.BeginTransactionAsync();
     }
 
     /// <summary>

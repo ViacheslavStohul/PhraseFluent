@@ -1,4 +1,5 @@
-﻿using PhraseFluent.DataAccess.Entities;
+﻿using Microsoft.EntityFrameworkCore.Storage;
+using PhraseFluent.DataAccess.Entities;
 
 namespace PhraseFluent.DataAccess.Repositories.Interfaces;
 
@@ -65,6 +66,15 @@ public interface IBaseRepository
     /// <param name="entity">The entity to update.</param>
     /// <exception cref="ArgumentNullException">Thrown if the entity is null.</exception>
     void Update<TEntity>(TEntity entity) where TEntity : BaseId;
+
+    /// <summary>
+    /// Begins a new transaction asynchronously.
+    /// </summary>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the <see cref="IDbContextTransaction"/> that represents the transaction.</returns>
+    /// <remarks>
+    /// This method starts a new transaction on the database context.
+    /// </remarks>
+    Task<IDbContextTransaction> BeginTransactionAsync();
 
     /// <summary>
     /// Saves the changes made in the data context asynchronously.

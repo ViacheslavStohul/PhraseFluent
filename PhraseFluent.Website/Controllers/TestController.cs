@@ -34,4 +34,16 @@ public class TestController (ITestsService testsService) : BaseController
 
         return Created("", test);
     }
+    
+    [HttpPost]
+    [Route("/card/new")]
+    [SwaggerResponse(201, "Adds a new card")]
+    [ProducesResponseType(typeof(CardResponse), 201)]
+    public async Task<IActionResult> AddCard([FromBody] AddCardRequest request)
+    {
+        var userId = UserId;
+        var card = await testsService.CreateCard(userId, request);
+
+        return Created("", card);
+    }
 }
