@@ -32,7 +32,7 @@ public class TestController (ITestsService testsService) : BaseController
         var userUuid = UserId ?? Guid.Empty;
         var test = await testsService.AddTest(request, userUuid);
 
-        return Created("", test);
+        return Created(string.Empty, test);
     }
     
     [HttpPost]
@@ -44,6 +44,6 @@ public class TestController (ITestsService testsService) : BaseController
         var userId = UserId ?? Guid.Empty;
         var card = await testsService.CreateCard(userId, request);
 
-        return Created("", card);
+        return Created(string.Empty, card);
     }
 }
