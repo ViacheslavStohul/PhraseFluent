@@ -1,4 +1,5 @@
 ﻿using PhraseFluent.DataAccess.Entities;
+using PhraseFluent.DataAccess.Enums;
 using PhraseFluent.DataAccess.Repositories.Interfaces;
 using PhraseFluent.Service.DTO.Requests;
 using PhraseFluent.Service.DTO.Responses;
@@ -49,6 +50,7 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
     public async Task<CardResponse> CreateCard(Guid? userId, AddCardRequest request)
     {
         ArgumentNullException.ThrowIfNull(userId);
+        ArgumentNullException.ThrowIfNull(request.AnswerOptions);
         var user = await testRepository.GetByUuidAsync<User>(userId.Value);
         ArgumentNullException.ThrowIfNull(user);
 
@@ -65,25 +67,42 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
             TestId = test.Id,
         };
 
+        if (request.AnswerOptions.All(x => x.IsCorrect != true))
+        {
+            throw new ArgumentException("There must be at least 1 correct answer");
+        }
+
+        if (request.AnswerOptions.Count > 10)
+        {
+            throw new ArgumentException("Cannot have more than 10 answers");
+        }
+
+        switch (request.QuestionType)
+        {
+            case QuestionType.Text when request.AnswerOptions.Count > 1:
+                throw new ArgumentException("Text questions must have only 1 answer option");
+            case QuestionType.None:
+                throw new Exception("Invalid question type");
+            case QuestionType.TestOneAnswer when request.AnswerOptions.Count(x => x.IsCorrect) > 1:
+                throw new ArgumentException("Only one correct answer allowed in this question type");
+        }
+
         await using var transaction = await testRepository.BeginTransactionAsync();
         try
         {
-            if (request.AnswerOptions != null)
-            {
-                cardToAdd.AnswerOptions = new List<AnswerOption>();
-
-                foreach (var option in request.AnswerOptions)
-                {
-                    cardToAdd.AnswerOptions.Add(new AnswerOption
-                    {
-                        Uuid = Guid.NewGuid(), OptionText = option.OptionText, IsCorrect = option.IsCorrect,
-                    });
-
-                    testRepository.Add(cardToAdd);
-                }
-            }
-
+            cardToAdd.AnswerOptions = new List<AnswerOption>();
             testRepository.Add(cardToAdd);
+
+            foreach (var option in request.AnswerOptions)
+            {
+                cardToAdd.AnswerOptions.Add(new AnswerOption
+                {
+                    Uuid = Guid.NewGuid(), OptionText = option.OptionText, IsCorrect = option.IsCorrect, CardId = cardToAdd.Id
+                });
+
+                testRepository.Add(cardToAdd);
+            }
+            
             await testRepository.SaveChangesAsync();
             await transaction.CommitAsync();
         }
