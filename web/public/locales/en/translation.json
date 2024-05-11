@@ -12,5 +12,7 @@
   "homepage-text": "Dive into a world of linguistic exploration and enhance your fluency in many languages with interactive tools. Start your journey today and unlock the power of multilingual communication with PhraseFluent!",
   "get-started": "Get Started Now!",
   "search": "Search",
-  "language": "Language"
+  "language": "Language",
+  "all-tests": "All Tests",
+  "create-test": "Create Test"
 }

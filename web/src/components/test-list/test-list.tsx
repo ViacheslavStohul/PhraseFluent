@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import './test-list.scss';
 import Select from 'react-select';
@@ -11,17 +11,27 @@ import { InputFieldComponent } from '../fields/input-field/input-field';
 import { debounce } from 'lodash';
 import { Test } from '../../interfaces/test';
 import Card from '../layouts/card/card';
+import { useNavigate } from 'react-router-dom';
+import PlusSVG from '../svg/plus';
+import TestCard from './test-card/test-card';
+import { useInView } from 'react-intersection-observer';
 
 interface TestListProps {
+  title: string;
   user?: IUser;
 }
 
-const TestList:FC<TestListProps> = ({user}) => {
+const TestList:FC<TestListProps> = ({title, user}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const [langs, setLangs] = useState<IOption[]>([]);
   const [request, setRequest] = useState<langService.ListRequest>({Page: 1, Size: 20, Username: user?.username});
   const [tests, setTests] = useState<Test[]>([]);
+  const navigate = useNavigate();
+  const totalItems = useRef(0);
+  const { ref, inView } = useInView({
+    threshold: 0,
+  });
 
   useEffect(()=>{
       langService.getLangs()
@@ -37,27 +47,53 @@ const TestList:FC<TestListProps> = ({user}) => {
   },[dispatch])
 
   const selectLanguage = (option?: string | number) => {
-    if (!option){
+    if (!option || option === request.Language){
       return;
     }
-    setRequest((prev) => ({ ...prev, Language: option as string }));
+    setRequest((prev) => ({ ...prev, Language: option as string, Page: 1}));
   }
 
   useEffect(()=>{
     langService.getList(request).then(testList=>{
-      setTests(testList.items ?? []);
+      if (request.Page === 1) {
+        setTests(testList.items ?? []);
+      } else {
+        setTests((prev) => [...prev.slice(0, (request.Page - 1) * 10),...testList.items?? []]);
+      }
+      totalItems.current = testList.totalItems;
     })
     .catch((error) => dispatch(callErrorToast({name: error.code, text: error.message})))
   },[request,dispatch]);
 
   const handleSearch = useCallback((value: string) => {
-    setRequest((prev) => ({ ...prev, search: value }));
+    setRequest((prev) => ({ ...prev, Title: value, Page: 1 }));
   }, [setRequest]);
+
+  useEffect(()=>{
+    setRequest((prev)=> {
+      if (inView && totalItems.current > prev.Page * prev.Size ) {
+        return {
+         ...prev,
+          Page: prev.Page + 1
+        }
+      }
+      return prev;
+    });
+  },[inView]);
 
   const handleChange = debounce(handleSearch, 500);
   
   return (
     <Card classes='card-column'>
+      <div className='test-list-header'>
+        <h1>{title}</h1>
+        <button
+          type='button'
+          onClick = {()=>navigate('/new')}>
+            <PlusSVG/>
+          {t("create-test")}
+        </button>
+      </div>
       <div className='test-list-header'>
         <InputFieldComponent 
           labelText={t("search")}
@@ -77,15 +113,15 @@ const TestList:FC<TestListProps> = ({user}) => {
           onChange={(value) => selectLanguage(value?.value)}/>
         </div>
       </div>
-      <hr/>
+      <div className='test-table'>
       {
         tests.map(test => (
-          <div key={test.title}>
-            <h2>{test.title}</h2>
-            <p>{test.description}</p>
-          </div>
+          <TestCard test={test} key={test.title}/>
         ))
       }
+      <div ref={ref}>
+      </div>
+      </div>
     </Card>
   );
 }

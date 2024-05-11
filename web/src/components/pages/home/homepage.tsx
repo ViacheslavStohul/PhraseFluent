@@ -18,7 +18,7 @@ const HomePage = () => {
     <>
     {
       user ?
-      <TestList/>
+      <TestList title={t('all-tests')}/>
       :
     <Card>
     <div className='homepage'>
