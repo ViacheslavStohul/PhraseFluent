@@ -41,7 +41,7 @@ public class TestController (ITestsService testsService) : BaseController
     [ProducesResponseType(typeof(CardResponse), 201)]
     public async Task<IActionResult> AddCard([FromBody] AddCardRequest request)
     {
-        var userId = UserId;
+        var userId = UserId ?? Guid.Empty;
         var card = await testsService.CreateCard(userId, request);
 
         return Created("", card);
