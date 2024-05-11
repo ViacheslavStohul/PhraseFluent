@@ -9,11 +9,11 @@ namespace PhraseFluent.Service;
 
 public class TestsService(ITestRepository testRepository, IMapper mapper) : ITestsService
 {
-    public async Task<TestSearchResponse> GetTestList(TestSearchRequest request)
+    public async Task<PaginationResponse<TestResponse>> GetTestList(TestSearchRequest request)
     {
         var items = await testRepository.GetTestList(request.Page, request.Size, request.Language, request.Username, request.Title);
 
-        var responses = mapper.Map<TestSearchResponse>(items);
+        var responses = mapper.Map<PaginationResponse<TestResponse>>(items);
 
         return responses;
     }

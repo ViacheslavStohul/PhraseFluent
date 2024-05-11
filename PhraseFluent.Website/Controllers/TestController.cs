@@ -15,7 +15,7 @@ public class TestController (ITestsService testsService) : BaseController
     [AllowAnonymous]
     [Route("/list")]
     [SwaggerResponse(200, "Gets test list by filters")]
-    [Produces<TestSearchResponse>]
+    [Produces<PaginationResponse<TestResponse>>]
     public async Task<IActionResult> GetTestList([FromQuery] TestSearchRequest request)
     {
         var tests = await testsService.GetTestList(request);
