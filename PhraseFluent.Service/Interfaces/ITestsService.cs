@@ -5,7 +5,9 @@ namespace PhraseFluent.Service.Interfaces;
 
 public interface ITestsService
 {
-    Task<TestSearchResponse> GetTestList(TestSearchRequest request);
+    Task<PaginationResponse<TestResponse>> GetTestList(TestSearchRequest request);
 
     Task<TestResponse> AddTest(AddTestRequest request, Guid userUuid);
+
+    Task<CardResponse> CreateCard(Guid? userId, AddCardRequest request);
 }

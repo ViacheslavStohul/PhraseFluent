@@ -15,7 +15,7 @@ public class TestController (ITestsService testsService) : BaseController
     [AllowAnonymous]
     [Route("/list")]
     [SwaggerResponse(200, "Gets test list by filters")]
-    [Produces<TestSearchResponse>]
+    [Produces<PaginationResponse<TestResponse>>]
     public async Task<IActionResult> GetTestList([FromQuery] TestSearchRequest request)
     {
         var tests = await testsService.GetTestList(request);
@@ -32,6 +32,18 @@ public class TestController (ITestsService testsService) : BaseController
         var userUuid = UserId ?? Guid.Empty;
         var test = await testsService.AddTest(request, userUuid);
 
-        return Created("", test);
+        return Created(string.Empty, test);
+    }
+    
+    [HttpPost]
+    [Route("/card/new")]
+    [SwaggerResponse(201, "Adds a new card")]
+    [ProducesResponseType(typeof(CardResponse), 201)]
+    public async Task<IActionResult> AddCard([FromBody] AddCardRequest request)
+    {
+        var userId = UserId ?? Guid.Empty;
+        var card = await testsService.CreateCard(userId, request);
+
+        return Created(string.Empty, card);
     }
 }

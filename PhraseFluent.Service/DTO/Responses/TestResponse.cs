@@ -13,6 +13,4 @@ public class TestResponse
     public LanguageResponse? Language { get; set; }
     
     public UserResponse? CreatedBy { get; set; }
-    
-    public ICollection<CardResponse>? Cards { get; set; }
 }
