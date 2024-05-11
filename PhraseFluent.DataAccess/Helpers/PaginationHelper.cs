@@ -2,9 +2,9 @@
 
 namespace PhraseFluent.DataAccess.Helpers;
 
-public class TestSearcHelper
+public class PaginationHelper<TEntity> where TEntity : BaseId
 {
-    public required IEnumerable<Test> Tests { get; set; }
+    public required IEnumerable<TEntity> Items { get; set; }
     
     public int TotalItems { get; set; }
 }

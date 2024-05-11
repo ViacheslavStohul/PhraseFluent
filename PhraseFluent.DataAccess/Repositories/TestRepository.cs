@@ -9,7 +9,7 @@ public class TestRepository(DataContext dataContext) : BaseRepository(dataContex
 {
     private readonly DataContext _dataContext = dataContext;
     
-    public async Task<TestSearcHelper> GetTestList(int page, int size, string? language, string? username, string? title)
+    public async Task<PaginationHelper<Test>> GetTestList(int page, int size, string? language, string? username, string? title)
     {
         var toSkip = SkipSize(page, size);
         
@@ -41,7 +41,7 @@ public class TestRepository(DataContext dataContext) : BaseRepository(dataContex
 
         if (totalItems == 0)
         {
-            return new TestSearcHelper { Tests = Enumerable.Empty<Test>(), TotalItems = totalItems };
+            return new PaginationHelper<Test> { Items = Enumerable.Empty<Test>(), TotalItems = totalItems };
         }
         
         var items = await query
@@ -52,6 +52,6 @@ public class TestRepository(DataContext dataContext) : BaseRepository(dataContex
             .AsNoTracking()
             .ToListAsync();
         
-        return new TestSearcHelper { Tests = items, TotalItems = totalItems };
+        return new PaginationHelper<Test> { Items = items, TotalItems = totalItems };
     }
 }
