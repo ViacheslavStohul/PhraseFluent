@@ -44,8 +44,8 @@ const TestList:FC<TestListProps> = ({user}) => {
   }
 
   useEffect(()=>{
-    langService.getList(request).then(tests=>{
-      setTests(tests);
+    langService.getList(request).then(testList=>{
+      setTests(testList.items ?? []);
     })
     .catch((error) => dispatch(callErrorToast({name: error.code, text: error.message})))
   },[request,dispatch]);
