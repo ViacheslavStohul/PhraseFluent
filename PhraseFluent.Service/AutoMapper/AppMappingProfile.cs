@@ -13,6 +13,6 @@ public class AppMappingProfile : Profile
         CreateMap<Language, LanguageResponse>();
         CreateMap<Test, TestResponse>();
         CreateMap<Card, CardResponse>();
-        CreateMap<TestSearcHelper, TestSearchResponse>();
+        CreateMap<PaginationHelper<Test>, TestSearchResponse>();
     }
 }
