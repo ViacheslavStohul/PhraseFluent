@@ -71,6 +71,18 @@ const getUserFetchEpic: Epic<any> = (action$) =>
     )
 );
 
+const updateUserImageFetchEpic: Epic<any> = (action$) =>
+  action$.pipe(
+    ofType(AuthActions.updateUserImageFetch.type),
+    switchMap((action) =>
+      AuthService.updateImage(action.payload)
+        .then(() => {
+          return AuthActions.updateUserImageSuccess(action.payload);
+        })
+        .catch((error) => callErrorToast({name: error.code, text: error.message}))
+    )
+);
+
 const RefreshFetchEpic: Epic<any> = (action$) =>
   action$.pipe(
     ofType(AuthActions.refreshFetch.type),
@@ -88,6 +100,7 @@ export const authEpics = combineEpics<any>(
   RegisterFetchEpic,
   RefreshFetchEpic,
   RegisterSuccessEpic,
+  updateUserImageFetchEpic,
   AuthSuccessEpic,
   getUserFetchEpic
 );

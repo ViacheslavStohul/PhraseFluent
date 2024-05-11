@@ -19,7 +19,7 @@ const Navbar = () => {
 
   return (
     <nav>
-      <div><LogoSVG/></div>
+      <NavLink to='/'><LogoSVG/></NavLink>
       <div className='nav-block'>
         { user ? 
           <>

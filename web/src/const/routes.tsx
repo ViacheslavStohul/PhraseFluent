@@ -20,6 +20,14 @@ const children: RouteObject[] = [
             )
           },
           {
+            path: 'profile',
+            lazy: () => import('../components/pages/profile/profile').then(
+              (module) => ({
+                Component: module.default
+              })
+            )
+          },
+          {
             path: '*',
             lazy: () => import('../components/pages/home/homepage').then(
               (module) => ({

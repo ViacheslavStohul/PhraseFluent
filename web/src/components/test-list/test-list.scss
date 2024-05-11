@@ -1,6 +1,6 @@
 .test-list-header {
   display: grid;
-  grid-template-columns: 1fr 200px;
+  grid-template-columns: 1fr auto;
   width: 100%;
   gap: 10px;
 }
@@ -9,4 +9,10 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+}
+
+.test-table {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 200px));
+  gap: 15px;
 }
