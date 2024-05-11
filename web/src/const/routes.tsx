@@ -11,12 +11,6 @@ const children: RouteObject[] = [
         })
       ),
     children: [
-      {
-        lazy: () => import('../components/layouts/body-card/body-card').then(
-          (module) => ({
-            Component: module.default
-          })),
-        children: [
           {
             path: '/',
             lazy: () => import('../components/pages/home/homepage').then(
@@ -33,8 +27,6 @@ const children: RouteObject[] = [
               })
             ),
           }
-        ] 
-      },
     ],
   },
   {

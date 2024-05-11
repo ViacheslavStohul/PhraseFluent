@@ -3,7 +3,7 @@ import './input-field.scss';
 
 export interface IInputFieldProps {
   labelText: string;
-  value: string | number;
+  value?: string | number;
   changed?: (value: string) => void;
   readonly?: boolean;
   type?: string;
