@@ -12,5 +12,7 @@ export const Auth = async (auth :IAuth): Promise<AxiosResponse<ITokenState>> =>
   export const Refresh = async (token: ITokenState): Promise<AxiosResponse<ITokenState>> => 
   axios.post(`${baseUrl}/token/refresh`,token);
 
-  export const Get = async (): Promise<AxiosResponse<IUser>> => 
-    axios.get(`/get`);
+  export const Get = async (): Promise<IUser> => {
+    const {data} = await axios.get(`/get`);
+    return data;
+  }

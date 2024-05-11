@@ -61,10 +61,13 @@ const getUserFetchEpic: Epic<any> = (action$) =>
     ofType(AuthActions.getUserFetch.type),
     switchMap(() =>
       AuthService.Get()
-        .then(({data}) => {
+        .then((data) => {
           return AuthActions.getUserSuccess(data);
         })
-        .catch((error) => callErrorToast({name: error.code, text: error.message}))
+        .catch((error) =>{ 
+          localStorage.removeItem('token');
+          window.location.reload();
+          return callErrorToast({name: error.code, text: error.message})})
     )
 );
 
