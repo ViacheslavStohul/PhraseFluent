@@ -10,7 +10,7 @@ export const getLangs = async (): Promise<Language[]> => {
     return data;
 }
 
-interface ListRequest {
+export interface ListRequest {
   Page: number;
   Size: number;
   Language?: string;
