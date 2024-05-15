@@ -1,10 +1,8 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import './test-list.scss';
-import Select from 'react-select';
 import { IUser } from '../../interfaces/auth';
 import { useDispatch } from 'react-redux';
-import { IOption } from '../../interfaces/option';
 import { callErrorToast } from '../../store/slice/toast';
 import * as langService from '../../service/word.service';
 import { InputFieldComponent } from '../fields/input-field/input-field';
@@ -15,6 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import PlusSVG from '../svg/plus';
 import TestCard from './test-card/test-card';
 import { useInView } from 'react-intersection-observer';
+import { LangFieldComponent } from '../fields/lang-field/lang-field';
 
 interface TestListProps {
   title: string;
@@ -24,7 +23,6 @@ interface TestListProps {
 const TestList:FC<TestListProps> = ({title, user}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const [langs, setLangs] = useState<IOption[]>([]);
   const [request, setRequest] = useState<langService.ListRequest>({Page: 1, Size: 20, Username: user?.username});
   const [tests, setTests] = useState<Test[]>([]);
   const navigate = useNavigate();
@@ -33,24 +31,11 @@ const TestList:FC<TestListProps> = ({title, user}) => {
     threshold: 0,
   });
 
-  useEffect(()=>{
-      langService.getLangs()
-      .then(languages=>{
-        setLangs(languages.map(lang =>{
-          return {
-            value: lang.languageCode,
-            label: lang.nativeName + '(' + lang.title + ')'
-          }
-        }));
-      })
-      .catch((error) => dispatch(callErrorToast({name: error.code, text: error.message})));
-  },[dispatch])
-
-  const selectLanguage = (option?: string | number) => {
+  const selectLanguage = (option?: string) => {
     if (!option || option === request.Language){
       return;
     }
-    setRequest((prev) => ({ ...prev, Language: option as string, Page: 1}));
+    setRequest((prev) => ({ ...prev, Language: option.split(' ')[0], Page: 1}));
   }
 
   useEffect(()=>{
@@ -105,12 +90,8 @@ const TestList:FC<TestListProps> = ({title, user}) => {
         >
           {t("language")}
         </label>
-        <Select
-          classNamePrefix='select'
-          className='select'
-          aria-label='language'
-          options={langs}
-          onChange={(value) => selectLanguage(value?.value)}/>
+        <LangFieldComponent
+          selectLanguage={(option) => selectLanguage(option.label)}/>
         </div>
       </div>
       <div className='test-table'>

@@ -12,5 +12,9 @@
 
   &__input-container {
     margin: 0 !important;
+
+    input:hover, input:focus {
+      border-bottom: 2px solid transparent !important;
+    }
   }
 }

@@ -20,5 +20,9 @@
   "cards": "Cards",
   "by": "by",
   "joined": "Joined",
-  "picture": "Profile picture"
+  "picture": "Profile picture",
+  "title": "Title",
+  "description": "Description",
+  "test-picture": "Test picture",
+  "select-language": "Select language"
 }

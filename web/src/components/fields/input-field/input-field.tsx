@@ -44,7 +44,7 @@ export const InputFieldComponent = (
     htmlFor={labelText}
     className="label"
     >
-    {labelText}
+    {labelText}{isRequired && '*'}
     </label>
     <input
       ref={inputRef}

@@ -10,6 +10,7 @@ import * as AuthService from '../../../service/auth.service';
 import { callErrorToast } from '../../../store/slice/toast';
 import Card from '../../layouts/card/card';
 import { InputFieldComponent } from '../../fields/input-field/input-field';
+import { Protection } from '../../protection/protection';
 
 const Profile = () => {
 
@@ -45,11 +46,13 @@ const Profile = () => {
   },[userStore, navigate, searchParams,dispatch]);
 
   const updateImage = (link: string) => {
+    setImageError(false);
     dispatch(AuthActions.updateUserImageFetch(link));
   }
 
   
   return (
+    <Protection>
     <div className='profile'>
     {
       user ?
@@ -75,6 +78,7 @@ const Profile = () => {
       <></>
     }
     </div>
+    </Protection>
   );
 }
 

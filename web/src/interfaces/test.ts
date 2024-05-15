@@ -15,3 +15,10 @@ export interface Card {
   question: string;
   questionType: string;
 }
+
+export interface createTestRequest {
+  title: string,
+  description?: string,
+  imageUrl?: string,
+  languageUuid: string
+}
