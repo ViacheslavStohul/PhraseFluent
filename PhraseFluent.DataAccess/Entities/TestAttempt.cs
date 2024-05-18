@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PhraseFluent.DataAccess.Entities;
 
@@ -27,4 +28,7 @@ public class TestAttempt : BaseId
     public Test Test { get; set; }
     
     public User User { get; set; }
+    
+    [StringLength(200)]
+    public required string QuestionOrder { get; set; }
 }

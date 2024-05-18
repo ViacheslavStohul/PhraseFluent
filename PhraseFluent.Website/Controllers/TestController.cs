@@ -46,4 +46,16 @@ public class TestController (ITestsService testsService) : BaseController
 
         return Created(string.Empty, card);
     }
+    
+    [HttpPost]
+    [Route("/begin")]
+    [SwaggerResponse(200, "Begin new test")]
+    [ProducesResponseType(typeof(BaseCardResponse), 200)]
+    public async Task<IActionResult> BeginTest([FromRoute] Guid testUuid)
+    {
+        var userId = UserId ?? Guid.Empty;
+        var card = await testsService.BeginTestAsync(userId, testUuid);
+
+        return Ok(card);
+    }
 }

@@ -54,4 +54,14 @@ public class TestRepository(DataContext dataContext) : BaseRepository(dataContex
         
         return new PaginationHelper<Test> { Items = items, TotalItems = totalItems };
     }
+
+    public async Task<Test?> TestWithCards(Guid testUuid)
+    {
+        var test = await _dataContext.Tests
+            .Include(x => x.Cards!.Where(card => card.IsActive == true))
+            .ThenInclude(card => card.AnswerOptions)
+            .FirstOrDefaultAsync(x => x.Uuid == testUuid);
+
+        return test;
+    }
 }

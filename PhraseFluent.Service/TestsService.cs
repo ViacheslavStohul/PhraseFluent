@@ -118,4 +118,62 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
 
         return mapper.Map<CardResponseWitCorrectAnswer>(cardToAdd);
     }
+
+    public async Task<BaseCardResponse> BeginTestAsync(Guid testUuid, Guid userId)
+    {
+        var testWithCards = await testRepository.TestWithCards(testUuid);
+        var user = testRepository.GetByUuid<User>(userId) ?? throw new ForbiddenException();
+        
+        ArgumentNullException.ThrowIfNull(testWithCards);
+        ArgumentNullException.ThrowIfNull(testWithCards.Cards);
+
+        var shuffledCards = testWithCards.Cards.OrderBy(c => Guid.NewGuid()).ToList();
+        var questionOrder = string.Join(",", shuffledCards.Select(c => c.Id));
+        
+        var testAttempt = new TestAttempt
+        {
+            Uuid = Guid.NewGuid(),
+            TestId = testWithCards.Id,
+            UserId = user.Id,
+            CorrectAnswers = 0,
+            WrongAnswers = 0,
+            PartiallyCorrectAnswers = 0,
+            OverallResult = 0,
+            StartDate = DateTimeOffset.Now,
+            EndDate = null,
+            Test = testWithCards,
+            User = user,
+            QuestionOrder = questionOrder
+        };
+        
+        await using var transaction = await testRepository.BeginTransactionAsync();
+        try
+        {
+            testRepository.Add(testAttempt);
+
+            foreach (var card in shuffledCards)
+            {
+                var answerAttempt = new AnswerAttempt
+                {
+                    Uuid = Guid.NewGuid(),
+                    TestAttemptId = testAttempt.Id,
+                    AnswerOptionId = card.Id,
+                    CardId = card.Id,
+                    AnswerResult = AnswerResult.UnAnswered,
+                    PickedAnswer = testAttempt,
+                    Card = card,
+                };
+                
+                testRepository.Add(answerAttempt);
+            }
+            await transaction.CommitAsync();
+        }
+        catch
+        {
+            await transaction.RollbackAsync();
+            throw;
+        }
+
+        return mapper.Map<BaseCardResponse>(shuffledCards[0]);
+    }
 }

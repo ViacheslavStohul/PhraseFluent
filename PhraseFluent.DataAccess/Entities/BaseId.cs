@@ -8,4 +8,8 @@ public abstract class BaseId
     public long Id { get; set; }
     
     public required Guid Uuid { get; set; }
+
+    public bool IsActive = true;
+    
+    public DateTime CreatedDate = DateTime.Now;
 }
