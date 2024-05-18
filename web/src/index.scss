@@ -68,6 +68,14 @@ button {
   &:hover {
     filter:brightness(1.2);
   }
+
+  &:disabled,
+  &:disabled:hover {
+  background-color: $font-color-light;
+  opacity: 0.7;
+  filter: none;
+  cursor: not-allowed
+  }
 }
 
 a{

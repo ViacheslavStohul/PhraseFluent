@@ -35,11 +35,11 @@ input[type='number'],input[type='text'],input[type='password'],input[type='date'
   position: relative;
 
   &:hover {
-    border-bottom: 2px solid $second-color !important;
+    border-bottom: 2px solid $second-color;
   }
 
   &:focus {
-    border-bottom: 2px solid $nav-color !important;
+    border-bottom: 2px solid $nav-color;
   }
 
 }
