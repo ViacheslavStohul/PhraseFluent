@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Language } from "../interfaces/lang";
 import { mapObjectToParams } from "../functions/params";
-import { Test, createTestRequest } from "../interfaces/test";
+import { ICard, Test, createTestRequest } from "../interfaces/test";
 import { List } from "../interfaces/list";
 
 const baseUrl = '/api/word'
@@ -26,5 +26,10 @@ export const getList = async (request:ListRequest): Promise<List<Test>> => {
 
 export const createTest = async (request: createTestRequest): Promise<Test> => {
   const { data } = await axios.post(`/new`, request);
+  return data;
+}
+
+export const createCard = async (request: ICard): Promise<ICard> => {
+  const { data } = await axios.post(`/card/new`, request);
   return data;
 }

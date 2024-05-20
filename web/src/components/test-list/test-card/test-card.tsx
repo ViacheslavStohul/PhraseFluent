@@ -23,7 +23,7 @@ const TestCard = ({test}:{test:Test}): React.JSX.Element => {
         <span>{t('by')} <Link to={`/profile?id=${test.createdBy.uuid}`}>{test.createdBy.username}</Link></span>
         <div className='bottom-test'>
           <div className='chip'>
-            {test.language.title}
+            {test.language.nativeName}
           </div>
           <div>
             {test.cardsAmount} {t('cards')}

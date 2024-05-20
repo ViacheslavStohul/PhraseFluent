@@ -1,0 +1,21 @@
+.new-test-text {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  label {
+    opacity: 0.5;
+  }
+}
+
+.new-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.new-edit {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}

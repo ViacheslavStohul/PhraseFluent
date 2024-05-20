@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './new.scss';
 import Card from '../../layouts/card/card';
-import { createTestRequest } from '../../../interfaces/test';
+import { Test, createTestRequest } from '../../../interfaces/test';
 import { InputFieldComponent } from '../../fields/input-field/input-field';
 import { useTranslation } from 'react-i18next';
 import PlusSVG from '../../svg/plus';
@@ -10,9 +10,11 @@ import { Protection } from '../../protection/protection';
 import * as langService from '../../../service/word.service';
 import { callErrorToast } from '../../../store/slice/toast';
 import { useDispatch } from 'react-redux';
+import Edit from '../edit/edit';
 
 const NewTest = () => {
   const [newTest, setNewTest] = useState<Partial<createTestRequest>>({});
+  const [test, setTest] = useState<Test>();
   const { t } = useTranslation();
   const [imageError, setImageError] = useState(false);
   const [isSubmited, setIsSubmited] = useState<boolean>();
@@ -39,7 +41,7 @@ const NewTest = () => {
     setIsSubmited(true);
     langService.createTest(newTest as createTestRequest)
      .then((test) => {
-        console.log(test);
+        setTest(test);
       })
       .catch((error) => {
         setIsSubmited(false);
@@ -50,7 +52,10 @@ const NewTest = () => {
 
   return (
     <Protection>
-    <Card classes='new-test'>
+      {test ? 
+      <Edit test={test}/>
+      :
+      <Card classes='new-test'>
       <div className='new-test-fields'>
         <div className='new-test-header'>
         <h2>Create Test</h2>
@@ -97,6 +102,8 @@ const NewTest = () => {
         src={imageError ? 'https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg': newTest?.imageUrl?? ''}
         onError={handleError}/>
     </Card>
+    }
+    
     </Protection>
   );
 }

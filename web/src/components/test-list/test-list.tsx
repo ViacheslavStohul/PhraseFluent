@@ -97,7 +97,7 @@ const TestList:FC<TestListProps> = ({title, user}) => {
       <div className='test-table'>
       {
         tests.map(test => (
-          <TestCard test={test} key={test.title}/>
+          <TestCard test={test} key={test.uuid}/>
         ))
       }
       <div ref={ref}>
