@@ -31,5 +31,9 @@
   "question-type": "Question type",
   "text": "Text",
   "test-one": "One Answer",
-  "test-many":"Many Answers"
+  "test-many":"Many Answers",
+  "answer-text": "Answer text",
+  "add-answer": "Add answer",
+  "option-text": "Option text",
+  "is-correct": "Is correct"
 }

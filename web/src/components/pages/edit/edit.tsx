@@ -39,7 +39,7 @@ const Edit = ({test}:{test: Test}) => {
           </Card>
         ))
       }
-      <CreateTestCard emit={addQuestion}/>
+      <CreateTestCard emit={addQuestion} testId={test.uuid}/>
     </div>
   );
 }

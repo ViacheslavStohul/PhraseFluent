@@ -19,3 +19,9 @@
   flex-direction: column;
   gap: 20px;
 }
+
+.answer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 200px));
+  gap: 10px;
+}

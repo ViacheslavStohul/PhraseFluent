@@ -20,6 +20,7 @@ export interface Option {
 export interface ICard {
   question: string;
   testUuid: string;
+  questionType: string;
   answerOptions: Option[];
   uuid?: string;
 }
