@@ -45,7 +45,7 @@ const NewTest = () => {
       })
       .catch((error) => {
         setIsSubmited(false);
-        dispatch(callErrorToast({name: error.code, text: error.message}));
+        dispatch(callErrorToast({name: error.code, text: error.response?.data?.Message ?? error.message}));
       });
   };
 

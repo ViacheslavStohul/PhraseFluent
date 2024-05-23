@@ -14,7 +14,7 @@ const AuthFetchEpic: Epic<any> = (action$) =>
         .then(({data}) => {
           return AuthActions.authSuccess(data);
         })
-        .catch((error) => callErrorToast({name: error.code, text: error.message}))
+        .catch((error) => callErrorToast({name: error.code, text: error.response?.data?.Message ?? error.message}))
     )
 );
 
@@ -26,7 +26,7 @@ const RegisterFetchEpic: Epic<any> = (action$) =>
         .then(({data}) => {
           return AuthActions.registerSuccess(data);
         })
-        .catch((error) => callErrorToast({name: error.code, text: error.message}))
+        .catch((error) => callErrorToast({name: error.code, text: error.response?.data?.Message ?? error.message}))
     )
 );
 
@@ -67,7 +67,7 @@ const getUserFetchEpic: Epic<any> = (action$) =>
         .catch((error) =>{ 
           localStorage.removeItem('token');
           window.location.reload();
-          return callErrorToast({name: error.code, text: error.message})})
+          return callErrorToast({name: error.code, text: error.response?.data?.Message ?? error.message})})
     )
 );
 
@@ -79,7 +79,7 @@ const updateUserImageFetchEpic: Epic<any> = (action$) =>
         .then(() => {
           return AuthActions.updateUserImageSuccess(action.payload);
         })
-        .catch((error) => callErrorToast({name: error.code, text: error.message}))
+        .catch((error) => callErrorToast({name: error.code, text: error.response?.data?.Message ?? error.message}))
     )
 );
 
@@ -91,7 +91,7 @@ const RefreshFetchEpic: Epic<any> = (action$) =>
         .then(({data}) => {
           return AuthActions.refreshSuccess(data);
         })
-        .catch((error) => callErrorToast({name: error.code, text: error.message}))
+        .catch((error) => callErrorToast({name: error.code, text: error.response?.data?.Message ?? error.message}))
     )
 );
 

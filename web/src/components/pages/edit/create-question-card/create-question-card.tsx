@@ -16,7 +16,7 @@ interface IProps {
 }
 
 
-const CreateTestCard = ({emit, testId}: IProps) => {
+const CreateQuestionCard = ({emit, testId}: IProps) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const [card, setCard] = useState<Partial<ICard>>({});
@@ -29,12 +29,12 @@ const CreateTestCard = ({emit, testId}: IProps) => {
 
   const createCard = () => {
     langService.createCard({...card, testUuid: testId} as ICard)
-    .then((response)=>{
-      emit(response);
+    .then(()=>{
+      emit({...card, testUuid: testId} as ICard);
       setCard({});
     })
     .catch((error) => {
-      dispatch(callErrorToast({name: error.code, text: error.message}));
+      dispatch(callErrorToast({name: error.code, text: error.response?.data?.Message ?? error.response?.data?.Message ?? error.message}));
     });
   }
 
@@ -134,4 +134,4 @@ const CreateTestCard = ({emit, testId}: IProps) => {
   );
 }
 
-export default CreateTestCard;
+export default CreateQuestionCard;

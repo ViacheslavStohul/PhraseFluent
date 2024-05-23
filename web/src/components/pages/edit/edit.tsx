@@ -3,12 +3,16 @@ import './edit.scss';
 import '../new/new.scss';
 import { ICard, Test } from '../../../interfaces/test';
 import Card from '../../layouts/card/card';
-import CreateTestCard from './create-test-card/create-test-card';
+import CreateQuestionCard from './create-question-card/create-question-card';
+import { useTranslation } from 'react-i18next';
+import AnswerCard from './answer-card/answer-card';
+import { useNavigate } from 'react-router-dom';
 
 const Edit = ({test}:{test: Test}) => {
-  // const { t } = useTranslation();
+  const { t } = useTranslation();
   const [imageError, setImageError] = useState(false);
   const [cards, setCards]=useState<ICard[]>([]);
+  const navigate = useNavigate();
 
   const handleError = (): void => {
    setImageError(true);
@@ -33,13 +37,26 @@ const Edit = ({test}:{test: Test}) => {
         onError={handleError}/>
       </Card>
       {
-        cards.map((card) => (
-          <Card>
+        cards.map((card, index) => (
+          <Card classes='new-card' key={index+'-question'}>
+            <h2>{t('question')} {index+1}</h2>
             {card.question}
+            {card.questionType==='Text' ?
+              <label>{t('correct-answer')}: {card?.answerOptions?.[0]?.optionText}</label>
+              :
+              <div className='answer-grid'>
+                {
+                  card.answerOptions && card.answerOptions.map((option, index)=> (
+                    <AnswerCard option={option} key={index}/>
+                  ))
+                }
+              </div>
+            }
           </Card>
         ))
       }
-      <CreateTestCard emit={addQuestion} testId={test.uuid}/>
+      <CreateQuestionCard emit={addQuestion} testId={test.uuid}/>
+      <button onClick={()=>navigate('/')}>{t('finish-test-creation')}</button>
     </div>
   );
 }

@@ -31,7 +31,7 @@ export const LangFieldComponent = (
         }
       }));
     })
-    .catch((error) => dispatch(callErrorToast({name: error.code, text: error.message})));
+    .catch((error) => dispatch(callErrorToast({name: error.code, text: error.response?.data?.Message ?? error.message})));
   },[dispatch])
 
   return (

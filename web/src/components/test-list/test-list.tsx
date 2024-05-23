@@ -43,11 +43,11 @@ const TestList:FC<TestListProps> = ({title, user}) => {
       if (request.Page === 1) {
         setTests(testList.items ?? []);
       } else {
-        setTests((prev) => [...prev.slice(0, (request.Page - 1) * 10),...testList.items?? []]);
+        setTests((prev) => [...prev.slice(0, (request.Page - 1) * request.Size),...testList.items?? []]);
       }
       totalItems.current = testList.totalItems;
     })
-    .catch((error) => dispatch(callErrorToast({name: error.code, text: error.message})))
+    .catch((error) => dispatch(callErrorToast({name: error.code, text: error.response?.data?.Message ?? error.message})))
   },[request,dispatch]);
 
   const handleSearch = useCallback((value: string) => {
