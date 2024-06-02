@@ -24,5 +24,18 @@
   "title": "Title",
   "description": "Description",
   "test-picture": "Test picture",
-  "select-language": "Select language"
+  "select-language": "Select language",
+  "new-question": "New Question",
+  "create-question": "Create Question",
+  "question-text": "Question text",
+  "question-type": "Question type",
+  "text": "Text",
+  "test-one": "One Answer",
+  "test-many":"Many Answers",
+  "answer-text": "Answer text",
+  "add-answer": "Add answer",
+  "option-text": "Option text",
+  "is-correct": "Is correct",
+  "correct-answer": "Correct answer",
+  "finish-test-creation": "Finish test creation"
 }

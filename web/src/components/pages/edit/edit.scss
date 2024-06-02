@@ -1,0 +1,27 @@
+.new-test-text {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  label {
+    opacity: 0.5;
+  }
+}
+
+.new-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.new-edit {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.answer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 200px));
+  gap: 10px;
+}

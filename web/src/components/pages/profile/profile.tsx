@@ -38,7 +38,7 @@ const Profile = () => {
       .then(user=>{
         setUser(user);
       })
-      .catch((error) => dispatch(callErrorToast({name: error.code, text: error.message})));
+      .catch((error) => dispatch(callErrorToast({name: error.code, text: error.response?.data?.Message ?? error.message})));
     } else {
       setUser(userStore);
     }

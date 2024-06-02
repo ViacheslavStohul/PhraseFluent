@@ -2,18 +2,27 @@ import { IUser } from "./auth";
 import { Language } from "./lang";
 
 export interface Test {
+  uuid: string;
   title: string;
   description: string;
   imageUrl: string;
   cardsAmount: number;
   language: Language;
   createdBy: IUser;
-  cards: Card[];
 }
 
-export interface Card {
+export interface Option {
+  optionText: string;
+  isCorrect: boolean;
+  uuid?: string;
+}
+
+export interface ICard {
   question: string;
+  testUuid: string;
   questionType: string;
+  answerOptions: Option[];
+  uuid?: string;
 }
 
 export interface createTestRequest {
