@@ -19,6 +19,8 @@ public class TestAttempt : BaseId
     
     public int OverallResult { get; set; }
     
+    public bool Completed { get; set; }
+    
     public DateTimeOffset StartDate { get; set; }
     
     public DateTimeOffset? EndDate { get; set; }

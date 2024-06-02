@@ -50,7 +50,7 @@ public class TestController (ITestsService testsService) : BaseController
     [HttpPost]
     [Route("/begin")]
     [SwaggerResponse(200, "Begin new test")]
-    [ProducesResponseType(typeof(BaseCardResponse), 200)]
+    [ProducesResponseType(typeof(TestCardResponse), 200)]
     public async Task<IActionResult> BeginTest([FromRoute] Guid testUuid)
     {
         var userId = UserId ?? Guid.Empty;
@@ -59,14 +59,13 @@ public class TestController (ITestsService testsService) : BaseController
         return Ok(card);
     }
     
-    [HttpPut]
+    [HttpPost]
     [Route("/next")]
     [SwaggerResponse(200, "Process answer and receive next one")]
-    [ProducesResponseType(typeof(BaseCardResponse), 200)]
-    public async Task<IActionResult> BeginTest([FromRoute] Guid testUuid)
+    [ProducesResponseType(typeof(TestCardResponse), 200)]
+    public async Task<IActionResult> ProcessAnswer([FromBody] CardAnswerRequest request)
     {
-        var userId = UserId ?? Guid.Empty;
-        var card = await testsService.BeginTestAsync(userId, testUuid);
+        var card = await testsService.ProcessAnswer(request);
 
         return Ok(card);
     }

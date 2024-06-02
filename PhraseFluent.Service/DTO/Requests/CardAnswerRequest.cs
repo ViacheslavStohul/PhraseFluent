@@ -6,5 +6,7 @@ public class CardAnswerRequest
     
     public ICollection<Guid>? PickedOptions { get; set; }
     
+    public required Guid TestAttemptUuid { get; set; }
+    
     public string? AnswerString { get; set; }
 }

@@ -6,7 +6,7 @@ namespace PhraseFluent.DataAccess.Entities;
 
 public class AnswerAttempt : BaseId
 {
-    [ForeignKey(nameof(PickedAnswer))]
+    [ForeignKey(nameof(TestAttempt))]
     public long TestAttemptId { get; set; }
     
     [ForeignKey(nameof(AnswerOption))]
@@ -19,7 +19,7 @@ public class AnswerAttempt : BaseId
     
     [StringLength(255)] public string? TextAnswer { get; set; }
     
-    public required TestAttempt PickedAnswer { get; set; }
+    public required TestAttempt TestAttempt { get; set; }
     
     public AnswerOption? AnswerOption { get; set; }
     

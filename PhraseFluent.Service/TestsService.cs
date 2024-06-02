@@ -119,7 +119,7 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
         return mapper.Map<CardResponseWitCorrectAnswer>(cardToAdd);
     }
 
-    public async Task<BaseCardResponse> BeginTestAsync(Guid testUuid, Guid userId)
+    public async Task<TestCardResponse> BeginTestAsync(Guid testUuid, Guid userId)
     {
         var testWithCards = await testRepository.TestWithCards(testUuid);
         var user = testRepository.GetByUuid<User>(userId) ?? throw new ForbiddenException();
@@ -148,38 +148,105 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
         
         testRepository.Add(testAttempt);
 
+        await testRepository.SaveChangesAsync();
+
         var firstCard = shuffledCards[0];
         
-        return ProcessCardResponse(firstCard);
+        return ProcessCardResponse(firstCard, testAttempt.Uuid, shuffledCards.Count - 1, 1);
     }
 
-    public async Task<BaseCardResponse> ProcessAnswer(CardAnswerRequest request)
+    public async Task<TestCardResponse?> ProcessAnswer(CardAnswerRequest request)
     {
         var card = await testRepository.GetCardWithOptionsByUuid(request.CardUuid);
+        var testAttempt = testRepository.GetByUuid<TestAttempt>(request.TestAttemptUuid);
         ArgumentNullException.ThrowIfNull(card);
+        ArgumentNullException.ThrowIfNull(testAttempt);
+
+        if (testAttempt.Completed)
+        {
+            throw new ArgumentException("This test has already marked as completed");
+        }
 
         var answerResult = GetAnswerResult(request, card);
 
-        if ()
+        await AddTestAttemptToDb(request, testAttempt.Id, card, answerResult);
+        
+        CalculateTestResults(answerResult, testAttempt);
+        
+        await testRepository.SaveChangesAsync();
+        
+        var questionOrder = testAttempt.QuestionOrder.Split(',').Select(long.Parse).ToList();
+        var nextQuestionIndex = questionOrder.IndexOf(card.Id);
+        if (questionOrder.Count == nextQuestionIndex)
+        {
+            testAttempt.Completed = true;
+            await testRepository.SaveChangesAsync();
+            return new TestCardResponse()
+            {
+                Card = null,
+                CurrentQuestion = nextQuestionIndex - 1,
+                Questions = questionOrder.Count - 1
+            };
+        }
+
+        var nextQuestionId = questionOrder[nextQuestionIndex + 1];
+
+        var nextQuestion = await testRepository.GetCardWithOptionsById(nextQuestionId);
+        ArgumentNullException.ThrowIfNull(nextQuestion);
+        
+        return ProcessCardResponse(nextQuestion, testAttempt.Uuid, questionOrder.Count - 1, nextQuestionIndex - 1);
+    }
+
+    private static void CalculateTestResults(AnswerResult answerResult, TestAttempt testAttempt)
+    {
+        switch (answerResult)
+        {
+            case AnswerResult.Correct:
+                testAttempt.CorrectAnswers++;
+                break;
+            case AnswerResult.Wrong:
+                testAttempt.WrongAnswers++;
+                break;
+            case AnswerResult.PartiallyCorrect:
+                testAttempt.PartiallyCorrectAnswers++;
+                break;
+        }
+
+        var totalQuestions = testAttempt.CorrectAnswers + testAttempt.WrongAnswers + testAttempt.PartiallyCorrectAnswers;
+        testAttempt.OverallResult = totalQuestions > 0 ? (testAttempt.CorrectAnswers * 100) / totalQuestions : 0;
+    }
+
+    private async Task AddTestAttemptToDb(CardAnswerRequest request, long testAttemptId, Card card, AnswerResult answerResult)
+    {
         var answerAttempt = new AnswerAttempt
         {
-            Id = 0,
-            Uuid = default,
-            IsActive = false,
-            CreatedDate = default,
-            TestAttemptId = 0,
-            AnswerOptionId = null,
-            CardId = 0,
+            Uuid = Guid.NewGuid(),
+            TestAttemptId = testAttemptId,
+            CardId = card.Id,
             AnswerResult = answerResult,
-            TextAnswer = card.QuestionType == QuestionType.Text ? request.AnswerString : null,
-            PickedAnswer = null,
-            AnswerOption = null,
-            Card = null
+            TestAttempt = null,
+            Card = null,
         };
 
-        var cardResponse = mapper.Map<BaseCardResponse>(card);
+        if (card.QuestionType != QuestionType.Text)
+        {
+            ArgumentNullException.ThrowIfNull(request.PickedOptions);
+            foreach (var answerOption in request.PickedOptions)
+            {
+                answerAttempt.AnswerOptionId = GetAnswerOptionIdByUuidFromCard(card, answerOption);
+                testRepository.Add(answerAttempt);
+            }
+        }
+        else
+        {
+            answerAttempt.TextAnswer = request.AnswerString;
+            testRepository.Add(answerAttempt);
+        }
+    }
 
-        return cardResponse;
+    private long GetAnswerOptionIdByUuidFromCard(Card card, Guid answerOptionUuid)
+    {
+        return card.AnswerOptions.First(x => x.Uuid == answerOptionUuid).Id;
     }
 
     private AnswerResult GetAnswerResult(CardAnswerRequest answer, Card cardToAnswer)
@@ -235,13 +302,21 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
     }
 
 
-    private BaseCardResponse ProcessCardResponse(Card card)
+    private TestCardResponse ProcessCardResponse(Card card, Guid testAttemptUuid, int allQuestions, int currentQuestion)
     {
         if (card.QuestionType == QuestionType.Text)
         {
             card.AnswerOptions = new List<AnswerOption>();
         }
 
-        return mapper.Map<BaseCardResponse>(card);
+        var cardResponse = mapper.Map<BaseCardResponse>(card);
+
+        return new TestCardResponse
+        {
+            Card = cardResponse,
+            TestAttemptUuid = testAttemptUuid,
+            Questions = allQuestions,
+            CurrentQuestion = currentQuestion
+        };
     }
 }
