@@ -146,34 +146,102 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
             QuestionOrder = questionOrder
         };
         
-        await using var transaction = await testRepository.BeginTransactionAsync();
-        try
-        {
-            testRepository.Add(testAttempt);
+        testRepository.Add(testAttempt);
 
-            foreach (var card in shuffledCards)
-            {
-                var answerAttempt = new AnswerAttempt
-                {
-                    Uuid = Guid.NewGuid(),
-                    TestAttemptId = testAttempt.Id,
-                    AnswerOptionId = card.Id,
-                    CardId = card.Id,
-                    AnswerResult = AnswerResult.UnAnswered,
-                    PickedAnswer = testAttempt,
-                    Card = card,
-                };
-                
-                testRepository.Add(answerAttempt);
-            }
-            await transaction.CommitAsync();
-        }
-        catch
+        var firstCard = shuffledCards[0];
+        
+        return ProcessCardResponse(firstCard);
+    }
+
+    public async Task<BaseCardResponse> ProcessAnswer(CardAnswerRequest request)
+    {
+        var card = await testRepository.GetCardWithOptionsByUuid(request.CardUuid);
+        ArgumentNullException.ThrowIfNull(card);
+
+        var answerResult = GetAnswerResult(request, card);
+
+        if ()
+        var answerAttempt = new AnswerAttempt
         {
-            await transaction.RollbackAsync();
-            throw;
+            Id = 0,
+            Uuid = default,
+            IsActive = false,
+            CreatedDate = default,
+            TestAttemptId = 0,
+            AnswerOptionId = null,
+            CardId = 0,
+            AnswerResult = answerResult,
+            TextAnswer = card.QuestionType == QuestionType.Text ? request.AnswerString : null,
+            PickedAnswer = null,
+            AnswerOption = null,
+            Card = null
+        };
+
+        var cardResponse = mapper.Map<BaseCardResponse>(card);
+
+        return cardResponse;
+    }
+
+    private AnswerResult GetAnswerResult(CardAnswerRequest answer, Card cardToAnswer)
+    {
+        ArgumentNullException.ThrowIfNull(cardToAnswer.AnswerOptions);
+
+        return cardToAnswer.QuestionType switch
+        {
+            QuestionType.Text => EvaluateTextAnswer(answer, cardToAnswer),
+            QuestionType.TestOneAnswer => EvaluateTestOneAnswer(answer, cardToAnswer),
+            QuestionType.TestManyAnswers => EvaluateTestManyAnswers(answer, cardToAnswer),
+            _ => AnswerResult.UnAnswered
+        };
+    }
+
+    private AnswerResult EvaluateTextAnswer(CardAnswerRequest answer, Card cardToAnswer)
+    {
+        var correctAnswer = cardToAnswer.AnswerOptions.First().OptionText;
+
+        if (string.IsNullOrEmpty(answer.AnswerString))
+        {
+            return AnswerResult.Wrong;
         }
 
-        return mapper.Map<BaseCardResponse>(shuffledCards[0]);
+        return string.Equals(answer.AnswerString.TrimStart(), correctAnswer, StringComparison.CurrentCultureIgnoreCase)
+            ? AnswerResult.Correct
+            : AnswerResult.Wrong;
+    }
+
+    private AnswerResult EvaluateTestOneAnswer(CardAnswerRequest answer, Card cardToAnswer)
+    {
+        ArgumentNullException.ThrowIfNull(answer.PickedOptions);
+
+        return answer.PickedOptions.First() == cardToAnswer.AnswerOptions.First(x => x.IsCorrect).Uuid
+            ? AnswerResult.Correct
+            : AnswerResult.Wrong;
+    }
+
+    private AnswerResult EvaluateTestManyAnswers(CardAnswerRequest answer, Card cardToAnswer)
+    {
+        ArgumentNullException.ThrowIfNull(answer.PickedOptions);
+
+        var correctAnswers = cardToAnswer.AnswerOptions.Where(x => x.IsCorrect).Select(x => x.Uuid).ToList();
+        var pickedOptions = answer.PickedOptions.ToList();
+
+        var correctAnswersCount = correctAnswers.Count(correctAnswer => pickedOptions.Contains(correctAnswer));
+
+        return correctAnswersCount == 0
+            ? AnswerResult.Wrong
+            : correctAnswersCount == correctAnswers.Count && correctAnswersCount == pickedOptions.Count
+                ? AnswerResult.Correct
+                : AnswerResult.PartiallyCorrect;
+    }
+
+
+    private BaseCardResponse ProcessCardResponse(Card card)
+    {
+        if (card.QuestionType == QuestionType.Text)
+        {
+            card.AnswerOptions = new List<AnswerOption>();
+        }
+
+        return mapper.Map<BaseCardResponse>(card);
     }
 }

@@ -64,4 +64,13 @@ public class TestRepository(DataContext dataContext) : BaseRepository(dataContex
 
         return test;
     }
+
+    public async Task<Card?> GetCardWithOptionsByUuid(Guid cardUuid)
+    {
+        var card = await _dataContext.Cards
+            .Include(x => x.AnswerOptions)
+            .FirstOrDefaultAsync(x => x.Uuid == cardUuid);
+
+        return card;
+    }
 }

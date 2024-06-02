@@ -8,4 +8,6 @@ public interface ITestRepository : IBaseRepository
     public Task<PaginationHelper<Test>> GetTestList(int page, int size, string? language, string? username, string? title);
 
     Task<Test?> TestWithCards(Guid testUuid);
+
+    Task<Card?> GetCardWithOptionsByUuid(Guid cardUuid);
 }

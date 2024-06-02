@@ -7,7 +7,7 @@ public class AnswerOption : BaseId
 {
     [StringLength(255)] public required string OptionText { get; set; }
 
-    [StringLength(255)] public required bool IsCorrect;
+    public required bool IsCorrect;
     
     [ForeignKey(nameof(Card))]
     public long CardId { get; set; }

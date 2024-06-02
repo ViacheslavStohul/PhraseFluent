@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using PhraseFluent.DataAccess.Enums;
 
 namespace PhraseFluent.DataAccess.Entities;
@@ -15,6 +16,8 @@ public class AnswerAttempt : BaseId
     public long CardId { get; set; }
     
     public AnswerResult AnswerResult { get; set; }
+    
+    [StringLength(255)] public string? TextAnswer { get; set; }
     
     public required TestAttempt PickedAnswer { get; set; }
     
