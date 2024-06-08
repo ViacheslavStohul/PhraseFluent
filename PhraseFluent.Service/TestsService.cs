@@ -153,7 +153,7 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
 
         var firstCard = shuffledCards[0];
         
-        return ProcessCardResponse(firstCard, testAttempt.Uuid, shuffledCards.Count - 1, 1);
+        return ProcessCardResponse(firstCard, testAttempt.Uuid, shuffledCards.Count, 1);
     }
 
     public async Task<TestCardResponse?> ProcessAnswer(CardAnswerRequest request)
