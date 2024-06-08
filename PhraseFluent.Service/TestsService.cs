@@ -99,12 +99,13 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
 
             foreach (var option in request.AnswerOptions)
             {
-                cardToAdd.AnswerOptions.Add(new AnswerOption
+                var answerOption = new AnswerOption()
                 {
-                    Uuid = Guid.NewGuid(), OptionText = option.OptionText, IsCorrect = option.IsCorrect, CardId = cardToAdd.Id
-                });
-
-                testRepository.Add(cardToAdd);
+                    Uuid = Guid.NewGuid(), OptionText = option.OptionText, IsCorrect = option.IsCorrect,
+                    CardId = cardToAdd.Id
+                };
+                cardToAdd.AnswerOptions.Add(answerOption);
+                testRepository.Add(answerOption);
             }
             
             await testRepository.SaveChangesAsync();
