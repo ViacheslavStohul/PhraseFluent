@@ -1,0 +1,21 @@
+@import '../../../../scss/variables.scss';
+
+.answer-card {
+  background-color: $bg-primary-color;
+  border-radius: 10px;
+  border: 1px solid rgba($font-color-light,0.3);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  min-height: 150px;
+  width: 200px;
+  cursor: pointer;
+
+  &.correct {
+    border-color: $nav-color;
+    color: $nav-color !important;
+    background: linear-gradient(to bottom, $bg-primary-color, rgba($nav-color, 0.2));
+  }
+
+}

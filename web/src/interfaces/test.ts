@@ -31,3 +31,17 @@ export interface createTestRequest {
   imageUrl?: string,
   languageUuid: string
 }
+
+export interface BeginTestResponse {
+  card: ICard;
+  currentQuestion: number;
+  questions: number;
+  testAttemptUuid: string;
+}
+
+export interface NextTestRequest {
+  cardUuid: string;
+  testAttemptUuid: string;
+  answerString?: string;
+  pickedOptions?: string[];
+}
