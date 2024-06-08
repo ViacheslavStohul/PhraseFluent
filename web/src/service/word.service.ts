@@ -33,3 +33,8 @@ export const createCard = async (request: ICard): Promise<ICard> => {
   const { data } = await axios.post(`/card/new`, request);
   return data;
 }
+
+export const beginTest = async (id: string): Promise<any> => {
+  const { data } = await axios.post(`/begin?testUuid=${id}`);
+  return data;
+}

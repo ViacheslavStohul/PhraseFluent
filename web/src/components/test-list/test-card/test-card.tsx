@@ -31,7 +31,7 @@ const TestCard = ({test}:{test:Test}): React.JSX.Element => {
             {test.language.nativeName}
           </div>
           <div>
-            {test.cardsAmount} {t('cards')}
+            {test.cardsCount} {t('cards')}
           </div>
         </div>
       </div>

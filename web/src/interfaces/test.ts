@@ -6,7 +6,7 @@ export interface Test {
   title: string;
   description: string;
   imageUrl: string;
-  cardsAmount: number;
+  cardsCount: number;
   language: Language;
   createdBy: IUser;
 }
