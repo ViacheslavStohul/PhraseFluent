@@ -153,7 +153,7 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
 
         var firstCard = shuffledCards[0];
         
-        return ProcessCardResponse(firstCard, testAttempt.Uuid, shuffledCards.Count - 1, 1);
+        return ProcessCardResponse(firstCard, testAttempt.Uuid, shuffledCards.Count, 1);
     }
 
     public async Task<TestCardResponse?> ProcessAnswer(CardAnswerRequest request)
@@ -195,7 +195,7 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
         var nextQuestion = await testRepository.GetCardWithOptionsById(nextQuestionId);
         ArgumentNullException.ThrowIfNull(nextQuestion);
         
-        return ProcessCardResponse(nextQuestion, testAttempt.Uuid, questionOrder.Count - 1, nextQuestionIndex - 1);
+        return ProcessCardResponse(nextQuestion, testAttempt.Uuid, questionOrder.Count, nextQuestionIndex - 1);
     }
 
     private static void CalculateTestResults(AnswerResult answerResult, TestAttempt testAttempt)
