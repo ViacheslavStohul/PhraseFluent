@@ -54,7 +54,7 @@ public class TestController (ITestsService testsService) : BaseController
     public async Task<IActionResult> BeginTest([FromRoute] Guid testUuid)
     {
         var userId = UserId ?? Guid.Empty;
-        var card = await testsService.BeginTestAsync(userId, testUuid);
+        var card = await testsService.BeginTestAsync(testUuid, userId);
 
         return Ok(card);
     }
