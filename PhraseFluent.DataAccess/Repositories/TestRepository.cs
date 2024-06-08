@@ -58,7 +58,7 @@ public class TestRepository(DataContext dataContext) : BaseRepository(dataContex
     public async Task<Test?> TestWithCards(Guid testUuid)
     {
         var test = await _dataContext.Tests
-            .Include(x => x.Cards!.Where(card => card.IsActive == true))
+            .Include(x => x.Cards)
             .ThenInclude(card => card.AnswerOptions)
             .FirstOrDefaultAsync(x => x.Uuid == testUuid);
 

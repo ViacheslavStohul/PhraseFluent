@@ -127,6 +127,7 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
         ArgumentNullException.ThrowIfNull(testWithCards);
         ArgumentNullException.ThrowIfNull(testWithCards.Cards);
 
+        testWithCards.Cards = testWithCards.Cards.Where(x => x.IsActive == true).ToList();
         var shuffledCards = testWithCards.Cards.OrderBy(c => Guid.NewGuid()).ToList();
         var questionOrder = string.Join(",", shuffledCards.Select(c => c.Id));
         
