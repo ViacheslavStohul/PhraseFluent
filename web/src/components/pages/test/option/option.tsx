@@ -11,7 +11,7 @@ interface IProps {
 const OptionCard = ({option, emit}: IProps) => {
   
   return (
-    <div className={`answer-card ${option?.isCorrect ? 'correct' : ''}`} onClick={()=>emit()}>
+    <div className={`option-card ${option?.isCorrect ? 'correct' : ''}`} onClick={()=>emit()}>
       <span>{option?.optionText}</span>
     </div>
   );
