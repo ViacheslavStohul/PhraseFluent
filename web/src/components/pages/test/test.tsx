@@ -41,7 +41,7 @@ const User = () => {
 
   const changeOption = (uuid: string) => {
     setTest(prev => {
-      if (!prev){
+      if (!prev || !prev.card){
         return prev;
       }
       return {
@@ -55,7 +55,7 @@ const User = () => {
                 isCorrect:!option.isCorrect
               }
             }
-            return prev.card.questionType === 'TestOneAnswer'? {...option, isCorrect:false}: option;
+            return prev?.card?.questionType === 'TestOneAnswer'? {...option, isCorrect:false}: option;
           })
         }
       }
@@ -64,10 +64,10 @@ const User = () => {
   
   const submit = () => {
     testService.nextTest({
-      cardUuid: test?.card.uuid ?? '',
+      cardUuid: test?.card?.uuid ?? '',
       testAttemptUuid: test?.testAttemptUuid ?? '',
       answerString: text? text : undefined,
-      pickedOptions: test?.card.answerOptions.filter(option => option.isCorrect).map(option => option.uuid??'') ?? undefined
+      pickedOptions: test?.card?.answerOptions.filter(option => option.isCorrect).map(option => option.uuid??'') ?? undefined
     }).then((res)=>{
       setTest(res);
       setText('');
@@ -76,11 +76,27 @@ const User = () => {
     });
   }
 
+  const getText = () => {
+    if (!test?.card){
+      return '';
+    }
+    if (test?.card.questionType === 'Text'){
+      return t('enter-answer');
+    } else if (test?.card.questionType === 'TestOneAnswer'){
+      return t('choose-answer');
+    } else if (test?.card.questionType === 'TestManyAnswers'){
+      return t('choose-answers');
+    }
+  }
+
   return (
     <Card classes='testing-card'>
+      { test?.card &&
+      <>
       <div className='counter'>{test?.currentQuestion}/{test?.questions}</div>
-      <h2>{test?.card.question}</h2>
-      { test?.card.questionType === 'Text' ?
+      <h2>{test?.card?.question}</h2>
+      <p style={{textAlign:"center"}}>{getText()}</p>
+      { test?.card?.questionType === 'Text' ?
         <InputFieldComponent
           labelText={t('answer-text')}
           name='answer'
@@ -90,7 +106,7 @@ const User = () => {
         :
         <div className='answer-grid'>
         {
-          test && test.card.answerOptions.map((option, index)=> (
+          test && test.card?.answerOptions.map((option, index)=> (
             <OptionCard option={option} emit={() => changeOption(option.uuid??'')} key={index}/>
           ))
         }
@@ -99,6 +115,8 @@ const User = () => {
       <div className='right'>
         <button onClick={submit}>Next</button>
       </div>
+      </>
+      }
     </Card>
   );
 }

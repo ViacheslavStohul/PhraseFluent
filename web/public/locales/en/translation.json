@@ -37,5 +37,8 @@
   "option-text": "Option text",
   "is-correct": "Is correct",
   "correct-answer": "Correct answer",
-  "finish-test-creation": "Finish test creation"
+  "finish-test-creation": "Finish test creation",
+  "enter-answer": "Enter your answer",
+  "choose-answer": "Choose correct answer",
+  "choose-answers": "Choose correct answers"
 }

@@ -33,7 +33,7 @@ export interface createTestRequest {
 }
 
 export interface BeginTestResponse {
-  card: ICard;
+  card?: ICard;
   currentQuestion: number;
   questions: number;
   testAttemptUuid: string;
