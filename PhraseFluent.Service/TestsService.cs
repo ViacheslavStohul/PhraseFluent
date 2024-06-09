@@ -196,7 +196,7 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
         var nextQuestion = await testRepository.GetCardWithOptionsById(nextQuestionId);
         ArgumentNullException.ThrowIfNull(nextQuestion);
         
-        return ProcessCardResponse(nextQuestion, testAttempt.Uuid, questionOrder.Count, nextQuestionIndex - 1);
+        return ProcessCardResponse(nextQuestion, testAttempt.Uuid, questionOrder.Count, nextQuestionIndex + 1);
     }
 
     private static void CalculateTestResults(AnswerResult answerResult, TestAttempt testAttempt)
