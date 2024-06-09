@@ -179,7 +179,7 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
         
         var questionOrder = testAttempt.QuestionOrder.Split(',').Select(long.Parse).ToList();
         var nextQuestionIndex = questionOrder.IndexOf(card.Id);
-        if (questionOrder.Count == nextQuestionIndex)
+        if (questionOrder.Count - 1 == nextQuestionIndex)
         {
             testAttempt.Completed = true;
             await testRepository.SaveChangesAsync();
