@@ -137,10 +137,6 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
             Uuid = Guid.NewGuid(),
             TestId = testWithCards.Id,
             UserId = user.Id,
-            CorrectAnswers = 0,
-            WrongAnswers = 0,
-            PartiallyCorrectAnswers = 0,
-            OverallResult = 0,
             StartDate = DateTimeOffset.Now,
             EndDate = null,
             Test = testWithCards,
@@ -169,11 +165,7 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
             throw new ArgumentException("This test has already marked as completed");
         }
 
-        var answerResult = GetAnswerResult(request, card);
-
-        await AddTestAttemptToDb(request, testAttempt.Id, card, answerResult);
-        
-        CalculateTestResults(answerResult, testAttempt);
+        await AddTestAttemptToDb(request, testAttempt.Id, card);
         
         await testRepository.SaveChangesAsync();
         
@@ -199,33 +191,13 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
         return ProcessCardResponse(nextQuestion, testAttempt.Uuid, questionOrder.Count, nextQuestionIndex + 1);
     }
 
-    private static void CalculateTestResults(AnswerResult answerResult, TestAttempt testAttempt)
-    {
-        switch (answerResult)
-        {
-            case AnswerResult.Correct:
-                testAttempt.CorrectAnswers++;
-                break;
-            case AnswerResult.Wrong:
-                testAttempt.WrongAnswers++;
-                break;
-            case AnswerResult.PartiallyCorrect:
-                testAttempt.PartiallyCorrectAnswers++;
-                break;
-        }
-
-        var totalQuestions = testAttempt.CorrectAnswers + testAttempt.WrongAnswers + testAttempt.PartiallyCorrectAnswers;
-        testAttempt.OverallResult = totalQuestions > 0 ? (testAttempt.CorrectAnswers * 100) / totalQuestions : 0;
-    }
-
-    private async Task AddTestAttemptToDb(CardAnswerRequest request, long testAttemptId, Card card, AnswerResult answerResult)
+    private async Task AddTestAttemptToDb(CardAnswerRequest request, long testAttemptId, Card card)
     {
         var answerAttempt = new AnswerAttempt
         {
             Uuid = Guid.NewGuid(),
             TestAttemptId = testAttemptId,
             CardId = card.Id,
-            AnswerResult = answerResult,
             TestAttempt = null,
             Card = null,
         };
@@ -250,59 +222,6 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
     {
         return card.AnswerOptions.First(x => x.Uuid == answerOptionUuid).Id;
     }
-
-    private AnswerResult GetAnswerResult(CardAnswerRequest answer, Card cardToAnswer)
-    {
-        ArgumentNullException.ThrowIfNull(cardToAnswer.AnswerOptions);
-
-        return cardToAnswer.QuestionType switch
-        {
-            QuestionType.Text => EvaluateTextAnswer(answer, cardToAnswer),
-            QuestionType.TestOneAnswer => EvaluateTestOneAnswer(answer, cardToAnswer),
-            QuestionType.TestManyAnswers => EvaluateTestManyAnswers(answer, cardToAnswer),
-            _ => AnswerResult.UnAnswered
-        };
-    }
-
-    private AnswerResult EvaluateTextAnswer(CardAnswerRequest answer, Card cardToAnswer)
-    {
-        var correctAnswer = cardToAnswer.AnswerOptions.First().OptionText;
-
-        if (string.IsNullOrEmpty(answer.AnswerString))
-        {
-            return AnswerResult.Wrong;
-        }
-
-        return string.Equals(answer.AnswerString.TrimStart(), correctAnswer, StringComparison.CurrentCultureIgnoreCase)
-            ? AnswerResult.Correct
-            : AnswerResult.Wrong;
-    }
-
-    private AnswerResult EvaluateTestOneAnswer(CardAnswerRequest answer, Card cardToAnswer)
-    {
-        ArgumentNullException.ThrowIfNull(answer.PickedOptions);
-
-        return answer.PickedOptions.First() == cardToAnswer.AnswerOptions.First(x => x.IsCorrect).Uuid
-            ? AnswerResult.Correct
-            : AnswerResult.Wrong;
-    }
-
-    private AnswerResult EvaluateTestManyAnswers(CardAnswerRequest answer, Card cardToAnswer)
-    {
-        ArgumentNullException.ThrowIfNull(answer.PickedOptions);
-
-        var correctAnswers = cardToAnswer.AnswerOptions.Where(x => x.IsCorrect).Select(x => x.Uuid).ToList();
-        var pickedOptions = answer.PickedOptions.ToList();
-
-        var correctAnswersCount = correctAnswers.Count(correctAnswer => pickedOptions.Contains(correctAnswer));
-
-        return correctAnswersCount == 0
-            ? AnswerResult.Wrong
-            : correctAnswersCount == correctAnswers.Count && correctAnswersCount == pickedOptions.Count
-                ? AnswerResult.Correct
-                : AnswerResult.PartiallyCorrect;
-    }
-
 
     private TestCardResponse ProcessCardResponse(Card card, Guid testAttemptUuid, int allQuestions, int currentQuestion)
     {

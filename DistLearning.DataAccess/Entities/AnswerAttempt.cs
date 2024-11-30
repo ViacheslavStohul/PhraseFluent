@@ -15,8 +15,6 @@ public class AnswerAttempt : BaseId
     [ForeignKey(nameof(Card))]
     public long CardId { get; set; }
     
-    public AnswerResult AnswerResult { get; set; }
-    
     [StringLength(255)] public string? TextAnswer { get; set; }
     
     public required TestAttempt TestAttempt { get; set; }

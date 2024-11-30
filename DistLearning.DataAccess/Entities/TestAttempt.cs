@@ -11,14 +11,6 @@ public class TestAttempt : BaseId
     [ForeignKey(nameof(User))]
     public long UserId { get; set; }
     
-    public int CorrectAnswers { get; set; }
-    
-    public int WrongAnswers { get; set; }
-    
-    public int PartiallyCorrectAnswers { get; set; }
-    
-    public int OverallResult { get; set; }
-    
     public bool Completed { get; set; }
     
     public DateTimeOffset StartDate { get; set; }
