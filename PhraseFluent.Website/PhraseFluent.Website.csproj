@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>PhraseFluent.API</RootNamespace>
+    <RootNamespace>DistLearning.API</RootNamespace>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <UserSecretsId>682d0f74-9386-40e7-a218-2e5fee98fc86</UserSecretsId>
   </PropertyGroup>
@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PhraseFluent.Service\PhraseFluent.Service.csproj" />
+    <ProjectReference Include="..\DistLearning.Service\DistLearning.Service.csproj" />
   </ItemGroup>
 
 </Project>

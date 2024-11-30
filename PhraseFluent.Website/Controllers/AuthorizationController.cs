@@ -1,12 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
-using PhraseFluent.Service;
-using PhraseFluent.Service.DTO.Requests;
-using PhraseFluent.Service.DTO.Responses;
-using PhraseFluent.Service.Interfaces;
+using DistLearning.Service;
+using DistLearning.Service.DTO.Requests;
+using DistLearning.Service.DTO.Responses;
+using DistLearning.Service.Interfaces;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace PhraseFluent.API.Controllers;
+namespace DistLearning.API.Controllers;
 
 [Route("api/auth")]
 public class AuthorizationController(IAuthorizationService authorizationService)

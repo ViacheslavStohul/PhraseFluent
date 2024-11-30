@@ -2,16 +2,16 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using PhraseFluent.API.ExceptionHandling;
-using PhraseFluent.DataAccess;
-using PhraseFluent.DataAccess.Repositories;
-using PhraseFluent.DataAccess.Repositories.Interfaces;
-using PhraseFluent.Service;
-using PhraseFluent.Service.AutoMapper;
-using PhraseFluent.Service.Interfaces;
-using PhraseFluent.Service.Options;
+using DistLearning.API.ExceptionHandling;
+using DistLearning.DataAccess;
+using DistLearning.DataAccess.Repositories;
+using DistLearning.DataAccess.Repositories.Interfaces;
+using DistLearning.Service;
+using DistLearning.Service.AutoMapper;
+using DistLearning.Service.Interfaces;
+using DistLearning.Service.Options;
 
-namespace PhraseFluent.API;
+namespace DistLearning.API;
 
 internal static class Program
 {
@@ -94,7 +94,7 @@ internal static class Program
         {
             opt.UseMySQL(configuration.GetValue<string>("DataBase:ConnectionString") ?? throw new InvalidOperationException(),
                 b => {
-                    b.MigrationsAssembly("PhraseFluent.Website");
+                    b.MigrationsAssembly("DistLearning.Website");
                     b.CommandTimeout(60);
                 });
         });

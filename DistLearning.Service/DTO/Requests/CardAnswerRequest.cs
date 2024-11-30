@@ -1,0 +1,12 @@
+﻿namespace DistLearning.Service.DTO.Requests;
+
+public class CardAnswerRequest
+{
+    public required Guid CardUuid { get; set; }
+    
+    public ICollection<Guid>? PickedOptions { get; set; }
+    
+    public required Guid TestAttemptUuid { get; set; }
+    
+    public string? AnswerString { get; set; }
+}

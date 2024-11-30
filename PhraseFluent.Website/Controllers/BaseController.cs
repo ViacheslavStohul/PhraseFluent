@@ -2,7 +2,7 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 
-namespace PhraseFluent.API.Controllers;
+namespace DistLearning.API.Controllers;
 
 public class BaseController : Controller
 {

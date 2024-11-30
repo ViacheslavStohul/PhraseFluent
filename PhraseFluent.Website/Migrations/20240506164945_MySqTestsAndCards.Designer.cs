@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using PhraseFluent.DataAccess;
+using DistLearning.DataAccess;
 
 #nullable disable
 
-namespace PhraseFluent.API.Migrations
+namespace DistLearning.API.Migrations
 {
     [DbContext(typeof(DataContext))]
     [Migration("20240506164945_MySqTestsAndCards")]
@@ -22,7 +22,7 @@ namespace PhraseFluent.API.Migrations
                 .HasAnnotation("ProductVersion", "8.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("PhraseFluent.DataAccess.Entities.AnswerAttempt", b =>
+            modelBuilder.Entity("DistLearning.DataAccess.Entities.AnswerAttempt", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -49,7 +49,7 @@ namespace PhraseFluent.API.Migrations
                     b.ToTable("AnswerAttempts");
                 });
 
-            modelBuilder.Entity("PhraseFluent.DataAccess.Entities.AnswerOption", b =>
+            modelBuilder.Entity("DistLearning.DataAccess.Entities.AnswerOption", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -73,7 +73,7 @@ namespace PhraseFluent.API.Migrations
                     b.ToTable("AnswerOptions");
                 });
 
-            modelBuilder.Entity("PhraseFluent.DataAccess.Entities.Card", b =>
+            modelBuilder.Entity("DistLearning.DataAccess.Entities.Card", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -100,7 +100,7 @@ namespace PhraseFluent.API.Migrations
                     b.ToTable("Cards");
                 });
 
-            modelBuilder.Entity("PhraseFluent.DataAccess.Entities.Test", b =>
+            modelBuilder.Entity("DistLearning.DataAccess.Entities.Test", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -132,7 +132,7 @@ namespace PhraseFluent.API.Migrations
                     b.ToTable("Tests");
                 });
 
-            modelBuilder.Entity("PhraseFluent.DataAccess.Entities.TestAttempt", b =>
+            modelBuilder.Entity("DistLearning.DataAccess.Entities.TestAttempt", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -174,7 +174,7 @@ namespace PhraseFluent.API.Migrations
                     b.ToTable("TestAttempts");
                 });
 
-            modelBuilder.Entity("PhraseFluent.DataAccess.Entities.User", b =>
+            modelBuilder.Entity("DistLearning.DataAccess.Entities.User", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -208,7 +208,7 @@ namespace PhraseFluent.API.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("PhraseFluent.DataAccess.Entities.UserSession", b =>
+            modelBuilder.Entity("DistLearning.DataAccess.Entities.UserSession", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -243,15 +243,15 @@ namespace PhraseFluent.API.Migrations
                     b.ToTable("UserSessions");
                 });
 
-            modelBuilder.Entity("PhraseFluent.DataAccess.Entities.AnswerAttempt", b =>
+            modelBuilder.Entity("DistLearning.DataAccess.Entities.AnswerAttempt", b =>
                 {
-                    b.HasOne("PhraseFluent.DataAccess.Entities.Card", "Card")
+                    b.HasOne("DistLearning.DataAccess.Entities.Card", "Card")
                         .WithMany()
                         .HasForeignKey("CardId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("PhraseFluent.DataAccess.Entities.TestAttempt", "TestAttempt")
+                    b.HasOne("DistLearning.DataAccess.Entities.TestAttempt", "TestAttempt")
                         .WithMany("AnswerAttempts")
                         .HasForeignKey("TestAttemptId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -262,25 +262,25 @@ namespace PhraseFluent.API.Migrations
                     b.Navigation("TestAttempt");
                 });
 
-            modelBuilder.Entity("PhraseFluent.DataAccess.Entities.AnswerOption", b =>
+            modelBuilder.Entity("DistLearning.DataAccess.Entities.AnswerOption", b =>
                 {
-                    b.HasOne("PhraseFluent.DataAccess.Entities.Card", null)
+                    b.HasOne("DistLearning.DataAccess.Entities.Card", null)
                         .WithMany("AnswerOptions")
                         .HasForeignKey("CardId");
                 });
 
-            modelBuilder.Entity("PhraseFluent.DataAccess.Entities.Card", b =>
+            modelBuilder.Entity("DistLearning.DataAccess.Entities.Card", b =>
                 {
-                    b.HasOne("PhraseFluent.DataAccess.Entities.Test", null)
+                    b.HasOne("DistLearning.DataAccess.Entities.Test", null)
                         .WithMany("Cards")
                         .HasForeignKey("TestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("PhraseFluent.DataAccess.Entities.Test", b =>
+            modelBuilder.Entity("DistLearning.DataAccess.Entities.Test", b =>
                 {
-                    b.HasOne("PhraseFluent.DataAccess.Entities.User", "CreatedBy")
+                    b.HasOne("DistLearning.DataAccess.Entities.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -289,15 +289,15 @@ namespace PhraseFluent.API.Migrations
                     b.Navigation("CreatedBy");
                 });
 
-            modelBuilder.Entity("PhraseFluent.DataAccess.Entities.TestAttempt", b =>
+            modelBuilder.Entity("DistLearning.DataAccess.Entities.TestAttempt", b =>
                 {
-                    b.HasOne("PhraseFluent.DataAccess.Entities.Test", "Test")
+                    b.HasOne("DistLearning.DataAccess.Entities.Test", "Test")
                         .WithMany()
                         .HasForeignKey("TestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("PhraseFluent.DataAccess.Entities.User", "User")
+                    b.HasOne("DistLearning.DataAccess.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -308,9 +308,9 @@ namespace PhraseFluent.API.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("PhraseFluent.DataAccess.Entities.UserSession", b =>
+            modelBuilder.Entity("DistLearning.DataAccess.Entities.UserSession", b =>
                 {
-                    b.HasOne("PhraseFluent.DataAccess.Entities.User", "User")
+                    b.HasOne("DistLearning.DataAccess.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -319,17 +319,17 @@ namespace PhraseFluent.API.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("PhraseFluent.DataAccess.Entities.Card", b =>
+            modelBuilder.Entity("DistLearning.DataAccess.Entities.Card", b =>
                 {
                     b.Navigation("AnswerOptions");
                 });
 
-            modelBuilder.Entity("PhraseFluent.DataAccess.Entities.Test", b =>
+            modelBuilder.Entity("DistLearning.DataAccess.Entities.Test", b =>
                 {
                     b.Navigation("Cards");
                 });
 
-            modelBuilder.Entity("PhraseFluent.DataAccess.Entities.TestAttempt", b =>
+            modelBuilder.Entity("DistLearning.DataAccess.Entities.TestAttempt", b =>
                 {
                     b.Navigation("AnswerAttempts");
                 });

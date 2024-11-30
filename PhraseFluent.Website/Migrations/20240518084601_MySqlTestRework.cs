@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace PhraseFluent.API.Migrations
+namespace DistLearning.API.Migrations
 {
     /// <inheritdoc />
     public partial class MySqlTestRework : Migration

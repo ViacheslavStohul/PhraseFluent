@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PhraseFluent.Service;
-using PhraseFluent.Service.DTO.Responses;
-using PhraseFluent.Service.Interfaces;
+using DistLearning.Service;
+using DistLearning.Service.DTO.Responses;
+using DistLearning.Service.Interfaces;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace PhraseFluent.API.Controllers;
+namespace DistLearning.API.Controllers;
 
 [Authorize]
 [Route("api/word")]

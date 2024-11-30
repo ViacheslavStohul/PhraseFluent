@@ -1,4 +1,4 @@
-﻿namespace PhraseFluent.API.ExceptionHandling;
+﻿namespace DistLearning.API.ExceptionHandling;
 
 public static class ExceptionExtension
 {

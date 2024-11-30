@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace PhraseFluent.API.ExceptionHandling;
+namespace DistLearning.API.ExceptionHandling;
 
 public class ErrorDetails
 {

@@ -2,9 +2,9 @@
 using System.Net;
 using System.Security;
 using Microsoft.IdentityModel.Tokens;
-using PhraseFluent.Service.Exceptions;
+using DistLearning.Service.Exceptions;
 
-namespace PhraseFluent.API.ExceptionHandling;
+namespace DistLearning.API.ExceptionHandling;
 
 public class ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger)
 {

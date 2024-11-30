@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using PhraseFluent.DataAccess;
+using DistLearning.DataAccess;
 
 #nullable disable
 
-namespace PhraseFluent.API.Migrations
+namespace DistLearning.API.Migrations
 {
     [DbContext(typeof(DataContext))]
     [Migration("20240502143733_MySqlInitial")]
@@ -22,7 +22,7 @@ namespace PhraseFluent.API.Migrations
                 .HasAnnotation("ProductVersion", "8.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("PhraseFluent.DataAccess.Entities.User", b =>
+            modelBuilder.Entity("DistLearning.DataAccess.Entities.User", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -52,7 +52,7 @@ namespace PhraseFluent.API.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("PhraseFluent.DataAccess.Entities.UserSession", b =>
+            modelBuilder.Entity("DistLearning.DataAccess.Entities.UserSession", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -87,9 +87,9 @@ namespace PhraseFluent.API.Migrations
                     b.ToTable("UserSessions");
                 });
 
-            modelBuilder.Entity("PhraseFluent.DataAccess.Entities.UserSession", b =>
+            modelBuilder.Entity("DistLearning.DataAccess.Entities.UserSession", b =>
                 {
-                    b.HasOne("PhraseFluent.DataAccess.Entities.User", "User")
+                    b.HasOne("DistLearning.DataAccess.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
