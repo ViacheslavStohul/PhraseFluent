@@ -108,7 +108,7 @@ internal static class Program
                     partitionKey: "global",
                     factory: _ => new FixedWindowRateLimiterOptions
                     {
-                        PermitLimit = 500,
+                        PermitLimit = 100,
                         Window = TimeSpan.FromMinutes(1),
                         QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
                         QueueLimit = 0 

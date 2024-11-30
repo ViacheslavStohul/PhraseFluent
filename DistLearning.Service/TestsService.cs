@@ -64,26 +64,14 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
             TestId = test.Id,
         };
 
-        if (request.AnswerOptions.All(x => x.IsCorrect != true))
-        {
-            throw new ArgumentException("There must be at least 1 correct answer");
-        }
-
-        if (request.AnswerOptions.Count > 10)
-        {
-            throw new ArgumentException("Cannot have more than 10 answers");
-        }
-
         switch (request.QuestionType)
         {
             case QuestionType.Text when request.AnswerOptions.Count > 1:
                 throw new ArgumentException("Text questions must have only 1 answer option");
             case QuestionType.None:
-                throw new Exception("Invalid question type");
-            case QuestionType.TestOneAnswer when request.AnswerOptions.Count(x => x.IsCorrect) > 1:
-                throw new ArgumentException("Only one correct answer allowed in this question type");
+                throw new ArgumentException("Invalid question type");
             case QuestionType.TestManyAnswers or QuestionType.TestOneAnswer when request.AnswerOptions.Count < 2:
-                throw new ArgumentException("This type of question must have least 2 answer options");
+                throw new ArgumentException("Для цього типу запитання виберіть хочаб дві відповіді");
         }
 
         await using var transaction = await testRepository.BeginTransactionAsync();

@@ -96,12 +96,12 @@ public partial class AuthorizationService(
 
         if (user == null)
         {
-            throw new ForbiddenException("Wrong username and password combination");
+            throw new ForbiddenException("Невірна комбінація логіну та паролю");
         }
 
         if (!clientData.Password.IsHashStringsEqual(user.ClientSecret))
         {
-            throw new ForbiddenException("Wrong username and password combination");
+            throw new ForbiddenException("Невірна комбінація логіну та паролю");
         }
 
         var tokenId = Guid.NewGuid().ToString();
