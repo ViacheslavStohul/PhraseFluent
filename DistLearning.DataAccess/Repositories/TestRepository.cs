@@ -37,31 +37,25 @@ public class TestRepository(DataContext dataContext) : BaseRepository(dataContex
         return new PaginationHelper<Test> { Items = items, TotalItems = totalItems };
     }
 
-    public async Task<Test?> TestWithCards(Guid testUuid)
+    public Task<Test?> TestWithCards(Guid testUuid)
     {
-        var test = await _dataContext.Tests
+        return _dataContext.Tests
             .Include(x => x.Cards)
             .ThenInclude(card => card.AnswerOptions)
             .FirstOrDefaultAsync(x => x.Uuid == testUuid);
-
-        return test;
     }
 
-    public async Task<Card?> GetCardWithOptionsByUuid(Guid cardUuid)
+    public Task<Card?> GetCardWithOptionsByUuid(Guid cardUuid)
     {
-        var card = await _dataContext.Cards
+        return _dataContext.Cards
             .Include(x => x.AnswerOptions)
             .FirstOrDefaultAsync(x => x.Uuid == cardUuid);
-
-        return card;
     }
     
-    public async Task<Card?> GetCardWithOptionsById(long cardId)
+    public Task<Card?> GetCardWithOptionsById(long cardId)
     {
-        var card = await _dataContext.Cards
+        return _dataContext.Cards
             .Include(x => x.AnswerOptions)
             .FirstOrDefaultAsync(x => x.Id == cardId);
-
-        return card;
     }
 }

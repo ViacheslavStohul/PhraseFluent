@@ -13,6 +13,8 @@ using DistLearning.Service.Options;
 
 namespace DistLearning.API;
 
+using System.Threading.RateLimiting;
+
 internal static class Program
 {
     public static async Task Main(string[] args)
@@ -92,11 +94,50 @@ internal static class Program
 
         services.AddDbContext<DataContext>(opt =>
         {
-            opt.UseMySQL(configuration.GetValue<string>("DataBase:ConnectionString") ?? throw new InvalidOperationException(),
+            opt.UseSqlServer(configuration.GetValue<string>("DataBase:ConnectionString") ?? throw new InvalidOperationException(),
                 b => {
                     b.MigrationsAssembly("DistLearning.Website");
                     b.CommandTimeout(60);
                 });
+        });
+        
+        services.AddRateLimiter(options =>
+        {
+            options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(httpContext =>
+                RateLimitPartition.GetFixedWindowLimiter(
+                    partitionKey: "global",
+                    factory: _ => new FixedWindowRateLimiterOptions
+                    {
+                        PermitLimit = 500,
+                        Window = TimeSpan.FromMinutes(1),
+                        QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+                        QueueLimit = 0 
+                    }));
+
+            options.AddPolicy("TokenPolicy", context =>
+                RateLimitPartition.GetFixedWindowLimiter(
+                    partitionKey: "global",
+                    factory: _ => new FixedWindowRateLimiterOptions
+                    {
+                        PermitLimit = 10,
+                        Window = TimeSpan.FromHours(1),
+                        QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+                        QueueLimit = 0
+                    }));
+            
+            options.RejectionStatusCode = 429;
+            
+            options.OnRejected = async (context, cancellationToken) =>
+            {
+                context.HttpContext.Response.ContentType = "application/json";
+                await context.HttpContext.Response.WriteAsync(
+                    new ErrorDetails
+                    {
+                        StatusCode = 429,
+                        Message = "Занадто багато запитів. Спробуйте пізніше"
+                    }.ToString(),
+                    cancellationToken);
+            };
         });
 
         #region scopes and configuration
@@ -126,6 +167,8 @@ internal static class Program
         app.UseCors("AllowSpecificOrigin");
 
         app.UseRouting();
+        
+        app.UseRateLimiter();
         
         app.UseAuthorization();
 

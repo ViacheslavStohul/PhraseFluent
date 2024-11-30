@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Org.BouncyCastle.Asn1.Cms.Ecc;
 using DistLearning.DataAccess.Entities;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
@@ -22,4 +21,26 @@ public partial class DataContext(DbContextOptions<DataContext> options) : DbCont
     public virtual DbSet<TestAttempt> TestAttempts { get; set; }
     
     public virtual DbSet<CompleteInitializer> CompleteInitializers { get; set; }
+    
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<AnswerAttempt>()
+            .HasOne(a => a.TestAttempt)
+            .WithMany(t => t.AnswerAttempts)
+            .HasForeignKey(a => a.TestAttemptId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<AnswerAttempt>()
+            .HasOne(a => a.AnswerOption)
+            .WithMany()
+            .HasForeignKey(a => a.AnswerOptionId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<AnswerAttempt>()
+            .HasOne(a => a.Card)
+            .WithMany()
+            .HasForeignKey(a => a.CardId)
+            .OnDelete(DeleteBehavior.NoAction);
+    }
+
 }

@@ -111,9 +111,9 @@ public class BaseRepository(DataContext dataContext) : IBaseRepository
     /// A task representing the asynchronous operation.
     /// The task result contains the number of objects written to the underlying database.
     /// </returns>
-    public async Task<int> SaveChangesAsync()
+    public Task<int> SaveChangesAsync()
     {
-        return await dataContext.SaveChangesAsync();
+        return dataContext.SaveChangesAsync();
     }
 
     /// <summary>
@@ -123,9 +123,9 @@ public class BaseRepository(DataContext dataContext) : IBaseRepository
     /// <remarks>
     /// This method starts a new transaction on the database context.
     /// </remarks>
-    public async Task<IDbContextTransaction> BeginTransactionAsync()
+    public Task<IDbContextTransaction> BeginTransactionAsync()
     {
-        return await dataContext.Database.BeginTransactionAsync();
+        return dataContext.Database.BeginTransactionAsync();
     }
 
     /// <summary>

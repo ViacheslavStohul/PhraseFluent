@@ -8,12 +8,15 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace DistLearning.API.Controllers;
 
+using Microsoft.AspNetCore.RateLimiting;
+
 [Route("api/auth")]
 public class AuthorizationController(IAuthorizationService authorizationService)
     : BaseController
 {
     [Route("token")]
     [HttpPost]
+    [EnableRateLimiting("TokenPolicy")]
     [SwaggerResponse(200, "Returns access and refresh token")]
     [SwaggerResponse(400, "Error getting response")]
     [Produces<TokenResponse>]
@@ -36,6 +39,7 @@ public class AuthorizationController(IAuthorizationService authorizationService)
 
     [Route("token/refresh")]
     [HttpPost]
+    [EnableRateLimiting("TokenPolicy")]
     [SwaggerResponse(200, "Returns access and refresh token")]
     [SwaggerResponse(400, "Error refreshing token")]
     [Produces<TokenResponse>]
