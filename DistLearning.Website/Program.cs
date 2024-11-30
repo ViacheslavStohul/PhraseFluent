@@ -104,7 +104,6 @@ internal static class Program
         services.Configure<MicrosoftTranslatorSettings>(builder.Configuration.GetSection("Translator"));
         services.Configure<TokenConfiguration>(tokenOptionsSection);
 
-        services.AddScoped<ITranslationService, TranslationService>();
         services.AddScoped<IAuthorizationService, AuthorizationService>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<ITestsService, TestsService>();
@@ -112,7 +111,6 @@ internal static class Program
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IBaseRepository, BaseRepository>();
         services.AddScoped<ITestRepository, TestRepository>();
-        services.AddScoped<ILanguageRepository, LanguageRepository>();
         
         services.AddAutoMapper(typeof(AppMappingProfile));
         services.AddSingleton(key);

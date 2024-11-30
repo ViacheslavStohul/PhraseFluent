@@ -11,6 +11,4 @@ public class TestResponse
     public string? ImageUrl { get; set; }
     
     public int CardsCount { get; set; }
-    
-    public LanguageResponse? Language { get; set; }
 }

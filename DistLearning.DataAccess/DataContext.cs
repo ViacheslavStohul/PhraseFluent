@@ -21,7 +21,5 @@ public partial class DataContext(DbContextOptions<DataContext> options) : DbCont
     
     public virtual DbSet<TestAttempt> TestAttempts { get; set; }
     
-    public virtual DbSet<Language> Languages { get; set; }
-    
     public virtual DbSet<CompleteInitializer> CompleteInitializers { get; set; }
 }
