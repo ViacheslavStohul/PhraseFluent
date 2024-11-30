@@ -13,7 +13,7 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
 {
     public async Task<PaginationResponse<TestResponse>> GetTestList(TestSearchRequest request)
     {
-        var items = await testRepository.GetTestList(request.Page, request.Size, request.Language, request.Username, request.Title);
+        var items = await testRepository.GetTestList(request.Page, request.Size, request.Title);
 
         var responses = mapper.Map<PaginationResponse<TestResponse>>(items);
 
@@ -23,10 +23,8 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
     public async Task<TestResponse> AddTest(AddTestRequest request, Guid userUuid)
     {
         var user = testRepository.GetByUuid<User>(userUuid);
-        var language = testRepository.GetByUuid<Language>(request.LanguageUuid);
         
         ArgumentNullException.ThrowIfNull(user);
-        ArgumentNullException.ThrowIfNull(language);
 
         var testToAdd = new Test
         {
@@ -37,7 +35,6 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
             ImageUrl = request.ImageUrl,
             UserId = user.Id,
             CardsCount = 0,
-            LanguageId = language.Id,
         };
         
         testRepository.Add(testToAdd);
@@ -101,7 +98,8 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
             {
                 var answerOption = new AnswerOption()
                 {
-                    Uuid = Guid.NewGuid(), OptionText = option.OptionText, IsCorrect = option.IsCorrect,
+                    Uuid = Guid.NewGuid(),
+                    OptionText = option.OptionText,
                     CardId = cardToAdd.Id
                 };
                 cardToAdd.AnswerOptions.Add(answerOption);
@@ -120,10 +118,9 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
         return mapper.Map<CardResponseWitCorrectAnswer>(cardToAdd);
     }
 
-    public async Task<TestCardResponse> BeginTestAsync(Guid testUuid, Guid userId)
+    public async Task<TestCardResponse> BeginTestAsync(Guid testUuid)
     {
         var testWithCards = await testRepository.TestWithCards(testUuid);
-        var user = testRepository.GetByUuid<User>(userId) ?? throw new ForbiddenException();
         
         ArgumentNullException.ThrowIfNull(testWithCards);
         ArgumentNullException.ThrowIfNull(testWithCards.Cards);
@@ -136,11 +133,9 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
         {
             Uuid = Guid.NewGuid(),
             TestId = testWithCards.Id,
-            UserId = user.Id,
             StartDate = DateTimeOffset.Now,
             EndDate = null,
             Test = testWithCards,
-            User = user,
             QuestionOrder = questionOrder
         };
         

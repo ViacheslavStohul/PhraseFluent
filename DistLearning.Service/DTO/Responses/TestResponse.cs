@@ -13,6 +13,4 @@ public class TestResponse
     public int CardsCount { get; set; }
     
     public LanguageResponse? Language { get; set; }
-    
-    public UserResponse? CreatedBy { get; set; }
 }

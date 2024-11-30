@@ -7,6 +7,4 @@ public class AddTestRequest
     public string? Description { get; set; }
     
     public string? ImageUrl { get; set; }
-
-    public required Guid LanguageUuid { get; set; }
 }

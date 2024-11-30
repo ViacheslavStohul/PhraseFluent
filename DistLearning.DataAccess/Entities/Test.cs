@@ -20,14 +20,9 @@ public class Test : BaseId
     [ForeignKey(nameof(CreatedBy))]
     public long UserId { get; set; }
     
-    [ForeignKey(nameof(Language))]
-    public long LanguageId { get; set; }
-    
     public int CardsCount { get; set; }
     
     public User CreatedBy { get; set; }
-    
-    public Language Language { get; set; }
     
     public virtual ICollection<Card>? Cards { get; set; }
 } 

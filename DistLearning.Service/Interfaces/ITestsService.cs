@@ -11,7 +11,7 @@ public interface ITestsService
 
     Task<CardResponseWitCorrectAnswer> CreateCard(Guid? userId, AddCardRequest request);
 
-    Task<TestCardResponse> BeginTestAsync(Guid testUuid, Guid userId);
+    Task<TestCardResponse> BeginTestAsync(Guid testUuid);
 
     Task<TestCardResponse?> ProcessAnswer(CardAnswerRequest request);
 }

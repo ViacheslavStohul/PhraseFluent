@@ -49,18 +49,19 @@ public class TestController (ITestsService testsService) : BaseController
     
     [HttpPost]
     [Route("/begin")]
+    [AllowAnonymous]
     [SwaggerResponse(200, "Begin new test")]
     [ProducesResponseType(typeof(TestCardResponse), 200)]
     public async Task<IActionResult> BeginTest([FromQuery] Guid testUuid)
     {
-        var userId = UserId ?? Guid.Empty;
-        var card = await testsService.BeginTestAsync(testUuid, userId);
+        var card = await testsService.BeginTestAsync(testUuid);
 
         return Ok(card);
     }
     
     [HttpPost]
     [Route("/next")]
+    [AllowAnonymous]
     [SwaggerResponse(200, "Process answer and receive next one")]
     [ProducesResponseType(typeof(TestCardResponse), 200)]
     public async Task<IActionResult> ProcessAnswer([FromBody] CardAnswerRequest request)
