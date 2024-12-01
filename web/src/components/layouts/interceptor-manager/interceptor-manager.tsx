@@ -23,7 +23,7 @@ const InterceptorManager: FC<AppProps> = (
 
   useEffect(() => {
     axios.interceptors.request.use((config) => {
-      config.baseURL = 'https://192.168.1.106:10192/';
+      config.baseURL = 'http://192.168.1.106:10192/';
       return config;
     });
 
