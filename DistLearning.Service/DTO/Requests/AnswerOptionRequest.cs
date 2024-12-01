@@ -3,4 +3,6 @@
 public class AnswerOptionRequest
 {
     public required string OptionText { get; set; }
+    
+    public required bool IsAllowedText { get; set; }
 }

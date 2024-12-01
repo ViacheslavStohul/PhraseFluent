@@ -10,5 +10,7 @@ public class AnswerOption : BaseId
     [ForeignKey(nameof(Card))]
     public long CardId { get; set; }
     
+    public required bool IsAllowedText { get; set; }
+    
     public Card Card { get; set; }
 }
