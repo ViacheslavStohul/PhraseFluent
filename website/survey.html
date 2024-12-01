@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Опитування</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">
+            <img src="img/logo.png" alt="Logo">
+        </div>
+        <div class="nav-links">
+            <a href="index.html">Головна</a>
+            <a href="info.html">Слухачам</a>
+            <div class="dropdown">
+                <button class="dropdown-button">Moodle</button>
+                <div class="dropdown-content">
+                    <a href="moodle.html">Загальні відомості</a>
+                    <a href="cources.html">Створення курсів в системі Moodle</a>
+                    <a href="recommendations.html">Методичні рекомендації студентам</a>
+                    <a href="https://moodle.ontu.edu.ua/login/index.php">Сайт ЦДР(дистанційні курси)</a>
+                </div>
+            </div>
+            <a href="survey.html" class="selected">Опитування</a>
+        </div>
+    </div>
+    <div class="wrapper" id="wrapper">
+        <h1>Анкета для студентів щодо організації дистанційного навчання у Одеському національному технологічному університеті в умовах воєнного стану</h1>
+        <p><i>Шановні студенти! Ми постійно проводимо моніторинг, за результатами якого реалізуємо заходи щодо покращення якості освітнього процесу в університеті. Нас цікавить думка кожного студента, саме тому ваша участь в анкетуванні є дуже важливою. Просимо відповісти на запитання та заповнити анкету про ваш особистий досвід дистанційного навчання у період воєнного стану. Треба обрати зі списку. Опитування анонімне, його результати будуть використані для вдосконалення організації дистанційного навчання студентів ОНТУ. Дякуємо за участь!</i></p>
+        <p><i>P.S. В деяких питаннях Ви можете обрати варіант відповіді «Інше». Це текстове поле, куди можна вписати свою відповідь, якщо потрібної відповіді в списку немає.</i></p>
+        <form id="surveyForm">
+            <div class="question">
+                <label for="specialty">1. Вкажіть спеціальність, за якою Ви навчаєтесь:</label>
+                <div>
+                    <input type="radio" id="specialty1" name="specialty" value="Автоматизація комп´ютерно-інтегровані технології та робототехніка" required>
+                    <label for="specialty1">Автоматизація комп´ютерно-інтегровані технології та робототехніка</label>
+                </div>
+                <div>
+                    <input type="radio" id="specialty2" name="specialty" value="Біотехнології та біоінженерія">
+                    <label for="specialty2">Біотехнології та біоінженерія</label>
+                </div>
+                <div>
+                    <input type="radio" id="specialty3" name="specialty" value="Галузеве машинобудування">
+                    <label for="specialty3">Галузеве машинобудування</label>
+                </div>
+                <div>
+                    <input type="radio" id="specialty4" name="specialty" value="Готельно-ресторанна справа">
+                    <label for="specialty4">Готельно-ресторанна справа</label>
+                </div>
+                <div>
+                    <input type="radio" id="specialty5" name="specialty" value="Екологія">
+                    <label for="specialty5">Екологія</label>
+                </div>
+                <div>
+                    <input type="radio" id="specialty6" name="specialty" value="Економіка">
+                    <label for="specialty6">Економіка</label>
+                </div>
+                <div>
+                    <input type="radio" id="specialty7" name="specialty" value="Електроенергетика, електротехніка та електромеханіка">
+                    <label for="specialty7">Електроенергетика, електротехніка та електромеханіка</label>
+                </div>
+                <div>
+                    <input type="radio" id="specialty8" name="specialty" value="Енергетичне машинобудування">
+                    <label for="specialty8">Енергетичне машинобудування</label>
+                </div>
+                <div>
+                    <input type="radio" id="specialty9" name="specialty" value="Комп’ютерні науки">
+                    <label for="specialty9">Комп’ютерні науки</label>
+                </div>
+                <div>
+                    <input type="radio" id="specialty10" name="specialty" value="Комп’ютерна інженерія">
+                    <label for="specialty10">Комп’ютерна інженерія</label>
+                </div>
+                <div>
+                    <input type="radio" id="specialty11" name="specialty" value="Маркетинг">
+                    <label for="specialty11">Маркетинг</label>
+                </div>
+                <div>
+                    <input type="radio" id="specialty12" name="specialty" value="Менеджмент">
+                    <label for="specialty12">Менеджмент</label>
+                </div>
+                <div>
+                    <input type="radio" id="specialty13" name="specialty" value="Нафтогазова інженерія та технології">
+                    <label for="specialty13">Нафтогазова інженерія та технології</label>
+                </div>
+                <div>
+                    <input type="radio" id="specialty14" name="specialty" value="Облік і оподаткування">
+                    <label for="specialty14">Облік і оподаткування</label>
+                </div>
+                <div>
+                    <input type="radio" id="specialty15" name="specialty" value="Підприємництво та торгівля">
+                    <label for="specialty15">Підприємництво та торгівля</label>
+                </div>
+                <div>
+                    <input type="radio" id="specialty16" name="specialty" value="Прикладна механіка">
+                    <label for="specialty16">Прикладна механіка</label>
+                </div>
+                <div>
+                    <input type="radio" id="specialty17" name="specialty" value="Публічне управління та адміністрування">
+                    <label for="specialty17">Публічне управління та адміністрування</label>
+                </div>
+                <div>
+                    <input type="radio" id="specialty18" name="specialty" value="Теплоенергетика">
+                    <label for="specialty18">Теплоенергетика</label>
+                </div>
+                <div>
+                    <input type="radio" id="specialty19" name="specialty" value="Технології захисту навколишнього середовища">
+                    <label for="specialty19">Технології захисту навколишнього середовища</label>
+                </div>
+                <div>
+                    <input type="radio" id="specialty20" name="specialty" value="Технологія виробництва і переробки продукції тваринництва">
+                    <label for="specialty20">Технологія виробництва і переробки продукції тваринництва</label>
+                </div>
+                <div>
+                    <input type="radio" id="specialty21" name="specialty" value="Туризм">
+                    <label for="specialty21">Туризм</label>
+                </div>
+                <div>
+                    <input type="radio" id="specialty22" name="specialty" value="Філологія">
+                    <label for="specialty22">Філологія</label>
+                </div>
+                <div>
+                    <input type="radio" id="specialty23" name="specialty" value="Фінанси, банківська справа, страхування та фондовий ринок">
+                    <label for="specialty23">Фінанси, банківська справа, страхування та фондовий ринок</label>
+                </div>
+                <div>
+                    <input type="radio" id="specialty24" name="specialty" value="Харчові технології">
+                    <label for="specialty24">Харчові технології</label>
+                </div>
+            </div>
+    
+            <div class="question">
+                <label>2. На якому курсі ви навчаєтесь?</label>
+                <div>
+                    <input type="radio" id="course1" name="course" value="1 курс (бакалавр)" required>
+                    <label for="course1">1 курс (бакалавр)</label>
+                </div>
+                <div>
+                    <input type="radio" id="course2" name="course" value="1 курс (магістратура)">
+                    <label for="course2">1 курс (магістратура)</label>
+                </div>
+                <div>
+                    <input type="radio" id="course3" name="course" value="2 курс (магістратура)">
+                    <label for="course3">2 курс (магістратура)</label>
+                </div>
+                <div>
+                    <input type="radio" id="course4" name="course" value="3 курс">
+                    <label for="course4">3 курс</label>
+                </div>
+                <div>
+                    <input type="radio" id="course5" name="course" value="4 курс">
+                    <label for="course5">4 курс</label>
+                </div>
+            </div>
+            <div class="question">
+                <label for="location">3. Де Ви зараз перебуваєте?</label>
+                <div>
+                    <input type="radio" id="location1" name="location" value="В Україні, м.Одеса" required>
+                    <label for="location1">В Україні, м.Одеса</label>
+                </div>
+                <div>
+                    <input type="radio" id="location2" name="location" value="В Україні, Одеська область">
+                    <label for="location2">В Україні, Одеська область</label>
+                </div>
+                <div>
+                    <input type="radio" id="location3" name="location" value="В Україні, за межами Одеської області">
+                    <label for="location3">В Україні, за межами Одеської області</label>
+                </div>
+                <div>
+                    <input type="radio" id="location4" name="location" value="За кордоном">
+                    <label for="location4">За кордоном</label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <label for="safety">4. Чи відчуваєте Ви себе у безпеці?</label>
+                <div>
+                    <input type="radio" id="safety1" name="safety" value="Так" required>
+                    <label for="safety1">Так</label>
+                </div>
+                <div>
+                    <input type="radio" id="safety2" name="safety" value="Ні">
+                    <label for="safety2">Ні</label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <label for="education">5. Чи вважаєте ви навчання під час воєнного стану повноцінною заміною очного навчання?</label>
+                <div>
+                    <input type="radio" id="education1" name="education" value="Так" required>
+                    <label for="education1">Так</label>
+                </div>
+                <div>
+                    <input type="radio" id="education2" name="education" value="Ні">
+                    <label for="education2">Ні</label>
+                </div>
+                <div>
+                    <input type="radio" id="education3" name="education" value="Частково">
+                    <label for="education3">Частково</label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <label for="equipment">6. Чи достатньо вам комп'ютерного обладнання для Вашого навчання вдома?</label>
+                <div>
+                    <input type="radio" id="equipment1" name="equipment" value="Так" required>
+                    <label for="equipment1">Так</label>
+                </div>
+                <div>
+                    <input type="radio" id="equipment2" name="equipment" value="Ні">
+                    <label for="equipment2">Ні</label>
+                </div>
+                <div>
+                    <input type="radio" id="equipment3" name="equipment" value="Частково">
+                    <label for="equipment3">Частково</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <label for="equipment">7. Яке обладнання для навчання Ви використовуєте? (можливі декілька варіантів)</label>
+                <div>
+                    <input type="checkbox" id="equipment1" name="equipment" value="Смартфон">
+                    <label for="equipment1">Смартфон</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="equipment2" name="equipment" value="Ноутбук">
+                    <label for="equipment2">Ноутбук</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="equipment3" name="equipment" value="Планшет">
+                    <label for="equipment3">Планшет</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="equipment4" name="equipment" value="Стаціонарний комп’ютер">
+                    <label for="equipment4">Стаціонарний комп’ютер</label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <label for="communication">8. Чи налагоджена комунікація викладачів зі студентами?</label>
+                <div>
+                    <input type="radio" id="communication1" name="communication" value="Усі викладачі комунікують у різний спосіб" required>
+                    <label for="communication1">Усі викладачі комунікують у різний спосіб</label>
+                </div>
+                <div>
+                    <input type="radio" id="communication2" name="communication" value="Комунікують лише окремі викладачі">
+                    <label for="communication2">Комунікують лише окремі викладачі</label>
+                </div>
+                <div>
+                    <input type="radio" id="communication3" name="communication" value="Комунікація з викладачами відбувається через працівників деканату">
+                    <label for="communication3">Комунікація з викладачами відбувається через працівників деканату</label>
+                </div>
+                <div>
+                    <input type="radio" id="communication4" name="communication" value="Комунікація з викладачами відбувається через кураторів">
+                    <label for="communication4">Комунікація з викладачами відбувається через кураторів</label>
+                </div>
+                <div>
+                    <input type="radio" id="communication5" name="communication" value="Викладачі комунікують зі старостою групи, хто повідомляє нам всю необхідну інформацію">
+                    <label for="communication5">Викладачі комунікують зі старостою групи, хто повідомляє нам всю необхідну інформацію</label>
+                </div>
+                <div>
+                    <input type="radio" id="communication6" name="communication" value="Комунікації не відбувається">
+                    <label for="communication6">Комунікації не відбувається</label>
+                </div>
+                <div>
+                    <input type="radio" id="communication7" name="communication" value="Інше">
+                    <label for="communication7">Інше:</label>
+                    <input type="text" name="communicationOther" id="communicationOther" placeholder="Вкажіть інше">
+                </div>
+            </div>
+            
+            <div class="question">
+                <label for="platforms">9. З якими інструментами та платформами для дистанційного навчання вам найзручніше працювати? (можливо обрати декілька варіантів відповідей)</label>
+                <div>
+                    <input type="checkbox" id="platform1" name="platforms" value="Discord">
+                    <label for="platform1">Discord</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="platform2" name="platforms" value="Moodle">
+                    <label for="platform2">Moodle</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="platform3" name="platforms" value="Google Classroom">
+                    <label for="platform3">Google Classroom</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="platform4" name="platforms" value="Microsoft Teams">
+                    <label for="platform4">Microsoft Teams</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="platform5" name="platforms" value="Zoom">
+                    <label for="platform5">Zoom</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="platform6" name="platforms" value="YouTube">
+                    <label for="platform6">YouTube</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="platform7" name="platforms" value="Інше">
+                    <label for="platform7">Інше:</label>
+                    <input type="text" name="platformsOther" id="platformsOther" placeholder="Вкажіть інше">
+                </div>
+            </div>
+            
+            <div class="question">
+                <label for="socialMedia">10. Які із соціальних мереж та месенджерів є найзручнішими, з Вашої точки зору, для дистанційного навчання?</label>
+                <div>
+                    <input type="checkbox" id="socialMedia1" name="socialMedia" value="Viber">
+                    <label for="socialMedia1">Viber</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="socialMedia2" name="socialMedia" value="Facebook">
+                    <label for="socialMedia2">Facebook</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="socialMedia3" name="socialMedia" value="Telegram">
+                    <label for="socialMedia3">Telegram</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="socialMedia4" name="socialMedia" value="Messenger">
+                    <label for="socialMedia4">Messenger</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="socialMedia5" name="socialMedia" value="Instagram">
+                    <label for="socialMedia5">Instagram</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="socialMedia6" name="socialMedia" value="Інше">
+                    <label for="socialMedia6">Інше:</label>
+                    <input type="text" name="socialMediaOther" id="socialMediaOther" placeholder="Вкажіть інше">
+                </div>
+            </div>
+            
+            <div class="question">
+                <label for="moodle">11. Чи зручна у користуванні платформа Moodle для забезпечення дистанційного навчання?</label>
+                <div>
+                    <input type="radio" id="moodle1" name="moodle" value="Так" required>
+                    <label for="moodle1">Так</label>
+                </div>
+                <div>
+                    <input type="radio" id="moodle2" name="moodle" value="Ні">
+                    <label for="moodle2">Ні</label>
+                </div>
+                <div>
+                    <input type="radio" id="moodle3" name="moodle" value="Частково">
+                    <label for="moodle3">Частково</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <label for="moodleIssues">12. Чого не вистачає на платформі Moodle?</label>
+                <textarea id="moodleIssues" name="moodleIssues" placeholder="Вкажіть, чого не вистачає на платформі Moodle"></textarea>
+            </div>
+            
+            <div class="question">
+                <label for="taskCheckMethods">13. Які способи перевірки виконаних Вами завдань використовують викладачі?</label>
+                <div>
+                    <input type="radio" id="taskCheckMethods1" name="taskCheckMethods" value="Надсилання виконаних завдань різними способами" required>
+                    <label for="taskCheckMethods1">Надсилання виконаних завдань різними способами</label>
+                </div>
+                <div>
+                    <input type="radio" id="taskCheckMethods2" name="taskCheckMethods" value="Онлайн-спілкування із викладачем">
+                    <label for="taskCheckMethods2">Онлайн-спілкування із викладачем</label>
+                </div>
+                <div>
+                    <input type="radio" id="taskCheckMethods3" name="taskCheckMethods" value="Оцінювання відсутнє, оскільки Ви не звітуєте про виконання завдань">
+                    <label for="taskCheckMethods3">Оцінювання відсутнє, оскільки Ви не звітуєте про виконання завдань</label>
+                </div>
+                <div>
+                    <input type="radio" id="taskCheckMethods4" name="taskCheckMethods" value="Інше">
+                    <label for="taskCheckMethods4">Інше:</label>
+                    <input type="text" name="taskCheckMethodsOther" id="taskCheckMethodsOther" placeholder="Вкажіть інше">
+                </div>
+            </div>
+            
+            <div class="question">
+                <label for="gradingFeedback">14. Чи отримуєте Ви інформацію від викладачів про оцінювання навчальних досягнень?</label>
+                <div>
+                    <input type="radio" id="gradingFeedback1" name="gradingFeedback" value="Так, отримую" required>
+                    <label for="gradingFeedback1">Так, отримую</label>
+                </div>
+                <div>
+                    <input type="radio" id="gradingFeedback2" name="gradingFeedback" value="Так, отримую, але тільки у разі звернення до викладача">
+                    <label for="gradingFeedback2">Так, отримую, але тільки у разі звернення до викладача</label>
+                </div>
+                <div>
+                    <input type="radio" id="gradingFeedback3" name="gradingFeedback" value="Не отримую, навіть у разі звернення до викладача">
+                    <label for="gradingFeedback3">Не отримую, навіть у разі звернення до викладача</label>
+                </div>
+                <div>
+                    <input type="radio" id="gradingFeedback4" name="gradingFeedback" value="Інше">
+                    <label for="gradingFeedback4">Інше:</label>
+                    <input type="text" name="gradingFeedbackOther" id="gradingFeedbackOther" placeholder="Вкажіть інше">
+                </div>
+            </div>
+            
+            <div class="question">
+                <label for="fairGrading">15. Наскільки викладачі справедливо оцінюють ваші навчальні досягнення?</label>
+                <div>
+                    <input type="radio" id="fairGrading1" name="fairGrading" value="Оцінюють справедливо" required>
+                    <label for="fairGrading1">Оцінюють справедливо</label>
+                </div>
+                <div>
+                    <input type="radio" id="fairGrading2" name="fairGrading" value="У більшості випадків оцінюють справедливо">
+                    <label for="fairGrading2">У більшості випадків оцінюють справедливо</label>
+                </div>
+                <div>
+                    <input type="radio" id="fairGrading3" name="fairGrading" value="У більшості випадків оцінюють несправедливо">
+                    <label for="fairGrading3">У більшості випадків оцінюють несправедливо</label>
+                </div>
+                <div>
+                    <input type="radio" id="fairGrading4" name="fairGrading" value="Оцінюють несправедливо">
+                    <label for="fairGrading4">Оцінюють несправедливо</label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <label for="homeworkMethods">16. Зазвичай Ви виконуєте домашнє завдання (можна обрати один або декілька варіантів відповідей)?</label>
+                <div>
+                    <input type="checkbox" id="homeworkMethods1" name="homeworkMethods" value="Самостійно">
+                    <label for="homeworkMethods1">Самостійно</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="homeworkMethods2" name="homeworkMethods" value="Спільно з одногрупниками">
+                    <label for="homeworkMethods2">Спільно з одногрупниками</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="homeworkMethods3" name="homeworkMethods" value="Використовую Інтернет">
+                    <label for="homeworkMethods3">Використовую Інтернет</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="homeworkMethods4" name="homeworkMethods" value="Не виконую домашнє завдання">
+                    <label for="homeworkMethods4">Не виконую домашнє завдання</label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <label for="impactOfDistanceLearning">17. Чи вплинув перехід на дистанційне навчання на рівень Ваших знань?</label>
+                <div>
+                    <input type="radio" id="impactOfDistanceLearning1" name="impactOfDistanceLearning" value="Так, мої знання покращилися" required>
+                    <label for="impactOfDistanceLearning1">Так, мої знання покращилися</label>
+                </div>
+                <div>
+                    <input type="radio" id="impactOfDistanceLearning2" name="impactOfDistanceLearning" value="В основному нічого не змінилося">
+                    <label for="impactOfDistanceLearning2">В основному нічого не змінилося</label>
+                </div>
+                <div>
+                    <input type="radio" id="impactOfDistanceLearning3" name="impactOfDistanceLearning" value="З окремих предметів (дисциплін) покращилися, а з окремих – погіршилися">
+                    <label for="impactOfDistanceLearning3">З окремих предметів (дисциплін) покращилися, а з окремих – погіршилися</label>
+                </div>
+                <div>
+                    <input type="radio" id="impactOfDistanceLearning4" name="impactOfDistanceLearning" value="Мої знання погіршилися">
+                    <label for="impactOfDistanceLearning4">Мої знання погіршилися</label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <label for="difficultSubjects">18. Назвіть предмети (дисципліни) з якими у вас виникають труднощі під час дистанційної форми навчання?</label>
+                <textarea id="difficultSubjects" name="difficultSubjects" placeholder="Вкажіть дисципліни, з якими виникають труднощі"></textarea>
+            </div>
+
+            <div class="question">
+                <label for="likesDistanceLearning">19. Що саме Вам подобається в дистанційному навчанні (можна обрати один або декілька варіантів відповідей)?</label>
+                <div>
+                    <input type="checkbox" id="likesDistanceLearning1" name="likesDistanceLearning" value="Домашні, комфортні для мене умови навчання">
+                    <label for="likesDistanceLearning1">Домашні, комфортні для мене умови навчання</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="likesDistanceLearning2" name="likesDistanceLearning" value="Самостійно обираю зручний для мене час навчання">
+                    <label for="likesDistanceLearning2">Самостійно обираю зручний для мене час навчання</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="likesDistanceLearning3" name="likesDistanceLearning" value="Самостійно обираю темп навчання">
+                    <label for="likesDistanceLearning3">Самостійно обираю темп навчання</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="likesDistanceLearning4" name="likesDistanceLearning" value="Самостійно обираю кількість часу, необхідного на виконання завдання">
+                    <label for="likesDistanceLearning4">Самостійно обираю кількість часу, необхідного на виконання завдання</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="likesDistanceLearning5" name="likesDistanceLearning" value="Самостійно обираю джерела отримання інформації (онлайн платформи, відеоуроки, онлайн підручники)">
+                    <label for="likesDistanceLearning5">Самостійно обираю джерела отримання інформації (онлайн платформи, відеоуроки, онлайн підручники)</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="likesDistanceLearning6" name="likesDistanceLearning" value="У мене з'явилося більше часу й можливостей для індивідуального спілкування з викладачами">
+                    <label for="likesDistanceLearning6">У мене з'явилося більше часу й можливостей для індивідуального спілкування з викладачами</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="likesDistanceLearning7" name="likesDistanceLearning" value="Мене зацікавила нова форма навчання">
+                    <label for="likesDistanceLearning7">Мене зацікавила нова форма навчання</label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <label for="dislikesDistanceLearning">20. Що саме Вас не влаштовує у дистанційному навчанні (можна обрати один або декілька варіантів відповідей)?</label>
+                <div>
+                    <input type="checkbox" id="dislikesDistanceLearning1" name="dislikesDistanceLearning" value="Незадовільні технічні умови (поганий інтернет-зв'язок, відсутні сучасні гаджети)">
+                    <label for="dislikesDistanceLearning1">Незадовільні технічні умови (поганий інтернет-зв'язок, відсутні сучасні гаджети)</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="dislikesDistanceLearning2" name="dislikesDistanceLearning" value="Зворотній зв'язок з педагогами зводиться до отримання завдань та надсилання відповідей">
+                    <label for="dislikesDistanceLearning2">Зворотній зв'язок з педагогами зводиться до отримання завдань та надсилання відповідей</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="dislikesDistanceLearning3" name="dislikesDistanceLearning" value="Відчуваю погіршення рівня власних знань">
+                    <label for="dislikesDistanceLearning3">Відчуваю погіршення рівня власних знань</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="dislikesDistanceLearning4" name="dislikesDistanceLearning" value="Знизився рівень мотивації до навчання">
+                    <label for="dislikesDistanceLearning4">Знизився рівень мотивації до навчання</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="dislikesDistanceLearning5" name="dislikesDistanceLearning" value="Бракує «живого» спілкування з викладачами, однолітками">
+                    <label for="dislikesDistanceLearning5">Бракує «живого» спілкування з викладачами, однолітками</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="dislikesDistanceLearning6" name="dislikesDistanceLearning" value="Не розумію критерії оцінювання виконаних завдань">
+                    <label for="dislikesDistanceLearning6">Не розумію критерії оцінювання виконаних завдань</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="dislikesDistanceLearning7" name="dislikesDistanceLearning" value="Не володію інформацією про результати оцінювання власних навчальних досягнень">
+                    <label for="dislikesDistanceLearning7">Не володію інформацією про результати оцінювання власних навчальних досягнень</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="dislikesDistanceLearning8" name="dislikesDistanceLearning" value="Нерозуміння нових тем та пояснень">
+                    <label for="dislikesDistanceLearning8">Нерозуміння нових тем та пояснень</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="dislikesDistanceLearning9" name="dislikesDistanceLearning" value="Надмірне навантаження">
+                    <label for="dislikesDistanceLearning9">Надмірне навантаження</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="dislikesDistanceLearning10" name="dislikesDistanceLearning" value="Інше">
+                    <label for="dislikesDistanceLearning10">Інше:</label>
+                    <input type="text" name="dislikesDistanceLearningOther" id="dislikesDistanceLearningOther" placeholder="Вкажіть інше">
+                </div>
+            </div>
+            
+            <div class="question">
+                <label for="overallSatisfaction">21. Чи задоволені Ви в цілому організацією дистанційною складовою освітнього процесу в ОНТУ?</label>
+                <div>
+                    <input type="radio" id="overallSatisfaction1" name="overallSatisfaction" value="Так, задоволений / задоволена" required>
+                    <label for="overallSatisfaction1">Так, задоволений / задоволена</label>
+                </div>
+                <div>
+                    <input type="radio" id="overallSatisfaction2" name="overallSatisfaction" value="Переважно задоволений / задоволена">
+                    <label for="overallSatisfaction2">Переважно задоволений / задоволена</label>
+                </div>
+                <div>
+                    <input type="radio" id="overallSatisfaction3" name="overallSatisfaction" value="Переважно не задоволений / не задоволена">
+                    <label for="overallSatisfaction3">Переважно не задоволений / не задоволена</label>
+                </div>
+                <div>
+                    <input type="radio" id="overallSatisfaction4" name="overallSatisfaction" value="Не задоволений / не задоволена">
+                    <label for="overallSatisfaction4">Не задоволений / не задоволена</label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <label for="unsatisfactionDetails">22. Якщо не задоволені, вкажіть, чим саме ...</label>
+                <textarea id="unsatisfactionDetails" name="unsatisfactionDetails" placeholder="Опишіть, чим саме не задоволені"></textarea>
+            </div>
+            
+            <div class="question">
+                <label for="challenges">23. З якими труднощами Вам довелося зустрітися під час дистанційного навчання?</label>
+                <textarea id="challenges" name="challenges" placeholder="Опишіть труднощі, з якими стикалися"></textarea>
+            </div>
+            
+            <div class="question">
+                <label for="improvements">24. Що на Вашу думку необхідно змінити під час дистанційного навчання для покращення освітнього процесу?</label>
+                <textarea id="improvements" name="improvements" placeholder="Опишіть, що потрібно змінити"></textarea>
+            </div>
+            
+    
+            <button type="submit">Надіслати</button>
+        </form>
+    </div>
+    <footer>
+        <div class="contact-info">
+            <div class="contact-block">
+                <strong>Адреса:</strong>
+                <span>65065, м. Одеса, вул. Дворянська, 1/3, кім. 419, 418</span>
+            </div>
+            <div class="contact-block">
+                <strong>Електронна почта:</strong>
+                <a href="mailto:yurikkorn@gmail.com">yurikkorn@gmail.com</a>
+            </div>
+            <div class="contact-block">
+                <strong>Контактні телефони:</strong>
+                <span>Начальник відділу організації дистанційної роботи та навчання центру ІКТ</span>
+                <span>Корнієнко Юрій Костянтинович</span>
+                <span>(067) 934 99 41 (Viber, Telegram)</span>
+                <span>(095) 934 70 89</span>
+                <span>(093) 657 49 32</span>
+            </div>
+        </div>
+    </footer>
+    <script src="survey.js"></script>
+</body>
+</html>

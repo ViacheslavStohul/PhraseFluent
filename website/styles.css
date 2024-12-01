@@ -218,3 +218,24 @@ footer {
         text-indent: 0;
     }
 }
+
+.question {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 30px;
+}
+
+button {
+    background-color: #38356c;
+    color: white;
+    border: none;
+    font-size: 1.2rem;
+    padding: 1rem 2rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #5946ac;
+}
