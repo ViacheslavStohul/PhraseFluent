@@ -45,5 +45,12 @@
       "applicationUrl": "http://localhost:10192",
       "sslPort": 44346
     }
+  },
+  "Kestel": {
+    "Endpoints": {
+      "Http": {
+        "Url": "http://*:10192"
+      }
+    }
   }
 }

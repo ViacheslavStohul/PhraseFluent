@@ -140,6 +140,11 @@ internal static class Program
             };
         });
 
+        builder.WebHost.ConfigureKestrel(serverOptions =>
+        {
+            serverOptions.ListenAnyIP(10192);
+        });
+
         #region scopes and configuration
 
         services.Configure<MicrosoftTranslatorSettings>(builder.Configuration.GetSection("Translator"));
@@ -177,7 +182,7 @@ internal static class Program
         app.MapGet("/", () => Results.Ok("Ok"));
 
         app.UseExceptionHandling();
-        
+
         using (var serviceScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope())
         {
             var context = serviceScope.ServiceProvider.GetService<DataContext>();
