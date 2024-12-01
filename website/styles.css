@@ -193,12 +193,16 @@ footer {
 .wrapper.info {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+
+    p {
+        margin: 8px 0;
+    }
+
+    .last-link {
+        margin-bottom: 25px;
+    }
 }
 
-.last-link {
-    margin-bottom: 50px;
-}
 
 .h4 {
     font-size: 1.2rem;

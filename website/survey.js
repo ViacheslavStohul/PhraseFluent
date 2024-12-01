@@ -2,6 +2,14 @@ document.addEventListener("DOMContentLoaded", function() {
   const form = document.getElementById("surveyForm");
   const wrapper = document.getElementById("wrapper");
 
+  if (localStorage.getItem("surveySubmitted") === "true") {
+    wrapper.innerHTML = `
+        <h1>Дякуємо за вашу участь!</h1>
+        <p>Вашу відповідь було успішно надіслано.</p>
+    `;
+    return;
+}
+
   form.addEventListener("submit", function(event) {
       event.preventDefault();
 
@@ -23,10 +31,11 @@ document.addEventListener("DOMContentLoaded", function() {
       .then(response => response.json())
       .then(data => {
           if (data.success) {
-              wrapper.innerHTML = `
-                  <h1>Дякуємо за вашу участь!</h1>
-                  <p>Вашу відповідь було надіслано</p>
-              `;
+            localStorage.setItem("surveySubmitted", "true");
+            wrapper.innerHTML = `
+                <h1>Дякуємо за вашу участь!</h1>
+                <p>Вашу відповідь було успішно надіслано.</p>
+            `;
           } else {
               alert("Виникла помилка, повторіть спробу!");
           }
