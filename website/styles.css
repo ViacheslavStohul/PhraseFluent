@@ -239,3 +239,31 @@ button {
 button:hover {
     background-color: #5946ac;
 }
+
+input, textarea {
+    border: none;
+    border-bottom: 2px solid #38356c;
+    padding: 8px;
+    font-size: 16px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+input:focus, textarea:focus {
+    border-bottom: 2px solid #5946ac;
+    box-shadow: none;
+}
+
+input::placeholder, textarea::placeholder {
+    color: #a0a0a0;
+    font-style: italic;
+}
+
+textarea {
+    resize: none;
+    height: 100px;
+}
+
+input, textarea {
+    margin-bottom: 12px;
+}
