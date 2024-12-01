@@ -198,6 +198,8 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
             answerAttempt.TextAnswer = request.AnswerString;
             testRepository.Add(answerAttempt);
         }
+        
+        await testRepository.SaveChangesAsync();
     }
 
     private long GetAnswerOptionIdByUuidFromCard(Card card, Guid answerOptionUuid)
