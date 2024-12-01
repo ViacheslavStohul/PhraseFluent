@@ -13,7 +13,6 @@ import { useNavigate } from 'react-router-dom';
 import PlusSVG from '../svg/plus';
 import TestCard from './test-card/test-card';
 import { useInView } from 'react-intersection-observer';
-import { LangFieldComponent } from '../fields/lang-field/lang-field';
 
 interface TestListProps {
   title: string;
@@ -30,13 +29,6 @@ const TestList:FC<TestListProps> = ({title, user}) => {
   const { ref, inView } = useInView({
     threshold: 0,
   });
-
-  const selectLanguage = (option?: string) => {
-    if (!option || option === request.Language){
-      return;
-    }
-    setRequest((prev) => ({ ...prev, Language: option.split(' ')[0], Page: 1}));
-  }
 
   useEffect(()=>{
     langService.getList(request).then(testList=>{
@@ -84,15 +76,6 @@ const TestList:FC<TestListProps> = ({title, user}) => {
           labelText={t("search")}
           name='search'
           changed={handleChange}/>
-        <div className='input-field'>
-        <label
-          className="label"
-        >
-          {t("language")}
-        </label>
-        <LangFieldComponent
-          selectLanguage={(option) => selectLanguage(option.label)}/>
-        </div>
       </div>
       <div className='test-table'>
       {
