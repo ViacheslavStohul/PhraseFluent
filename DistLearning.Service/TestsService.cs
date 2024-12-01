@@ -114,8 +114,7 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
         ArgumentNullException.ThrowIfNull(testWithCards.Cards);
 
         testWithCards.Cards = testWithCards.Cards.Where(x => x.IsActive == true).ToList();
-        var shuffledCards = testWithCards.Cards.OrderBy(c => Guid.NewGuid()).ToList();
-        var questionOrder = string.Join(",", shuffledCards.Select(c => c.Id));
+        var questionOrder = string.Join(",", testWithCards.Cards.Select(c => c.Id));
         
         var testAttempt = new TestAttempt
         {
@@ -131,9 +130,9 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
 
         await testRepository.SaveChangesAsync();
 
-        var firstCard = shuffledCards[0];
+        var firstCard = testWithCards.Cards.First();
         
-        return ProcessCardResponse(firstCard, testAttempt.Uuid, shuffledCards.Count, 1);
+        return ProcessCardResponse(firstCard, testAttempt.Uuid, testWithCards.Cards.Count, 1);
     }
 
     public async Task<TestCardResponse?> ProcessAnswer(CardAnswerRequest request)
