@@ -1,0 +1,113 @@
+@import './scss/variables.scss';
+@import './scss/select.scss';
+@import url('https://fonts.googleapis.com/css2?family=Madimi+One&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap');
+
+*,
+*:focus,
+*:hover {
+  outline: none;
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  font-family: 'Merriweather', sans-serif;
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  width:100%;
+  height:100%;
+  color: $font-color;
+  background-color: $bg-color;
+}
+
+#root {
+  width:100%;
+  height:100%;
+  position: relative;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+h1,h2,h3,h4,h5,h6 {
+  margin: 0;
+}
+
+label {
+  font-size: 0.9em;
+  font-weight: 500;
+}
+
+button {
+  font-size: 1em;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  padding: 15px 30px;
+  width: max-content;
+  flex-wrap: nowrap;
+  color: $font-second-color;
+  background-color: $second-color;
+  border: none;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+  font-family: 'Merriweather', sans-serif;
+  text-decoration: none !important;
+
+  &:hover {
+    filter:brightness(1.2);
+  }
+
+  &:disabled,
+  &:disabled:hover {
+  background-color: $font-color-light;
+  opacity: 0.7;
+  filter: none;
+  cursor: not-allowed
+  }
+}
+
+a {
+  text-decoration: none;
+}
+
+.error-message {
+  color: rgb(255, 20, 20);
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.cls-1{
+  fill:$font-second-color;
+}
+.cls-2{
+  fill:#97cfe8;
+}
+
+hr {
+    color: $font-color-light;
+    width: 100%; 
+    height: 2px; 
+    border: none;
+    background-color: $font-color-light;
+    opacity: 0.2;
+    margin: 0;
+    padding: 0; 
+}
+
+p {
+  margin: 0;
+}

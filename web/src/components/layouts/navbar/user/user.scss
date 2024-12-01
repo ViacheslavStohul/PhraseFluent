@@ -1,0 +1,17 @@
+@import '../../../../scss/variables.scss';
+
+.user {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  align-items: center;
+  font-size: 0.9rem;
+  cursor: pointer;
+
+  img {
+    border-radius:50%;
+    height: calc($nav-height - 15px);
+    width: calc($nav-height - 15px);
+    object-fit: cover;
+  }
+}

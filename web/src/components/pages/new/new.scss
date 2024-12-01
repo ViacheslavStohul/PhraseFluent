@@ -1,0 +1,26 @@
+.new-test {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 15px;
+
+  img {
+    border-radius:10px;
+    height: 400px;
+    width: 400px;
+    object-fit: cover;
+  }
+
+  .new-test-fields {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 20px;
+
+    .new-test-header {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+}

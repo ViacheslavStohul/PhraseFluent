@@ -1,0 +1,42 @@
+@import '../../../scss/variables.scss';
+
+.app-body {
+  height:100%;
+  display: grid;
+  grid-template-rows: 1fr auto;
+}
+
+.main-body-body {
+  padding: $padding $side-padding ;
+}
+
+.contact-info {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 50px;
+  padding: 10px 10%;
+
+  @media (max-width: 768px) {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+  }
+}
+
+.contact-block {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  text-align: left;
+}
+
+.contact-block:nth-child(1) { grid-area: 1 / 1 / 2 / 2; }
+.contact-block:nth-child(2) { grid-area: 2 / 1 / 3 / 2; }
+.contact-block:nth-child(3) { grid-area: 1 / 2 / 3 / 3; }
+
+footer {
+  background-color: #333333;
+  color: white;
+  padding: 1.5rem;
+  text-align: center;
+}
