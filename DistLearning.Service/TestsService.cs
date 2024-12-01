@@ -88,6 +88,7 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
                 {
                     Uuid = Guid.NewGuid(),
                     OptionText = option.OptionText,
+                    IsAllowedText = option.IsAllowedText,
                     CardId = cardToAdd.Id
                 };
                 cardToAdd.AnswerOptions.Add(answerOption);
@@ -189,7 +190,13 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
             ArgumentNullException.ThrowIfNull(request.PickedOptions);
             foreach (var answerOption in request.PickedOptions)
             {
-                answerAttempt.AnswerOptionId = GetAnswerOptionIdByUuidFromCard(card, answerOption);
+                var selectedOption = GetAnswerOptionIdByUuidFromCard(card, answerOption);  
+                answerAttempt.AnswerOptionId = selectedOption.Id;
+
+                if (selectedOption.IsAllowedText && !string.IsNullOrEmpty(request.AnswerString))
+                {
+                    answerAttempt.TextAnswer = request.AnswerString;
+                }
                 testRepository.Add(answerAttempt);
             }
         }
@@ -202,9 +209,9 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
         await testRepository.SaveChangesAsync();
     }
 
-    private long GetAnswerOptionIdByUuidFromCard(Card card, Guid answerOptionUuid)
+    private AnswerOption GetAnswerOptionIdByUuidFromCard(Card card, Guid answerOptionUuid)
     {
-        return card.AnswerOptions.First(x => x.Uuid == answerOptionUuid).Id;
+        return card.AnswerOptions.First(x => x.Uuid == answerOptionUuid);
     }
 
     private TestCardResponse ProcessCardResponse(Card card, Guid testAttemptUuid, int allQuestions, int currentQuestion)
