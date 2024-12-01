@@ -8,10 +8,15 @@ html, body {
 
 body {
     margin: 0;
+    padding-top: 80px;
     font-family: Arial, sans-serif;
     background-color: #a5a8d3;
     display: grid;
     grid-template-rows: auto 1fr;
+
+    @media (max-width: 768px) {
+        padding-top: 60px;
+    }
 }
 
 a {
@@ -23,13 +28,26 @@ a {
     background-color: #38356c;
     color: white;
     padding: 0 2rem;
-    position: sticky;
+    position: fixed;
+    width: 100%;
     top: 0;
     z-index: 1000;
 	display: flex;
 	flex-direction: row;
 	gap: 10px;
     align-items: center;
+
+    @media (max-width: 768px) {
+        padding: 0;
+        gap: 0;
+        justify-content: space-between;
+    }
+}
+
+.no-mobile {
+    @media (max-width: 768px) {
+        display: none !important;
+    }
 }
 
 .navbar .logo img {
@@ -37,9 +55,28 @@ a {
     width: auto;
     margin: 0.5rem 0;
     margin-right: 50px;
+
 }
 
-.navbar a {
+.navbar .logo{
+    @media (max-width: 768px) {
+        display: none;
+    }
+}
+
+.navbar .logo-two {
+    display: none;
+    @media (max-width: 768px) {
+        display: block;
+    }
+
+    img {
+        margin-right: 10px;
+        height: 40px;
+    }
+}
+
+.navbar .nav-links a {
     color: white;
     height: 100%;
     display: block;
@@ -49,6 +86,12 @@ a {
     margin: 0;
     font-weight: bold;
     line-height: 80px;
+
+    @media (max-width: 768px) {
+        padding: 0 5px;
+        font-size: 1rem;
+        line-height: 60px;
+    }
 }
 
 
@@ -58,6 +101,10 @@ a {
     display: flex;
     flex-direction: row;
     align-items: center;
+
+    @media (max-width: 768px) {
+        height: 60px;
+    }
 }
 
 .navbar a.selected {
@@ -76,6 +123,35 @@ a {
     background-color: white;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+    @media (max-width: 768px) {
+        width: 100%;
+        margin: 0;
+        padding: 1rem;
+        border-radius: 0;
+
+        h1 {
+            font-size: 1.5rem;
+        }
+
+        h2 {
+            font-size: 1.25rem;
+        }
+
+        h3 {
+            font-size: 1.15rem;
+        }
+    }
+    
+    button {
+    background-color: #38356c;
+    color: white;
+    border: none;
+    font-size: 1.2rem;
+    padding: 1rem 2rem;
+    border-radius: 4px;
+    cursor: pointer;
+    }
 
     p {
         text-align: justify;
@@ -122,6 +198,12 @@ a {
     grid-template-columns: repeat(2, 1fr);
     gap: 50px;
     padding: 10px 10%;
+
+    @media (max-width: 768px) {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
 }
 
 .contact-block {
@@ -159,6 +241,12 @@ footer {
     margin: 0 15px;
     font-size: 1.25rem;
     height: 100%;
+
+    @media (max-width: 768px) {
+        font-size: 1rem;
+        margin: 0;
+        padding: 0 5px;
+    }
 }
 
 .dropdown-content {
@@ -169,6 +257,10 @@ footer {
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     z-index: 1;
     text-align: left;
+
+    @media (max-width: 768px) {
+        right: 0;
+    }
 }
 
 .dropdown-content a {
@@ -178,7 +270,15 @@ footer {
     padding: 15px;
     white-space: nowrap;
     font-size: 1rem;
-    line-height: 1.5rem;
+    line-height: 40px !important;
+
+    @media (max-width: 768px) {
+        font-size: 0.75rem;
+        white-space:initial;
+        max-width: 200px;
+        line-height: 1.5rem !important;
+        padding: 10px 5px!important;
+    }
 }
 
 .dropdown-content a:hover {
@@ -228,16 +328,6 @@ footer {
     flex-direction: column;
     gap: 5px;
     margin-bottom: 30px;
-}
-
-button {
-    background-color: #38356c;
-    color: white;
-    border: none;
-    font-size: 1.2rem;
-    padding: 1rem 2rem;
-    border-radius: 4px;
-    cursor: pointer;
 }
 
 button:hover {
