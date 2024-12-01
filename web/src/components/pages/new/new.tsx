@@ -5,7 +5,6 @@ import { Test, createTestRequest } from '../../../interfaces/test';
 import { InputFieldComponent } from '../../fields/input-field/input-field';
 import { useTranslation } from 'react-i18next';
 import PlusSVG from '../../svg/plus';
-import { LangFieldComponent } from '../../fields/lang-field/lang-field';
 import { Protection } from '../../protection/protection';
 import * as langService from '../../../service/word.service';
 import { callErrorToast } from '../../../store/slice/toast';
@@ -59,16 +58,6 @@ const NewTest = () => {
       <div className='new-test-fields'>
         <div className='new-test-header'>
         <h2>Create Test</h2>
-        <div>
-          <label
-            className="label"
-          >
-            {t("language")+'*'}
-          </label>
-          <LangFieldComponent
-            disabled={isSubmited}
-            selectLanguage={(option) => handleChange('languageUuid', option?.value)}/>
-        </div>
         </div>
         <InputFieldComponent 
           labelText={t("title")}
@@ -91,7 +80,7 @@ const NewTest = () => {
           changed={(value) => handleChange('imageUrl', value)}/>
         <button
           type='button'
-          disabled={!newTest.title || !newTest.languageUuid || isSubmited}
+          disabled={!newTest.title || isSubmited}
           onClick = {createNew}>
             <PlusSVG/>
           {t("create-test")}

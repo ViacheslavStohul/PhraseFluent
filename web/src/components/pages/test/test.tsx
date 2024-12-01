@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { AuthSelectors } from '../../../store/slice/auth';
+import { useDispatch} from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import * as testService from '../../../service/word.service';
 import { callErrorToast } from '../../../store/slice/toast';
@@ -12,7 +11,6 @@ import { useTranslation } from 'react-i18next';
 import OptionCard from './option/option';
 
 const User = () => {
-  const user = useSelector(AuthSelectors.selectUser);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const {t} = useTranslation();
@@ -21,9 +19,6 @@ const User = () => {
   const [text, setText] = useState<string>('');
 
   useEffect(() => {
-    if (!user){
-      navigate('/');
-    }
 
     let id = searchParams.get('id');
     if (id) {
@@ -37,7 +32,7 @@ const User = () => {
       navigate('/');
       return;
     }
-  },[user, navigate, searchParams, dispatch]);
+  },[navigate, searchParams, dispatch]);
 
   const changeOption = (uuid: string) => {
     setTest(prev => {
