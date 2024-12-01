@@ -1,32 +1,93 @@
 @import '../../../scss/variables.scss';
 
+.no-mobile {
+  @media (max-width: 768px) {
+      display: none !important;
+  }
+}
+
 nav {
-  height: $nav-height;
-  background-color: $nav-color;
-  color: $font-second-color;
-  padding: 5px 20px;
-  display: flex;
-  flex-direction:row;
-  justify-content: space-between;
-  align-items: center;
+  background-color: #38356c;
+  color: white;
+  padding: 0 2rem;
   position: fixed;
-  top: 0;
   width: 100%;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
 
-  a {
-    color: $font-second-color;
-    text-decoration: none;
+  @media (max-width: 768px) {
+      padding: 0;
+      gap: 0;
+      justify-content: space-between;
+  }
+}
+
+nav .logo img {
+  height: 60px;
+  width: auto;
+  margin: 0.5rem 0;
+  margin-right: 50px;
+
+}
+
+nav .logo{
+  @media (max-width: 768px) {
+      display: none;
+  }
+}
+
+nav .logo-two {
+  display: none;
+  @media (max-width: 768px) {
+      display: block;
   }
 
-  .nav-block {
-    display: flex;
-    flex-direction: row;
-    gap: 15px;
-
-    > * {
-      display: flex;
-      flex-direction: row;
-     align-items: center;
-    }
+  img {
+      margin-right: 10px;
+      height: 40px;
   }
+}
+
+nav .nav-links a {
+  color: white;
+  height: 100%;
+  display: block;
+  padding: 0 1rem;
+font-size: 1.25rem;
+  text-decoration: none;
+  margin: 0;
+  font-weight: bold;
+  line-height: 80px;
+
+  @media (max-width: 768px) {
+      padding: 0 5px;
+      font-size: 1rem;
+      line-height: 60px;
+  }
+}
+
+
+.nav-links {
+  height: 80px;
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  @media (max-width: 768px) {
+      height: 60px;
+  }
+}
+
+nav a.active {
+  background-color: #5946ac;
+}
+
+nav a:hover {
+  text-decoration: none;
+  background-color: #5946ac;
 }

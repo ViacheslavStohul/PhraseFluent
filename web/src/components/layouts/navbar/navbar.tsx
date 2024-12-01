@@ -1,16 +1,12 @@
 import React from 'react';
 import './navbar.scss';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { AuthActions, AuthSelectors } from '../../../store/slice/auth';
-import LogoSVG from '../../svg/logo';
 import User from './user/user';
-import { useTranslation } from 'react-i18next';
-
 
 const Navbar = () => {
   const user = useSelector(AuthSelectors.selectUser);
-  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const logout = () => {
@@ -19,20 +15,29 @@ const Navbar = () => {
 
   return (
     <nav>
-      <NavLink to='/'><LogoSVG/></NavLink>
-      <div className='nav-block'>
-        { user ? 
-          <>
-          <User/>
-          <div onClick={logout} className='pointer'>Log out</div>
-          </>
-          :
-          <>
-          <NavLink to='/registration' end>{t("signup")}</NavLink>
-          <NavLink to='/authorization' end>{t("signin")}</NavLink>
-          </>
-        }
-      </div>
+      <div className="logo">
+            <img src="/logo.png" alt="Logo"/>
+        </div>
+        <div className="logo logo-two">
+            <Link to="/">
+            <img src="/logo-2.png" alt="Logo"/>
+            </Link>
+        </div>
+        <div className="nav-links">
+            <NavLink to="/">Головна</NavLink>
+            <NavLink to="/tests">Опитування</NavLink>
+            { user ? 
+            <>
+            <User/>
+              <div onClick={logout} className='pointer'>Вийти</div>
+            </>
+            :
+            <>
+            <NavLink to='/registration' end>Реєстрація</NavLink>
+            <NavLink to='/authorization' end>Вхід</NavLink>
+            </>
+            }
+        </div>
     </nav>
   );
 }

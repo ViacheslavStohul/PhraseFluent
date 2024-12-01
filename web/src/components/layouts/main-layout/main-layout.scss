@@ -8,6 +8,10 @@
 
 .main-body-body {
   padding: $padding $side-padding ;
+
+  @media (max-width: 768px) {
+      padding: 0;
+  }
 }
 
 .contact-info {
