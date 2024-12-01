@@ -1,5 +1,4 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import './test-list.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { callErrorToast } from '../../store/slice/toast';
@@ -19,7 +18,6 @@ interface TestListProps {
 }
 
 const TestList:FC<TestListProps> = ({title}) => {
-  const { t } = useTranslation();
   const dispatch = useDispatch();
   const user = useSelector(AuthSelectors.selectUser);
   const [request, setRequest] = useState<langService.ListRequest>({Page: 1, Size: 20});
@@ -75,7 +73,7 @@ const TestList:FC<TestListProps> = ({title}) => {
       </div>
       <div className='test-list-header'>
         <InputFieldComponent 
-          labelText={t("search")}
+          labelText='Пошук'
           name='search'
           changed={handleChange}/>
       </div>
