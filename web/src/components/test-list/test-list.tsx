@@ -1,8 +1,7 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import './test-list.scss';
-import { IUser } from '../../interfaces/auth';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { callErrorToast } from '../../store/slice/toast';
 import * as langService from '../../service/word.service';
 import { InputFieldComponent } from '../fields/input-field/input-field';
@@ -13,16 +12,17 @@ import { useNavigate } from 'react-router-dom';
 import PlusSVG from '../svg/plus';
 import TestCard from './test-card/test-card';
 import { useInView } from 'react-intersection-observer';
+import { AuthSelectors } from '../../store/slice/auth';
 
 interface TestListProps {
   title: string;
-  user?: IUser;
 }
 
-const TestList:FC<TestListProps> = ({title, user}) => {
+const TestList:FC<TestListProps> = ({title}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const [request, setRequest] = useState<langService.ListRequest>({Page: 1, Size: 20, Username: user?.username});
+  const user = useSelector(AuthSelectors.selectUser);
+  const [request, setRequest] = useState<langService.ListRequest>({Page: 1, Size: 20});
   const [tests, setTests] = useState<Test[]>([]);
   const navigate = useNavigate();
   const totalItems = useRef(0);
@@ -64,12 +64,14 @@ const TestList:FC<TestListProps> = ({title, user}) => {
     <Card classes='card-column'>
       <div className='test-list-header'>
         <h1>{title}</h1>
+        { user &&
         <button
           type='button'
           onClick = {()=>navigate('/new')}>
             <PlusSVG/>
-          {t("create-test")}
+          Створити тест
         </button>
+        }
       </div>
       <div className='test-list-header'>
         <InputFieldComponent 
