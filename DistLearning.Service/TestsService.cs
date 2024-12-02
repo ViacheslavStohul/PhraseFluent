@@ -268,9 +268,9 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
                 .ToList();
 
             cardDto.TextAnswers = textAnswers;
-
-            testDto.Cards.Add(cardDto);
         }
+        
+        testDto.Cards.Add(cardDto);
     }
 
     private async Task AddTestAttemptToDb(CardAnswerRequest request, long testAttemptId, Card card)
