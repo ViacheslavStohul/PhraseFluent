@@ -201,7 +201,7 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
             return new TestCardResponse()
             {
                 Card = null,
-                CurrentQuestion = nextQuestionIndex + 2,
+                CurrentQuestion = questionOrder.Count,
                 Questions = questionOrder.Count
             };
         }
@@ -211,7 +211,7 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
         var nextQuestion = await testRepository.GetCardWithOptionsById(nextQuestionId);
         ArgumentNullException.ThrowIfNull(nextQuestion);
         
-        return ProcessCardResponse(nextQuestion, testAttempt.Uuid, questionOrder.Count, nextQuestionIndex + 1);
+        return ProcessCardResponse(nextQuestion, testAttempt.Uuid, questionOrder.Count, nextQuestionIndex + 2);
     }
     
     private static void ProcessCardStatistic(Test test, List<AnswerAttempt> answerAttempts, TestWithStatisticResponse testDto)
