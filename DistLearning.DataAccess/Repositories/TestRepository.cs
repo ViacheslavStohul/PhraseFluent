@@ -58,4 +58,15 @@ public class TestRepository(DataContext dataContext) : BaseRepository(dataContex
             .Include(x => x.AnswerOptions)
             .FirstOrDefaultAsync(x => x.Id == cardId);
     }
+    
+    public Task<List<AnswerAttempt>> GetAnswerAttemptsForTest(long testId)
+    {
+        return _dataContext
+            .AnswerAttempts
+            .Include(x => x.AnswerOption)
+            .Include(x => x.Card)
+            .ThenInclude(x => x.Test)
+            .Where(x => x.Card.Test.Id == testId)
+            .ToListAsync();
+    }
 }

@@ -2,7 +2,7 @@
 
 public class TestCardResponse
 {
-    public required BaseCardResponse Card { get; set; }
+    public required CardResponse Card { get; set; }
     
     public Guid TestAttemptUuid { get; set; }
     

@@ -2,7 +2,7 @@
 
 namespace DistLearning.Service.DTO.Responses;
 
-public class BaseCardResponse
+public class CardResponse
 {
     public Guid Uuid { get; set; }
     

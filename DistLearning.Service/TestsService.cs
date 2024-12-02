@@ -44,7 +44,7 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
         return mapper.Map<TestResponse>(testToAdd);
     }
 
-    public async Task<CardResponseWitCorrectAnswer> CreateCard(Guid? userId, AddCardRequest request)
+    public async Task<CardResponse> CreateCard(Guid? userId, AddCardRequest request)
     {
         ArgumentNullException.ThrowIfNull(userId);
         ArgumentNullException.ThrowIfNull(request.AnswerOptions);
@@ -104,7 +104,7 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
             throw;
         }
 
-        return mapper.Map<CardResponseWitCorrectAnswer>(cardToAdd);
+        return mapper.Map<CardResponse>(cardToAdd);
     }
 
     public async Task<TestCardResponse> BeginTestAsync(Guid testUuid)
@@ -221,7 +221,7 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
             card.AnswerOptions = new List<AnswerOption>();
         }
 
-        var cardResponse = mapper.Map<BaseCardResponse>(card);
+        var cardResponse = mapper.Map<CardResponse>(card);
 
         return new TestCardResponse
         {

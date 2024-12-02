@@ -9,7 +9,7 @@ public interface ITestsService
 
     Task<TestResponse> AddTest(AddTestRequest request, Guid userUuid);
 
-    Task<CardResponseWitCorrectAnswer> CreateCard(Guid? userId, AddCardRequest request);
+    Task<CardResponse> CreateCard(Guid? userId, AddCardRequest request);
 
     Task<TestCardResponse> BeginTestAsync(Guid testUuid);
 
