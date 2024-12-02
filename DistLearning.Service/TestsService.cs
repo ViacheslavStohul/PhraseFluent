@@ -275,20 +275,20 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
 
     private async Task AddTestAttemptToDb(CardAnswerRequest request, long testAttemptId, Card card)
     {
-        var answerAttempt = new AnswerAttempt
-        {
-            Uuid = Guid.NewGuid(),
-            TestAttemptId = testAttemptId,
-            CardId = card.Id,
-            TestAttempt = null,
-            Card = null,
-        };
-
         if (card.QuestionType != QuestionType.Text)
         {
             ArgumentNullException.ThrowIfNull(request.PickedOptions);
             foreach (var answerOption in request.PickedOptions)
             {
+                var answerAttempt = new AnswerAttempt
+                {
+                    Uuid = Guid.NewGuid(),
+                    TestAttemptId = testAttemptId,
+                    CardId = card.Id,
+                    TestAttempt = null,
+                    Card = null,
+                };
+                
                 var selectedOption = GetAnswerOptionIdByUuidFromCard(card, answerOption);  
                 answerAttempt.AnswerOptionId = selectedOption.Id;
 
@@ -301,7 +301,16 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
         }
         else
         {
-            answerAttempt.TextAnswer = request.AnswerString;
+            var answerAttempt = new AnswerAttempt
+            {
+                Uuid = Guid.NewGuid(),
+                TestAttemptId = testAttemptId,
+                CardId = card.Id,
+                TestAttempt = null,
+                Card = null,
+                TextAnswer = request.AnswerString
+            };
+
             testRepository.Add(answerAttempt);
         }
         
