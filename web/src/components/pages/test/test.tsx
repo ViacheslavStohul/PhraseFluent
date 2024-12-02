@@ -5,20 +5,35 @@ import * as testService from '../../../service/word.service';
 import { callErrorToast } from '../../../store/slice/toast';
 import './test.scss';
 import Card from '../../layouts/card/card';
-import { BeginTestResponse } from '../../../interfaces/test';
+import { BeginTestResponse, Test } from '../../../interfaces/test';
 import Checkbox from '../../fields/checkbox/checkbox';
 import { TextareaFieldComponent } from '../../fields/textarea/textarea';
 import { InputFieldComponent } from '../../fields/input-field/input-field';
 
-const Test = () => {
+const TestPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [searchParams] = useSearchParams();
   const [test, setTest] = useState<BeginTestResponse>();
   const [text, setText] = useState<string | undefined>();
+  const [info, setInfo] = useState<Test>();
 
   useEffect(() => {
+    let id = searchParams.get('id');
+    if (id) {
+      testService.getTest(id).then((test)=>{
+        setInfo(test);
+      }).catch((error) => {
+        dispatch(callErrorToast({name: error.code, text: error.response?.data?.Message ?? error.response?.data?.Message ?? error.message}));
+      });
+    } else {
+      navigate('/');
+      return;
+    }
+  },[navigate, searchParams, dispatch]);
 
+
+  const start = () => {
     let id = searchParams.get('id');
     if (id) {
       testService.beginTest(id).then((res)=>{
@@ -31,7 +46,7 @@ const Test = () => {
       navigate('/');
       return;
     }
-  },[navigate, searchParams, dispatch]);
+  };
 
   const changeOption = (uuid: string) => {
     setTest(prev => {
@@ -75,17 +90,27 @@ const Test = () => {
 
   return (
     <Card classes='testing-card'>
-      { test?.card ?
+      { !test?
+        info && 
+        <>
+          <h2>{info.title}</h2>
+          <p>{info.description}</p>
+          <div className='right'>
+            <button onClick={start}>Розпочати</button>
+          </div>
+        </>
+      :
+      test?.card ?
       <>
       <div className='counter'>{test?.currentQuestion}/{test?.questions}</div>
       <h3>{test?.card?.question}</h3>
       { test?.card.questionType === 'TestOneAnswer' &&
-      <p>
+      <p className='no-indent'>
         Оберіть одну з відповідей:
         </p>
       }
       { test?.card.questionType === 'TestManyAnswers' &&
-      <p>
+      <p className='no-indent'>
         Оберіть одну або декілька відповідей:
       </p>
       }
@@ -130,11 +155,11 @@ const Test = () => {
       :
       <>
       <h2>Дякуємо за проходження опитування!</h2>
-      <p>Ваші результати були надіслані.</p>
+      <p className='no-indent'>Ваші результати були надіслані.</p>
       </>
       }
     </Card>
   );
 }
 
-export default Test;
+export default TestPage;
