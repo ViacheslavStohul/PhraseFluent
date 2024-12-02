@@ -28,7 +28,6 @@ const Edit = ({test}:{test: Test}) => {
       <Card classes='new-test'>
         <div className='new-test-text'>
           <h2>{test.title}</h2>
-          <label>{test.language.nativeName+'('+test.language.title+')'}</label>
           <p>{test.description}</p>
         </div>
         <img 
