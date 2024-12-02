@@ -229,7 +229,7 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
             };
             
             var cardAnswerAttempts = answerAttempts.Where(a => a.CardId == card.Id).ToList();
-            var totalAttempts = cardAnswerAttempts.Count;
+            var totalAttempts = cardAnswerAttempts.GroupBy(x => x.TestAttemptId).Select(x => x.Key).Count();
             
             ProcessAnswerOptionStatistic(card, cardAnswerAttempts, totalAttempts, cardDto, testDto);
         }
