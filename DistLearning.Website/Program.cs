@@ -46,14 +46,6 @@ internal static class Program
                 };
             });
         
-        services.AddCors(options =>
-        {
-            options.AddPolicy("AllowSpecificOrigin",
-                conf => conf.WithOrigins("http://localhost:3000")
-                    .AllowAnyMethod()
-                    .AllowAnyHeader());
-        });
-        
         services.AddControllers();
         
         services.AddEndpointsApiExplorer();
@@ -145,6 +137,14 @@ internal static class Program
             serverOptions.ListenAnyIP(10192);
         });
 
+        services.AddCors(options =>
+        {
+            options.AddDefaultPolicy(
+                conf => conf.WithOrigins("http://195.138.81.28:3000")
+                    .AllowAnyMethod()
+                    .AllowAnyHeader());
+        });
+
         #region scopes and configuration
 
         services.Configure<MicrosoftTranslatorSettings>(builder.Configuration.GetSection("Translator"));
@@ -169,7 +169,16 @@ internal static class Program
 
         app.UseHttpsRedirection();
 
-        app.UseCors("AllowSpecificOrigin");
+        app.Use(async (ctx, next) =>
+        {
+            if (ctx.Request.Method.Equals("options", StringComparison.InvariantCultureIgnoreCase) && ctx.Request.Headers.ContainsKey("Access-Control-Request-Private-Network"))
+            {
+                ctx.Response.Headers.Add("Access-Control-Allow-Private-Network", "true");
+            }
+
+            await next();
+        });
+        app.UseCors();
 
         app.UseRouting();
         

@@ -8,6 +8,7 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace DistLearning.API.Controllers;
 
+using DistLearning.API.ExceptionHandling;
 using Microsoft.AspNetCore.RateLimiting;
 
 [Route("api/auth")]
@@ -33,8 +34,19 @@ public class AuthorizationController(IAuthorizationService authorizationService)
     [Produces<TokenResponse>]
     public async Task<IActionResult> Register([FromBody] UserCreationRequest userData)
     {
-        var token = await authorizationService.RegisterUser(userData);
-        return Ok(token);
+        //var token = await authorizationService.RegisterUser(userData);
+        //return Ok(token);
+        var error = new ErrorDetails
+        {
+            StatusCode = 403,
+            Message = "Функція тимчасово заблокована з міркувань безпеки"
+        };
+        return new ContentResult
+        {
+            Content = error.ToString(),
+            ContentType = "application/json",
+            StatusCode = 403
+        };
     }
 
     [Route("token/refresh")]

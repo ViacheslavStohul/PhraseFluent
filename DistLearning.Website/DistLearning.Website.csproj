@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -26,5 +26,10 @@
   <ItemGroup>
     <ProjectReference Include="..\DistLearning.Service\DistLearning.Service.csproj" />
   </ItemGroup>
+	<ItemGroup>
+		<None Update="Certs/certificate.pfx">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
 
 </Project>
