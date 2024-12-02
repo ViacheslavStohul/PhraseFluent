@@ -10,6 +10,6 @@ public class AddCardRequest
     public QuestionType QuestionType { get; set; }
     
     public Guid TestUuid { get; set; }
-    
-    public ICollection<AnswerOptionRequest>? AnswerOptions { get; set; }
+
+    public IList<AnswerOptionRequest> AnswerOptions { get; set; } = [];
 }
