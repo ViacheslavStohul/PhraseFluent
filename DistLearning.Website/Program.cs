@@ -53,7 +53,7 @@ internal static class Program
         {
             o.SwaggerDoc("v1", new OpenApiInfo
             {
-                Title = "Phrase fluent API documentation",
+                Title = "Dist learning API documentation",
                 Version = "v1",
                 Description = "List of APIs"
             });
