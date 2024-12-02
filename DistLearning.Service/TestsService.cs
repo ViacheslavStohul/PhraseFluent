@@ -44,6 +44,31 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
         return mapper.Map<TestResponse>(testToAdd);
     }
 
+    public async Task<TestWithStatisticResponse> GetTestWithStatisticsAsync(Guid testUuid)
+    {
+        var test = await testRepository.TestWithCards(testUuid);
+        ArgumentNullException.ThrowIfNull(test);
+        
+        var answerAttempts = await testRepository.GetAnswerAttemptsForTest(test.Id);
+
+        var testDto = new TestWithStatisticResponse
+        {
+            Uuid = test.Uuid,
+            Title = test.Title,
+            Description = test.Description,
+            ImageUrl = test.ImageUrl,
+            CardsCount = test.CardsCount,
+            Cards = []
+        };
+
+        if (test.Cards != null)
+        {
+            ProcessCardStatistic(test, answerAttempts, testDto);
+        }
+        
+        return testDto;
+    }
+
     public async Task<CardResponse> CreateCard(Guid? userId, AddCardRequest request)
     {
         ArgumentNullException.ThrowIfNull(userId);
@@ -172,6 +197,65 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
         ArgumentNullException.ThrowIfNull(nextQuestion);
         
         return ProcessCardResponse(nextQuestion, testAttempt.Uuid, questionOrder.Count, nextQuestionIndex + 1);
+    }
+    
+    private static void ProcessCardStatistic(Test test, List<AnswerAttempt> answerAttempts, TestWithStatisticResponse testDto)
+    {
+        ArgumentNullException.ThrowIfNull(test.Cards);
+        foreach (var card in test.Cards)
+        {
+            var cardDto = new CardWithStatisticsResponse
+            {
+                Uuid = card.Uuid,
+                Question = card.Question,
+                QuestionType = card.QuestionType,
+                AnswerOptions = [],
+                TextAnswers = []
+            };
+            
+            var cardAnswerAttempts = answerAttempts.Where(a => a.CardId == card.Id).ToList();
+            var totalAttempts = cardAnswerAttempts.Count;
+            
+            ProcessAnswerOptionStatistic(card, cardAnswerAttempts, totalAttempts, cardDto, testDto);
+        }
+    }
+    
+    private static void ProcessAnswerOptionStatistic(Card card, List<AnswerAttempt> cardAnswerAttempts, int totalAttempts, CardWithStatisticsResponse cardDto, TestWithStatisticResponse testDto)
+    {
+        foreach (var answerOption in card.AnswerOptions)
+        {
+            var optionAttempts = cardAnswerAttempts
+                .Where(a => a.AnswerOptionId == answerOption.Id)
+                .ToList();
+
+            var selectionCount = optionAttempts.Count;
+            var percentage = totalAttempts > 0 ? (double)selectionCount / totalAttempts * 100 : 0;
+
+            var answerOptionDto = new AnswerResponseWithStatistics()
+            {
+                Uuid = answerOption.Uuid,
+                OptionText = answerOption.OptionText,
+                SelectionCount = selectionCount,
+                SelectionPercentage = percentage,
+                IsAllowedText = answerOption.IsAllowedText,
+            };
+
+            cardDto.AnswerOptions.Add(answerOptionDto);
+                
+            var textAnswers = cardAnswerAttempts
+                .Where(a => !string.IsNullOrWhiteSpace(a.TextAnswer))
+                .GroupBy(a => a.TextAnswer)
+                .Select(g => new TextAnswerResponse()
+                {
+                    Text = g.Key!,
+                    Count = g.Count()
+                })
+                .ToList();
+
+            cardDto.TextAnswers = textAnswers;
+
+            testDto.Cards.Add(cardDto);
+        }
     }
 
     private async Task AddTestAttemptToDb(CardAnswerRequest request, long testAttemptId, Card card)

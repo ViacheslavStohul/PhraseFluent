@@ -7,6 +7,8 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace DistLearning.API.Controllers;
 
+using Microsoft.IdentityModel.Tokens;
+
 [Route("/api/test")]
 [Authorize]
 public class TestController (ITestsService testsService) : BaseController
@@ -14,7 +16,7 @@ public class TestController (ITestsService testsService) : BaseController
     [HttpGet]
     [AllowAnonymous]
     [Route("/list")]
-    [SwaggerResponse(200, "Gets test list by filters")]
+    [SwaggerResponse(200, "Gets test list by filters", typeof(PaginationResponse<TestResponse>))]
     [Produces<PaginationResponse<TestResponse>>]
     public async Task<IActionResult> GetTestList([FromQuery] TestSearchRequest request)
     {
@@ -25,7 +27,7 @@ public class TestController (ITestsService testsService) : BaseController
     
     [HttpPost]
     [Route("/new")]
-    [SwaggerResponse(201, "Adds a new test")]
+    [SwaggerResponse(201, "Adds a new test", typeof(TestResponse))]
     [ProducesResponseType(typeof(TestResponse), 201)]
     public async Task<IActionResult> AddTest([FromBody] AddTestRequest request)
     {
@@ -37,7 +39,7 @@ public class TestController (ITestsService testsService) : BaseController
     
     [HttpPost]
     [Route("/card/new")]
-    [SwaggerResponse(201, "Adds a new card")]
+    [SwaggerResponse(201, "Adds a new card", typeof(CardResponse))]
     [ProducesResponseType(typeof(CardResponse), 201)]
     public async Task<IActionResult> AddCard([FromBody] AddCardRequest request)
     {
@@ -50,7 +52,7 @@ public class TestController (ITestsService testsService) : BaseController
     [HttpPost]
     [Route("/begin")]
     [AllowAnonymous]
-    [SwaggerResponse(200, "Begin new test")]
+    [SwaggerResponse(200, "Begin new test", typeof(TestCardResponse))]
     [ProducesResponseType(typeof(TestCardResponse), 200)]
     public async Task<IActionResult> BeginTest([FromQuery] Guid testUuid)
     {
@@ -62,12 +64,22 @@ public class TestController (ITestsService testsService) : BaseController
     [HttpPost]
     [Route("/next")]
     [AllowAnonymous]
-    [SwaggerResponse(200, "Process answer and receive next one")]
+    [SwaggerResponse(200, "Process answer and receive next one", typeof(TestCardResponse))]
     [ProducesResponseType(typeof(TestCardResponse), 200)]
     public async Task<IActionResult> ProcessAnswer([FromBody] CardAnswerRequest request)
     {
         var card = await testsService.ProcessAnswer(request);
 
         return Ok(card);
+    }
+
+    [HttpGet("/statistics")]
+    [SwaggerResponse(200, "Gets test statistics", typeof(TestWithStatisticResponse))]
+    [ProducesResponseType(typeof(TestWithStatisticResponse), 200)]
+    public async Task<IActionResult> GetTestStatistics([FromQuery] Guid testUuid)
+    {
+        var statistics = await testsService.GetTestWithStatisticsAsync(testUuid).ConfigureAwait(false);
+
+        return Ok(statistics);
     }
 }

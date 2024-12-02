@@ -18,8 +18,8 @@ public class AuthorizationController(IAuthorizationService authorizationService)
     [Route("token")]
     [HttpPost]
     [EnableRateLimiting("TokenPolicy")]
-    [SwaggerResponse(200, "Returns access and refresh token")]
-    [SwaggerResponse(400, "Error getting response")]
+    [SwaggerResponse(200, "Returns access and refresh token", typeof(TokenResponse))]
+    [SwaggerResponse(400, "Error getting response", typeof(ErrorDetails))]
     [Produces<TokenResponse>]
     public async Task<IActionResult> Authorize([FromBody] UserAuthorizationRequest userData)
     {
@@ -29,8 +29,8 @@ public class AuthorizationController(IAuthorizationService authorizationService)
 
     [Route("register")]
     [HttpPost]
-    [SwaggerResponse(200, "Returns access and refresh token")]
-    [SwaggerResponse(400, "Error registing user")]
+    [SwaggerResponse(200, "Returns access and refresh token", typeof(TokenResponse))]
+    [SwaggerResponse(400, "Error registing user", typeof(ErrorDetails))]
     [Produces<TokenResponse>]
     public async Task<IActionResult> Register([FromBody] UserCreationRequest userData)
     {
@@ -52,8 +52,8 @@ public class AuthorizationController(IAuthorizationService authorizationService)
     [Route("token/refresh")]
     [HttpPost]
     [EnableRateLimiting("TokenPolicy")]
-    [SwaggerResponse(200, "Returns access and refresh token")]
-    [SwaggerResponse(400, "Error refreshing token")]
+    [SwaggerResponse(200, "Returns access and refresh token", typeof(TokenResponse))]
+    [SwaggerResponse(400, "Error refreshing token", typeof(ErrorDetails))]
     [Produces<TokenResponse>]
     public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequest userData)
     {
