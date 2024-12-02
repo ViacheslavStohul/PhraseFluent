@@ -83,6 +83,7 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
 
     public async Task<CardResponse> CreateCard(Guid? userId, AddCardRequest request)
     {
+        ArgumentNullException.ThrowIfNull(request);
         ArgumentNullException.ThrowIfNull(userId);
         ArgumentNullException.ThrowIfNull(request.AnswerOptions);
         var user = await testRepository.GetByUuidAsync<User>(userId.Value);
