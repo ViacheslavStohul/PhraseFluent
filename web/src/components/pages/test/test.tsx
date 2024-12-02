@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { useDispatch} from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import * as testService from '../../../service/word.service';
@@ -6,17 +6,16 @@ import { callErrorToast } from '../../../store/slice/toast';
 import './test.scss';
 import Card from '../../layouts/card/card';
 import { BeginTestResponse } from '../../../interfaces/test';
+import Checkbox from '../../fields/checkbox/checkbox';
+import { TextareaFieldComponent } from '../../fields/textarea/textarea';
 import { InputFieldComponent } from '../../fields/input-field/input-field';
-import { useTranslation } from 'react-i18next';
-import OptionCard from './option/option';
 
 const Test = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const {t} = useTranslation();
   const [searchParams] = useSearchParams();
   const [test, setTest] = useState<BeginTestResponse>();
-  const [text, setText] = useState<string>('');
+  const [text, setText] = useState<string | undefined>();
 
   useEffect(() => {
 
@@ -45,6 +44,9 @@ const Test = () => {
          ...prev.card,
           answerOptions: prev.card.answerOptions.map(option => {
             if (option.uuid === uuid) {
+              if (option.isCorrect && option.isAllowedText){
+                setText(undefined);
+              }
               return {
                ...option,
                 isCorrect:!option.isCorrect
@@ -71,29 +73,25 @@ const Test = () => {
     });
   }
 
-  const getText = () => {
-    if (!test?.card){
-      return '';
-    }
-    if (test?.card.questionType === 'Text'){
-      return t('enter-answer');
-    } else if (test?.card.questionType === 'TestOneAnswer'){
-      return t('choose-answer');
-    } else if (test?.card.questionType === 'TestManyAnswers'){
-      return t('choose-answers');
-    }
-  }
-
   return (
     <Card classes='testing-card'>
       { test?.card &&
       <>
       <div className='counter'>{test?.currentQuestion}/{test?.questions}</div>
-      <h2>{test?.card?.question}</h2>
-      <p style={{textAlign:"center"}}>{getText()}</p>
+      <h3>{test?.card?.question}</h3>
+      { test?.card.questionType === 'TestOneAnswer' &&
+      <p>
+        Оберіть одну з відповідей:
+        </p>
+      }
+      { test?.card.questionType === 'TestManyAnswers' &&
+      <p>
+        Оберіть одну або декілька відповідей:
+      </p>
+      }
       { test?.card?.questionType === 'Text' ?
-        <InputFieldComponent
-          labelText={t('answer-text')}
+        <TextareaFieldComponent
+          labelText='Відповідь'
           name='answer'
           value={text}
           changed={setText}
@@ -101,14 +99,32 @@ const Test = () => {
         :
         <div className='answer-grid'>
         {
-          test && test.card?.answerOptions.map((option, index)=> (
-            <OptionCard option={option} emit={() => changeOption(option.uuid??'')} key={index}/>
+          test && test.card?.answerOptions.map((option)=> (
+            <Fragment key={option.uuid}>
+            <Checkbox
+              label={option.optionText}
+              checked={option.isCorrect} 
+              onChange={() => changeOption(option.uuid??'')} 
+              isRadio={test?.card?.questionType === 'TestOneAnswer'}
+              />
+              {
+                option.isAllowedText &&
+                <InputFieldComponent
+                labelText=''
+                name='answer'
+                value={text ?? ''}
+                maxLength={50}
+                changed={setText}
+                disabled={!option.isCorrect}
+              />
+              }
+            </Fragment>
           ))
         }
       </div>
       }
       <div className='right'>
-        <button onClick={submit}>Next</button>
+        <button onClick={submit}>Наступне питання</button>
       </div>
       </>
       }

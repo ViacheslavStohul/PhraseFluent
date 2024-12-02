@@ -19,6 +19,12 @@
   position: relative;
   margin-right: 8px;
   transition: background-color 0.2s, border-color 0.2s;
+
+  &.radio {
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+  }
 }
 
 .custom-checkbox-input:checked + .custom-checkbox-marker {
@@ -26,7 +32,7 @@
   border-color: $second-color;
 }
 
-.custom-checkbox-marker::after {
+.custom-checkbox-marker.check::after {
   content: '';
   width: 6px;
   height: 10px;

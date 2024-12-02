@@ -1,36 +1,30 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './checkbox.scss';
 
 interface CustomCheckboxProps {
   label: string;
   checked?: boolean;
-  onChange?: (checked: boolean) => void;
+  onChange: (checked: boolean) => void;
+  isRadio?: boolean;
 }
 
 const Checkbox: React.FC<CustomCheckboxProps> = ({
   label,
   checked = false,
   onChange,
+  isRadio = false,
 }) => {
-  const [isChecked, setIsChecked] = useState(checked);
 
-  const handleCheckboxChange = () => {
-    const newCheckedState = !isChecked;
-    setIsChecked(newCheckedState);
-    if (onChange) {
-      onChange(newCheckedState);
-    }
-  };
 
   return (
     <label className="custom-checkbox">
       <input
         type="checkbox"
-        checked={isChecked}
-        onChange={handleCheckboxChange}
+        checked={checked ?? false}
+        onChange={()=> onChange(!checked)}
         className="custom-checkbox-input"
       />
-      <span className="custom-checkbox-marker" />
+      <span className={`custom-checkbox-marker ${isRadio ? 'radio' : 'check'}`} />
       {label && <span className="custom-checkbox-label">{label}</span>}
     </label>
   );

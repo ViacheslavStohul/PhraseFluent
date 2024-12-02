@@ -9,15 +9,17 @@ export interface IInputFieldProps {
   type?: string;
   isRequired?: boolean;
   placeholder?: string;
+  disabled?: boolean;
   regex?: RegExp;
   focus?: boolean;
   name: string;
+  maxLength?: number;
 }
 
 export const InputFieldComponent = (
   props: IInputFieldProps
 ): React.JSX.Element => {
-  const { labelText, value, changed, readonly, type, isRequired, placeholder, regex, focus, name } =
+  const { labelText, value, changed, readonly, type, isRequired, placeholder, regex, focus, name, disabled, maxLength } =
     props;
   const inputRef = useRef<HTMLInputElement|null>(null);
 
@@ -47,12 +49,14 @@ export const InputFieldComponent = (
     {labelText}{isRequired && '*'}
     </label>
     <input
+      maxLength={maxLength}
       ref={inputRef}
       className="required-field text-regular-m"
       type={type ?? 'text'}
       id={labelText}
       value={value}
       name={name}
+      disabled={disabled}
       onChange={onChange}
       readOnly={readonly}
       required={isRequired}
