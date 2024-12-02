@@ -75,7 +75,7 @@ const Test = () => {
 
   return (
     <Card classes='testing-card'>
-      { test?.card &&
+      { test?.card ?
       <>
       <div className='counter'>{test?.currentQuestion}/{test?.questions}</div>
       <h3>{test?.card?.question}</h3>
@@ -113,7 +113,7 @@ const Test = () => {
                 labelText=''
                 name='answer'
                 value={text ?? ''}
-                maxLength={50}
+                maxLength={40}
                 changed={setText}
                 disabled={!option.isCorrect}
               />
@@ -126,6 +126,11 @@ const Test = () => {
       <div className='right'>
         <button onClick={submit}>Наступне питання</button>
       </div>
+      </>
+      :
+      <>
+      <h2>Дякуємо за проходження опитування!</h2>
+      <p>Ваші результати були надіслані.</p>
       </>
       }
     </Card>
