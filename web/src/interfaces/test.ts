@@ -1,5 +1,4 @@
 import { IUser } from "./auth";
-import { Language } from "./lang";
 
 export interface Test {
   uuid: string;
@@ -7,8 +6,8 @@ export interface Test {
   description: string;
   imageUrl: string;
   cardsCount: number;
-  language: Language;
   createdBy: IUser;
+  cards: any[];
 }
 
 export interface Option {

@@ -1,18 +1,37 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './edit.scss';
 import '../new/new.scss';
 import { ICard, Test } from '../../../interfaces/test';
 import Card from '../../layouts/card/card';
 import CreateQuestionCard from './create-question-card/create-question-card';
-import { useTranslation } from 'react-i18next';
 import AnswerCard from './answer-card/answer-card';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import * as testService from '../../../service/word.service';
+import { useDispatch } from 'react-redux';
+import { callErrorToast } from '../../../store/slice/toast';
+import { Protection } from '../../protection/protection';
 
-const Edit = ({test}:{test: Test}) => {
-  const { t } = useTranslation();
+const Edit = () => {
   const [imageError, setImageError] = useState(false);
   const [cards, setCards]=useState<ICard[]>([]);
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const [test, setTest]=useState<Test>();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    let id = searchParams.get('id');
+    if (id) {
+      testService.getTest(id).then((test)=>{
+        setTest(test);
+      }).catch((error) => {
+        dispatch(callErrorToast({name: error.code, text: error.response?.data?.Message ?? error.response?.data?.Message ?? error.message}));
+      });
+    } else {
+      navigate('/');
+      return;
+    }
+  },[navigate, searchParams, dispatch]);
 
   const handleError = (): void => {
    setImageError(true);
@@ -24,6 +43,8 @@ const Edit = ({test}:{test: Test}) => {
 
   
   return (
+    <Protection>
+    { test &&
     <div className='new-edit'>
       <Card classes='new-test'>
         <div className='new-test-text'>
@@ -38,10 +59,10 @@ const Edit = ({test}:{test: Test}) => {
       {
         cards.map((card, index) => (
           <Card classes='new-card' key={index+'-question'}>
-            <h2>{t('question')} {index+1}</h2>
+            <h2>Питання {index+1}</h2>
             {card.question}
             {card.questionType==='Text' ?
-              <label>{t('correct-answer')}: {card?.answerOptions?.[0]?.optionText}</label>
+              <label>Правильна відповідь: {card?.answerOptions?.[0]?.optionText}</label>
               :
               <div className='answer-grid'>
                 {
@@ -55,8 +76,10 @@ const Edit = ({test}:{test: Test}) => {
         ))
       }
       <CreateQuestionCard emit={addQuestion} testId={test.uuid}/>
-      <button onClick={()=>navigate('/')}>{t('finish-test-creation')}</button>
+      <button onClick={()=>navigate('/')}>Завершити</button>
     </div>
+    }
+    </Protection>
   );
 }
 

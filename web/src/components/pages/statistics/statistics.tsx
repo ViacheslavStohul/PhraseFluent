@@ -12,7 +12,6 @@ const Statistics = () => {
   const [searchParams] = useSearchParams();
 
   useEffect(() => {
-
     let id = searchParams.get('id');
     if (id) {
       testService.statsTest(id).then((res)=>{

@@ -32,7 +32,10 @@ const TestCard = ({test}:{test:Test}): React.JSX.Element => {
         </div>
         <div className='bottom'>
         { user &&
+        <>
         <Link to={`/statistics?id=${test.uuid}`}>Переглянути статистику</Link>
+        <Link to={`/edit?id=${test.uuid}`}>Редагувати</Link>
+        </>
         }
         <Link className='link' to={`/test?id=${test.uuid}`}>Пройти опитування</Link>
         </div>
