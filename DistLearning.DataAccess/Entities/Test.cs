@@ -5,13 +5,13 @@ namespace DistLearning.DataAccess.Entities;
 
 public class Test : BaseId
 {
-    [StringLength(100)]
+    [StringLength(250)]
     public required string Title { get; set; }
     
-    [StringLength(100)]
+    [StringLength(250)]
     public required string NormalizedTitle { get; set; }
     
-    [StringLength(1000)]
+    [StringLength(1500)]
     public string? Description { get; set; }
     
     [StringLength(255)]
