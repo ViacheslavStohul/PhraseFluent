@@ -59,10 +59,11 @@ const CreateQuestionCard = ({emit, testId}: IProps) => {
   const isDisabled = () => {
     return !card.question || 
     card.question.length < 2 || 
-    !card.questionType || 
-    !card.answerOptions || 
+    !card.questionType ||
+    ( card.questionType !== 'Text' &&
+    (!card.answerOptions || 
     card.answerOptions.length === 0 ||
-    card.answerOptions.some(option => option.optionText.length < 1);
+    card.answerOptions.some(option => option.optionText.length < 1)));
   }
 
   const changeOption = (option: Option, index?: number) => {
