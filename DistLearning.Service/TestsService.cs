@@ -103,11 +103,11 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
 
         switch (request.QuestionType)
         {
-            case QuestionType.Text when request.AnswerOptions == null || request.AnswerOptions.Count > 1:
+            case QuestionType.Text when request.AnswerOptions.Count > 1:
                 throw new ArgumentException("Text questions must have only 1 answer option");
             case QuestionType.None:
                 throw new ArgumentException("Invalid question type");
-            case QuestionType.TestManyAnswers or QuestionType.TestOneAnswer when request.AnswerOptions == null || request.AnswerOptions.Count < 2:
+            case QuestionType.TestManyAnswers or QuestionType.TestOneAnswer when request.AnswerOptions.Count < 2:
                 throw new ArgumentException("Для цього типу запитання виберіть хочаб дві відповіді");
         }
 
