@@ -12,7 +12,7 @@ public class Card : BaseId
     [ForeignKey(nameof(Test))]
     public long TestId { get; set; }
 
-    public Test Test;
+    public Test Test { get; set; }
     
     public QuestionType QuestionType { get; set; }
     
