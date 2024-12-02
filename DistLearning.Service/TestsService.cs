@@ -237,6 +237,18 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
     
     private static void ProcessAnswerOptionStatistic(Card card, List<AnswerAttempt> cardAnswerAttempts, int totalAttempts, CardWithStatisticsResponse cardDto, TestWithStatisticResponse testDto)
     {
+        var textAnswers = cardAnswerAttempts
+            .Where(a => !string.IsNullOrWhiteSpace(a.TextAnswer))
+            .GroupBy(a => a.TextAnswer)
+            .Select(g => new TextAnswerResponse()
+            {
+                Text = g.Key!,
+                Count = g.Count()
+            })
+            .ToList();
+
+        cardDto.TextAnswers = textAnswers;
+        
         foreach (var answerOption in card.AnswerOptions)
         {
             var optionAttempts = cardAnswerAttempts
@@ -256,18 +268,6 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
             };
 
             cardDto.AnswerOptions.Add(answerOptionDto);
-                
-            var textAnswers = cardAnswerAttempts
-                .Where(a => !string.IsNullOrWhiteSpace(a.TextAnswer))
-                .GroupBy(a => a.TextAnswer)
-                .Select(g => new TextAnswerResponse()
-                {
-                    Text = g.Key!,
-                    Count = g.Count()
-                })
-                .ToList();
-
-            cardDto.TextAnswers = textAnswers;
         }
         
         testDto.Cards.Add(cardDto);
