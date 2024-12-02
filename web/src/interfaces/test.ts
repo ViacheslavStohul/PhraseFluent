@@ -12,8 +12,9 @@ export interface Test {
 
 export interface Option {
   optionText: string;
-  isCorrect: boolean;
+  isCorrect?: boolean;
   uuid?: string;
+  isAllowedText?: boolean;
 }
 
 export interface ICard {

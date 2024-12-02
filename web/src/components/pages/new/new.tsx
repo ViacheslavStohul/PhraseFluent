@@ -73,6 +73,7 @@ const NewTest = () => {
           readonly={isSubmited}
           name="test-picture"
           changed={(value) => handleChange('imageUrl', value)}/>
+          <div>
         <button
           type='button'
           disabled={!newTest.title || isSubmited}
@@ -80,6 +81,7 @@ const NewTest = () => {
             <PlusSVG/>
           Створити тест
         </button>
+        </div>
       </div>
       <img 
         alt={newTest?.title}

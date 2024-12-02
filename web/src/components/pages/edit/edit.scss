@@ -21,7 +21,13 @@
 }
 
 .answer-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 200px));
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
   gap: 10px;
 }

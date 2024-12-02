@@ -1,6 +1,5 @@
 import React, { useMemo, useState } from 'react';
 import Card from '../../../layouts/card/card';
-import { useTranslation } from 'react-i18next';
 import { ICard,Option } from '../../../../interfaces/test';
 import * as langService from '../../../../service/word.service';
 import { callErrorToast } from '../../../../store/slice/toast';
@@ -9,6 +8,7 @@ import { InputFieldComponent } from '../../../fields/input-field/input-field';
 import Select from 'react-select';
 import { IOption } from '../../../../interfaces/option';
 import AnswerCard from '../answer-card/answer-card';
+import Checkbox from '../../../fields/checkbox/checkbox';
 
 interface IProps {
   emit: (card: ICard) => void;
@@ -17,20 +17,24 @@ interface IProps {
 
 
 const CreateQuestionCard = ({emit, testId}: IProps) => {
-  const { t } = useTranslation();
   const dispatch = useDispatch();
   const [card, setCard] = useState<Partial<ICard>>({});
+  const [custom, setCustom] = useState<boolean>(false);
 
   const types: IOption[] = useMemo(()=>[
-    {value: 'Text', label: t('text').toString()},
-    {value: 'TestOneAnswer', label: t('test-one').toString()},
-    {value: 'TestManyAnswers', label: t('test-many').toString()},
-  ],[t]);
+    {value: 'Text', label: 'Текст'},
+    {value: 'TestOneAnswer', label: 'Одна відповідь'},
+    {value: 'TestManyAnswers', label: 'Багато відповідей'},
+  ],[]);
 
   const createCard = () => {
-    langService.createCard({...card, testUuid: testId} as ICard)
+    const newCard = card;
+    if (custom){
+      newCard.answerOptions = [...(newCard.answerOptions ?? []), {optionText: 'Інше:', isAllowedText: true} ];
+    }
+    langService.createCard({...newCard, testUuid: testId} as ICard)
     .then(()=>{
-      emit({...card, testUuid: testId} as ICard);
+      emit({...newCard, testUuid: testId} as ICard);
       setCard({});
     })
     .catch((error) => {
@@ -47,27 +51,17 @@ const CreateQuestionCard = ({emit, testId}: IProps) => {
       [key]: value,
       answerOptions: key === 'questionType' && value !== prevCard.questionType ? []: prevCard.answerOptions
     }));
+    if (key === 'questionType'){
+      setCustom(false);
+    }
   };
-
-  const setTextAnswer = (value: string) => {
-    setCard((prevCard) => ({
-     ...prevCard,
-      answerOptions: [
-        {
-          optionText: value,
-          isCorrect: true
-        }
-      ]
-    }));
-  }
 
   const isDisabled = () => {
     return !card.question || 
     card.question.length < 2 || 
     !card.questionType || 
     !card.answerOptions || 
-    card.answerOptions.length === 0 || 
-    !card.answerOptions.some(option => option.isCorrect) || 
+    card.answerOptions.length === 0 ||
     card.answerOptions.some(option => option.optionText.length < 1);
   }
 
@@ -76,20 +70,21 @@ const CreateQuestionCard = ({emit, testId}: IProps) => {
      ...prevCard,
       answerOptions: 
       index !== undefined ? 
-        prevCard.answerOptions ? prevCard.answerOptions.map((prevOption, i) => i === index? option : {...prevOption, isCorrect: prevCard.questionType === 'TestOneAnswer' && option.isCorrect ? false : prevOption.isCorrect }) : []
+        prevCard.answerOptions ? prevCard.answerOptions.map((prevOption, i) => i === index? option : prevOption) : []
       : [
-          ...(prevCard.answerOptions? prevCard.answerOptions.map(prevOption => ({...prevOption, isCorrect: prevCard.questionType === 'TestOneAnswer' && option.isCorrect ? false : prevOption.isCorrect})): []),
+          ...(prevCard.answerOptions ?? []),
           option
         ]
     }));
   
   }
 
+
   return (
     <Card classes='new-card'>
-      <h2>{t('new-question')}</h2>
+      <h2>Нове питання</h2>
       <InputFieldComponent 
-        labelText={t("question-text")}
+        labelText='Текст запитання'
         name='question-text'
         isRequired={true}
         value={card.question??''}
@@ -98,7 +93,7 @@ const CreateQuestionCard = ({emit, testId}: IProps) => {
         <label
           className="label"
         >
-          {t("question-type")}
+          Тип питання
         </label>
         <Select
           classNamePrefix='select'
@@ -116,20 +111,23 @@ const CreateQuestionCard = ({emit, testId}: IProps) => {
                 <AnswerCard option={option} emit={(value)=> changeOption(value, index)} key={index}/>
               ))
             }
-            <AnswerCard emit={changeOption}/>
           </div>
-        : card.questionType === 'Text' ?
-            <InputFieldComponent 
-              labelText={t("answer-text")}
-              name='answer'
-              value={card?.answerOptions?.[0]?.optionText??''}
-              changed={setTextAnswer}/>
         :
         <></>
       }
+        { card.questionType === 'TestManyAnswers' &&
+        <Checkbox label='Додати власну відповідь' checked={custom} onChange={() => setCustom(!custom)}/>
+        }
+      <div className='buttons'>
+        { (card.questionType === 'TestOneAnswer' || card.questionType === 'TestManyAnswers') &&
+        <button onClick={()=> changeOption({optionText:''})}>
+          Додати варіант відповіді
+        </button>
+        }
       <button onClick={createCard} disabled={isDisabled()}>
-        {t('create-question')}
+        Створити питання
       </button>
+      </div>
     </Card>
   );
 }

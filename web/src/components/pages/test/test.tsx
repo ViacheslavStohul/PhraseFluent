@@ -10,7 +10,7 @@ import { InputFieldComponent } from '../../fields/input-field/input-field';
 import { useTranslation } from 'react-i18next';
 import OptionCard from './option/option';
 
-const User = () => {
+const Test = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const {t} = useTranslation();
@@ -116,4 +116,4 @@ const User = () => {
   );
 }
 
-export default User;
+export default Test;

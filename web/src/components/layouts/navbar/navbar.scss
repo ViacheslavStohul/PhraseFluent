@@ -83,11 +83,11 @@ font-size: 1.25rem;
   }
 }
 
-nav a.active {
+.nav-links a.active {
   background-color: #5946ac;
 }
 
-nav a:hover, nav .exit:hover {
+.nav-links a:hover, nav .exit:hover {
   text-decoration: none;
   background-color: #5946ac;
 }
