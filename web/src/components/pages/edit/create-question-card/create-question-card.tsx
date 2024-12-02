@@ -35,7 +35,7 @@ const CreateQuestionCard = ({emit, testId}: IProps) => {
     langService.createCard({...newCard, testUuid: testId} as ICard)
     .then(()=>{
       emit({...newCard, testUuid: testId} as ICard);
-      setCard({});
+      setCard(prev => ({questionType: prev.questionType}));
     })
     .catch((error) => {
       dispatch(callErrorToast({name: error.code, text: error.response?.data?.Message ?? error.response?.data?.Message ?? error.message}));
@@ -80,6 +80,13 @@ const CreateQuestionCard = ({emit, testId}: IProps) => {
   
   }
 
+  const deleteOption = (index: number) => {
+    setCard((prevCard) => ({
+      ...prevCard,
+       answerOptions: prevCard.answerOptions ?  prevCard.answerOptions.filter((_, i)=> index !== i): []
+     }));
+  }
+
 
   return (
     <Card classes='new-card'>
@@ -101,6 +108,7 @@ const CreateQuestionCard = ({emit, testId}: IProps) => {
           className='select'
           aria-label='type'
           placeholder={''}
+          value={types.find(type => type.value === card.questionType)}
           options={types}
           onChange={(value) => handleChange('questionType',value?.value??'')}/>
         </div>
@@ -109,14 +117,14 @@ const CreateQuestionCard = ({emit, testId}: IProps) => {
           <div className='answer-grid'>
             {
               card.answerOptions && card.answerOptions.map((option, index)=> (
-                <AnswerCard option={option} emit={(value)=> changeOption(value, index)} key={index}/>
+                <AnswerCard option={option} emit={(value)=> changeOption(value, index)} onDelete={()=> deleteOption(index)} key={index}/>
               ))
             }
           </div>
         :
         <></>
       }
-        { card.questionType === 'TestManyAnswers' &&
+        { (card.questionType === 'TestOneAnswer' || card.questionType === 'TestManyAnswers') &&
         <Checkbox label='Додати власну відповідь' checked={custom} onChange={() => setCustom(!custom)}/>
         }
       <div className='buttons'>
