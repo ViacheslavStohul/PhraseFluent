@@ -36,6 +36,7 @@ public class AuthorizationController(IAuthorizationService authorizationService)
     {
         //var token = await authorizationService.RegisterUser(userData);
         //return Ok(token);
+        
         var error = new ErrorDetails
         {
             StatusCode = 403,
