@@ -62,7 +62,7 @@ const Edit = () => {
             <h2>Питання {index+1}</h2>
             {card.question}
             {card.questionType==='Text' ?
-              <label>Правильна відповідь: {card?.answerOptions?.[0]?.optionText}</label>
+              <></>
               :
               <div className='answer-grid'>
                 {
