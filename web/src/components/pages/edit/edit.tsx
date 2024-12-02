@@ -24,6 +24,7 @@ const Edit = () => {
     if (id) {
       testService.getTest(id).then((test)=>{
         setTest(test);
+        setCards(test.cards);
       }).catch((error) => {
         dispatch(callErrorToast({name: error.code, text: error.response?.data?.Message ?? error.response?.data?.Message ?? error.message}));
       });
