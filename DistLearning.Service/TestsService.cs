@@ -20,13 +20,13 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
         return responses;
     }
     
-    public async Task<PaginationResponse<TestWithCardsResponse>> GetTestInfo(Guid testUuid)
+    public async Task<TestWithCardsResponse> GetTestInfo(Guid testUuid)
     {
         var test =  await testRepository.TestWithCards(testUuid);
         
         ArgumentNullException.ThrowIfNull(test);
         
-        var responses = mapper.Map<PaginationResponse<TestWithCardsResponse>>(test);
+        var responses = mapper.Map<TestWithCardsResponse>(test);
 
         return responses;
     }

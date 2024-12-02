@@ -26,11 +26,11 @@ public class TestController (ITestsService testsService) : BaseController
     }
     
     [HttpGet]
-    [SwaggerResponse(200, "Gets user test list", typeof(TestWithCardsResponse))]
+    [SwaggerResponse(200, "Gets test", typeof(TestWithCardsResponse))]
     [Produces<TestWithCardsResponse>]
-    public async Task<IActionResult> GetUserTestList([FromQuery] TestSearchRequest request)
+    public async Task<IActionResult> GetUserTestList(Guid uuid)
     {
-        var tests = await testsService.GetTestList(request);
+        var tests = await testsService.GetTestInfo(uuid);
         
         return Ok(tests);
     }
