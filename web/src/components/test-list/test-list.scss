@@ -1,8 +1,15 @@
 .test-list-header {
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: auto 1fr auto;
   width: 100%;
-  gap: 10px;
+  gap: 20px;
+
+  
+  @media (max-width: 600px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 }
 
 .card-column {
@@ -12,7 +19,7 @@
 }
 
 .test-table {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 200px));
+  display: flex;
+  flex-direction: column;
   gap: 15px;
 }

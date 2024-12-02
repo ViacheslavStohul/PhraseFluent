@@ -5,7 +5,6 @@ import TestList from '../../test-list/test-list';
 const Tests = () => {
 
 
-  
   return (
     <>
       <TestList title='Усі тести'/>

@@ -52,7 +52,7 @@ nav .logo-two {
   }
 }
 
-nav .nav-links a {
+nav .nav-links a, nav .nav-links .exit {
   color: white;
   height: 100%;
   display: block;
@@ -87,7 +87,7 @@ nav a.active {
   background-color: #5946ac;
 }
 
-nav a:hover {
+nav a:hover, nav .exit:hover {
   text-decoration: none;
   background-color: #5946ac;
 }

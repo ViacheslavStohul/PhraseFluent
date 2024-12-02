@@ -36,6 +36,14 @@ const children: RouteObject[] = [
             )
           },
           {
+            path: 'statistics',
+            lazy: () => import('../components/pages/statistics/statistics').then(
+              (module) => ({
+                Component: module.default
+              })
+            )
+          },
+          {
             path: 'tests',
             lazy: () => import('../components/pages/tests/tests').then(
               (module) => ({
@@ -67,14 +75,14 @@ const children: RouteObject[] = [
           })
         )
       },
-      {
-        path: 'registration',
-        lazy: () => import('../components/pages/registration/registration').then(
-          (module) => ({
-            Component: module.default
-          })
-        )
-      },
+      // {
+      //   path: 'registration',
+      //   lazy: () => import('../components/pages/registration/registration').then(
+      //     (module) => ({
+      //       Component: module.default
+      //     })
+      //   )
+      // },
       {
         path: '*',
         lazy: () => import('../components/pages/authorization/authorization').then(
