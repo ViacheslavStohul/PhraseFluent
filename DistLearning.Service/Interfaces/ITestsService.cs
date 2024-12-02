@@ -16,4 +16,6 @@ public interface ITestsService
     Task<TestCardResponse?> ProcessAnswer(CardAnswerRequest request);
 
     Task<TestWithStatisticResponse> GetTestWithStatisticsAsync(Guid testUuid);
+
+    Task<PaginationResponse<TestWithCardsResponse>> GetTestInfo(Guid testUuid);
 }

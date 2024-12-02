@@ -25,6 +25,16 @@ public class TestController (ITestsService testsService) : BaseController
         return Ok(tests);
     }
     
+    [HttpGet]
+    [SwaggerResponse(200, "Gets user test list", typeof(TestWithCardsResponse))]
+    [Produces<TestWithCardsResponse>]
+    public async Task<IActionResult> GetUserTestList([FromQuery] TestSearchRequest request)
+    {
+        var tests = await testsService.GetTestList(request);
+        
+        return Ok(tests);
+    }
+    
     [HttpPost]
     [Route("/new")]
     [SwaggerResponse(201, "Adds a new test", typeof(TestResponse))]

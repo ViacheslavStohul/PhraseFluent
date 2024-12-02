@@ -14,5 +14,6 @@ public class AppMappingProfile : Profile
         CreateMap<Card, CardResponse>();
         CreateMap<AnswerOption, BaseAnswerOptionResponse>();
         CreateMap<PaginationHelper<Test>, PaginationResponse<TestResponse>>();
+        CreateMap<Test, TestWithCardsResponse>();
     }
 }
