@@ -27,10 +27,11 @@ public class TestController (ITestsService testsService) : BaseController
     
     [HttpGet]
     [SwaggerResponse(200, "Gets test", typeof(TestWithCardsResponse))]
+    [AllowAnonymous]
     [Produces<TestWithCardsResponse>]
     public async Task<IActionResult> GetUserTestList(Guid uuid)
     {
-        var tests = await testsService.GetTestInfo(uuid);
+        var tests = await testsService.GetTestInfo(uuid, UserId);
         
         return Ok(tests);
     }

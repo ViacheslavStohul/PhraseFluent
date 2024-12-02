@@ -20,15 +20,21 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
         return responses;
     }
     
-    public async Task<TestWithCardsResponse> GetTestInfo(Guid testUuid)
+    public async Task<TestResponse> GetTestInfo(Guid testUuid, Guid? userUuid)
     {
-        var test =  await testRepository.TestWithCards(testUuid);
-        
-        ArgumentNullException.ThrowIfNull(test);
-        
-        var responses = mapper.Map<TestWithCardsResponse>(test);
-
-        return responses;
+        if (userUuid == null)
+        {
+            var test = await testRepository.GetByUuidAsync<Test>(testUuid);
+            var response = mapper.Map<TestResponse>(test);
+            return response;
+        }
+        else
+        {
+            var test =  await testRepository.TestWithCards(testUuid);
+            ArgumentNullException.ThrowIfNull(test);
+            var response = mapper.Map<TestWithCardsResponse>(test);
+            return response;
+        }
     }
 
     public async Task<TestResponse> AddTest(AddTestRequest request, Guid userUuid)
