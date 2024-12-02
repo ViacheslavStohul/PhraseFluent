@@ -201,7 +201,7 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
             return new TestCardResponse()
             {
                 Card = null,
-                CurrentQuestion = nextQuestionIndex + 1,
+                CurrentQuestion = nextQuestionIndex + 2,
                 Questions = questionOrder.Count
             };
         }
