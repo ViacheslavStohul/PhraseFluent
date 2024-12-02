@@ -69,6 +69,7 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
             Description = test.Description,
             ImageUrl = test.ImageUrl,
             CardsCount = test.CardsCount,
+            CompletedAttempts = answerAttempts.Count > 0 ? answerAttempts.GroupBy(x => x.TestAttemptId).Count() : 0,
             Cards = []
         };
 
