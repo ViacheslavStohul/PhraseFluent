@@ -1,15 +1,7 @@
 import axios from "axios";
-import { Language } from "../interfaces/lang";
 import { mapObjectToParams } from "../functions/params";
 import { BeginTestResponse, ICard, NextTestRequest, Test, createTestRequest } from "../interfaces/test";
 import { List } from "../interfaces/list";
-
-const baseUrl = '/api/word'
-
-export const getLangs = async (): Promise<Language[]> => {
-    const { data } = await   axios.get(`${baseUrl}/languages`);
-    return data;
-}
 
 export interface ListRequest {
   Page: number;
@@ -44,5 +36,10 @@ export const statsTest = async (id: string): Promise<any> => {
 
 export const nextTest = async (next: NextTestRequest): Promise<BeginTestResponse> => {
   const { data } = await axios.post(`/next`, next);
+  return data;
+}
+
+export const getTest = async (id: string): Promise<Test> => {
+  const { data } = await axios.get(`api/test/?uuid=${id}`);
   return data;
 }

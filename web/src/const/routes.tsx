@@ -28,6 +28,14 @@ const children: RouteObject[] = [
             )
           },
           {
+            path: 'edit',
+            lazy: () => import('../components/pages/edit/edit').then(
+              (module) => ({
+                Component: module.default
+              })
+            )
+          },
+          {
             path: 'test',
             lazy: () => import('../components/pages/test/test').then(
               (module) => ({

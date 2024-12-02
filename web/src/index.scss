@@ -49,32 +49,16 @@ label {
 }
 
 button {
-  font-size: 1em;
-  border-radius: 4px;
-  display: flex;
-  flex-direction: row;
-  gap: 5px;
-  padding: 15px 30px;
-  width: max-content;
-  flex-wrap: nowrap;
-  color: $font-second-color;
-  background-color: $second-color;
+  background-color: #38356c;
+  color: white;
   border: none;
+  font-size: 1.2rem;
+  padding: 1rem 2rem;
+  border-radius: 4px;
   cursor: pointer;
-  transition: 0.2s ease-in-out;
-  height: min-content;
-  text-decoration: none !important;
 
-  &:hover {
-    filter:brightness(1.2);
-  }
-
-  &:disabled,
-  &:disabled:hover {
-  background-color: $font-color-light;
-  opacity: 0.7;
-  filter: none;
-  cursor: not-allowed
+  :hover {
+    background-color: #5946ac;
   }
 }
 
