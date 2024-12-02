@@ -3,6 +3,13 @@
   grid-template-columns: auto 1fr auto;
   width: 100%;
   gap: 20px;
+
+  
+  @media (max-width: 600px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 }
 
 .card-column {

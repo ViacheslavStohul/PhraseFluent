@@ -37,6 +37,10 @@ export const beginTest = async (id: string): Promise<BeginTestResponse> => {
   const { data } = await axios.post(`/begin?testUuid=${id}`);
   return data;
 }
+export const statsTest = async (id: string): Promise<any> => {
+  const { data } = await axios.get(`/statistics?testUuid=${id}`);
+  return data;
+}
 
 export const nextTest = async (next: NextTestRequest): Promise<BeginTestResponse> => {
   const { data } = await axios.post(`/next`, next);
