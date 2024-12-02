@@ -24,6 +24,8 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
     {
         var test =  await testRepository.TestWithCards(testUuid);
         
+        ArgumentNullException.ThrowIfNull(test);
+        
         var responses = mapper.Map<PaginationResponse<TestWithCardsResponse>>(test);
 
         return responses;
