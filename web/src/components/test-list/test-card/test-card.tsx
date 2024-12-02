@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import { Test } from '../../../interfaces/test';
 import './test-card.scss';
-import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
 
 const TestCard = ({test}:{test:Test}): React.JSX.Element => {
   const [imageError, setImageError] = useState(false);
-  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const handleError = (): void => {
@@ -25,15 +23,8 @@ const TestCard = ({test}:{test:Test}): React.JSX.Element => {
         onError={handleError}/>
       <div className='test-text'>
         <h4>{test.title}</h4>
-        <span>{t('by')} <Link to={`/profile?id=${test.createdBy.uuid}`}>{test.createdBy.username}</Link></span>
-        <div className='bottom-test'>
-          <div className='chip'>
-            {test.language.nativeName}
-          </div>
-          <div>
-            {test.cardsCount} {t('cards')}
-          </div>
-        </div>
+        <p>{test.description}</p>
+        <Link className='link' to={`/test?id=${test.uuid}`}>Пройти опитування</Link>
       </div>
     </div>
   );

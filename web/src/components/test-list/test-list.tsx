@@ -62,6 +62,10 @@ const TestList:FC<TestListProps> = ({title}) => {
     <Card classes='card-column'>
       <div className='test-list-header'>
         <h1>{title}</h1>
+        <InputFieldComponent 
+          labelText='Пошук'
+          name='search'
+          changed={handleChange}/>
         { user &&
         <button
           type='button'
@@ -71,16 +75,10 @@ const TestList:FC<TestListProps> = ({title}) => {
         </button>
         }
       </div>
-      <div className='test-list-header'>
-        <InputFieldComponent 
-          labelText='Пошук'
-          name='search'
-          changed={handleChange}/>
-      </div>
       <div className='test-table'>
       {
         tests.map(test => (
-          <TestCard test={test} key={test.uuid}/>
+          <TestCard test={test} key={test?.uuid}/>
         ))
       }
       <div ref={ref}>

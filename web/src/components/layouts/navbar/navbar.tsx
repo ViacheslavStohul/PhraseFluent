@@ -3,7 +3,6 @@ import './navbar.scss';
 import { Link, NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { AuthActions, AuthSelectors } from '../../../store/slice/auth';
-import User from './user/user';
 
 const Navbar = () => {
   const user = useSelector(AuthSelectors.selectUser);
@@ -27,13 +26,9 @@ const Navbar = () => {
             <NavLink to="/">Головна</NavLink>
             <NavLink to="/tests">Опитування</NavLink>
             { user ? 
-            <>
-            <User/>
-              <div onClick={logout} className='pointer'>Вийти</div>
-            </>
+              <div onClick={logout} className='pointer exit'>Вийти</div>
             :
             <>
-            <NavLink to='/registration' end>Реєстрація</NavLink>
             <NavLink to='/authorization' end>Вхід</NavLink>
             </>
             }
