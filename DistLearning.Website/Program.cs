@@ -141,7 +141,8 @@ internal static class Program
         services.AddCors(options =>
         {
             options.AddDefaultPolicy(
-                conf => conf.WithOrigins("http://195.138.81.28:3000")
+               // conf => conf.WithOrigins("http://195.138.81.28:3000")
+                conf => conf.WithOrigins("*")
                     .AllowAnyMethod()
                     .AllowAnyHeader());
         });
