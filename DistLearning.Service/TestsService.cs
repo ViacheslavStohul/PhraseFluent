@@ -61,7 +61,7 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
             Cards = []
         };
 
-        if (test.Cards != null)
+        if (test.Cards != null && test.Cards.Count != 0)
         {
             ProcessCardStatistic(test, answerAttempts, testDto);
         }
@@ -137,7 +137,10 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
         var testWithCards = await testRepository.TestWithCards(testUuid);
         
         ArgumentNullException.ThrowIfNull(testWithCards);
-        ArgumentNullException.ThrowIfNull(testWithCards.Cards);
+        if (testWithCards.Cards == null || testWithCards.Cards.Count == 0)
+        {
+            throw new ArgumentException("Test has no questions");
+        }
 
         testWithCards.Cards = testWithCards.Cards.Where(x => x.IsActive == true).ToList();
         var questionOrder = string.Join(",", testWithCards.Cards.Select(c => c.Id));
