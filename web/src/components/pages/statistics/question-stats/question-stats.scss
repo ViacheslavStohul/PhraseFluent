@@ -70,9 +70,13 @@
       margin-top: 20px;
       width: 100%;
       display: flex;
-      justify-content: space-between;
+      gap: 20px;
       align-items: center;
       flex-direction: row;
+
+      @media (min-width: 2000px) {
+        gap: 30px;
+      }
     }
 
     .content.open {
