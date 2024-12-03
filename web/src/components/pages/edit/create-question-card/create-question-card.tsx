@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import Card from '../../../layouts/card/card';
 import { ICard,Option } from '../../../../interfaces/test';
 import * as langService from '../../../../service/word.service';
@@ -6,9 +6,9 @@ import { callErrorToast } from '../../../../store/slice/toast';
 import { useDispatch } from 'react-redux';
 import { InputFieldComponent } from '../../../fields/input-field/input-field';
 import Select from 'react-select';
-import { IOption } from '../../../../interfaces/option';
 import AnswerCard from '../answer-card/answer-card';
 import Checkbox from '../../../fields/checkbox/checkbox';
+import { types } from '../../../../const/types';
 
 interface IProps {
   emit: (card: ICard) => void;
@@ -20,12 +20,6 @@ const CreateQuestionCard = ({emit, testId}: IProps) => {
   const dispatch = useDispatch();
   const [card, setCard] = useState<Partial<ICard>>({});
   const [custom, setCustom] = useState<boolean>(false);
-
-  const types: IOption[] = useMemo(()=>[
-    {value: 'Text', label: 'Текст'},
-    {value: 'TestOneAnswer', label: 'Одна відповідь'},
-    {value: 'TestManyAnswers', label: 'Багато відповідей'},
-  ],[]);
 
   const createCard = () => {
     const newCard = card;
