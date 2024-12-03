@@ -26,6 +26,11 @@ body {
   color: $font-color;
   background-color: $bg-color;
 
+  @media (min-width: 2000px) {
+    font-size: 1.25rem;
+
+  }
+
   @media (max-width: 768px) {
     padding-top: 60px;
 }
