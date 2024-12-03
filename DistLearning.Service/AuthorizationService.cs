@@ -211,7 +211,7 @@ public partial class AuthorizationService(
         {
             Subject = new ClaimsIdentity(claims),
             Expires = expiry,
-            SigningCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256Signature),
+            SigningCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.RsaSha256),
             Issuer = _tokenConfiguration.Issuer,
             Audience = _tokenConfiguration.Audience
         };
