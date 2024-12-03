@@ -269,7 +269,7 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
                 Uuid = answerOption.Uuid,
                 OptionText = answerOption.OptionText,
                 SelectionCount = selectionCount,
-                SelectionPercentage = percentage,
+                SelectionPercentage = (int)percentage,
                 IsAllowedText = answerOption.IsAllowedText,
             };
 
