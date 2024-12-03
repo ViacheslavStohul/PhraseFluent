@@ -9,6 +9,10 @@
 .main-body-body {
   padding: $padding $side-padding ;
 
+  @media (max-width: 1100px) {
+    padding: 20px 5vw;
+}
+
   @media (max-width: 768px) {
       padding: 0;
   }
