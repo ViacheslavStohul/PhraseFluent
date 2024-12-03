@@ -32,6 +32,9 @@ nav .logo img {
   margin: 0.5rem 0;
   margin-right: 50px;
 
+  @media (min-width: 2000px) {
+    height: 80px;
+  }
 }
 
 nav .logo{
@@ -57,7 +60,7 @@ nav .nav-links a, nav .nav-links .exit {
   height: 100%;
   display: block;
   padding: 0 1rem;
-font-size: 1.25rem;
+  font-size: 1.25em;
   text-decoration: none;
   margin: 0;
   font-weight: bold;
@@ -67,6 +70,10 @@ font-size: 1.25rem;
       padding: 0 5px;
       font-size: 1rem;
       line-height: 60px;
+  }
+
+  @media (min-width: 2000px) {
+    line-height: 100px;
   }
 }
 
@@ -80,6 +87,10 @@ font-size: 1.25rem;
 
   @media (max-width: 768px) {
       height: 60px;
+  }
+
+  @media (min-width: 2000px) {
+    height: 100px;
   }
 }
 
