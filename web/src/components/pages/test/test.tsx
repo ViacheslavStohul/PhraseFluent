@@ -57,7 +57,7 @@ const TestPage = () => {
        ...prev,
         card: {
          ...prev.card,
-          answerOptions: prev.card.answerOptions.map(option => {
+          answerOptions: prev.card.answerOptions?.map(option => {
             if (option.uuid === uuid) {
               if (option.isCorrect && option.isAllowedText){
                 setText(undefined);
@@ -79,7 +79,7 @@ const TestPage = () => {
       cardUuid: test?.card?.uuid ?? '',
       testAttemptUuid: test?.testAttemptUuid ?? '',
       answerString: text? text : undefined,
-      pickedOptions: test?.card?.answerOptions.filter(option => option.isCorrect).map(option => option.uuid??'') ?? undefined
+      pickedOptions: test?.card?.answerOptions?.filter(option => option.isCorrect).map(option => option.uuid??'') ?? undefined
     }).then((res)=>{
       setTest(res);
       setText('');
@@ -124,7 +124,7 @@ const TestPage = () => {
         :
         <div className='answer-grid'>
         {
-          test && test.card?.answerOptions.map((option)=> (
+          test && test.card?.answerOptions?.map((option)=> (
             <Fragment key={option.uuid}>
             <Checkbox
               label={option.optionText}
