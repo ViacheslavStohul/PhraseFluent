@@ -81,6 +81,7 @@ const TestPage = () => {
       answerString: text? text : undefined,
       pickedOptions: test?.card?.answerOptions?.filter(option => option.isCorrect).map(option => option.uuid??'') ?? undefined
     }).then((res)=>{
+      window.scrollTo(0, 0);
       setTest(res);
       setText('');
     }).catch((error) => {
