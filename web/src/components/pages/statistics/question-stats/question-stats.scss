@@ -75,9 +75,12 @@
       margin-top: 20px;
       width: 100%;
       display: flex;
-      justify-content: space-between;
       align-items: center;
       flex-direction: row;
+
+      @media (min-width: 2000px) {
+        gap: 30px;
+      }
     }
 
     .answer-content{

@@ -48,6 +48,14 @@
         overflow: hidden;
         text-overflow: ellipsis;
       }
+
+      @media (max-width: 500px){
+        max-height: 250px;
+
+        p{
+          -webkit-line-clamp: 2;
+        }
+      }
   
     }
 
