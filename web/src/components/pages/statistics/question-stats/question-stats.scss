@@ -46,4 +46,46 @@
       }
     }
   }
+
+  .own-answers {
+    display: grid;
+    width: 100%;
+    gap: 5px;
+    overflow: hidden;
+    grid-template-rows: auto 0fr;
+    transition: grid-template-rows 0.3s ease;
+
+    .arrow {
+      width: 0.75em;
+      height: 0.75em;
+      border-right: 3px solid $second-color;
+      border-bottom: 3px solid $second-color;
+      cursor: pointer;
+      transition: 0.3s ease;
+      transform: rotate(45deg) translateY(2px);
+      margin-right: 10px;
+    }
+
+    .answer-header {
+      margin-top: 20px;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-direction: row;
+    }
+
+    .content.open {
+      display: block;
+    }
+    
+    &.open {
+      grid-template-rows: auto 1fr;
+
+
+      .arrow {
+        transform: rotate(-135deg) translateY(-2px);
+      }
+    }
+  }
 }

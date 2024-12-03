@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ICard} from '../../../../interfaces/test';
 import './question-stats.scss';
 import Card from '../../../layouts/card/card';
@@ -9,6 +9,7 @@ interface IProps {
 
 
 const QuestionStats = ({question}: IProps) => {
+  const [open, setOpen] = useState<boolean>(false);
 
   return (
     <Card classes='stats-card'>
@@ -27,14 +28,19 @@ const QuestionStats = ({question}: IProps) => {
         ))
       }
       {question.textAnswers && question.textAnswers.length > 0 &&
-      <span className='beginning'>Власні відповіді:</span>
-      }
-      {question.textAnswers && question.textAnswers.length > 0 &&
-        question.textAnswers.map(answer => (
+      <div className={`own-answers ${open ? 'open': ''}`}>
+        <div className='answer-header beginning'>
+        <span >Власні відповіді</span>
+        <div className='arrow' onClick={()=> setOpen(!open)}></div>
+        </div>
+        <div className='answer-content'>
+        {question.textAnswers.map(answer => (
           <div className='answer-block'>
-            <span>{answer.text} - {answer.count}</span>
-          </div>
-        ))
+            <span>{answer.text} - {answer.count} раз{'('}iв{')'}</span>
+          </div>))
+        }
+        </div>
+        </div>
       }
     </Card>
   );
