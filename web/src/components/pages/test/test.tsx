@@ -90,7 +90,7 @@ const TestPage = () => {
 
   return (
     <Card classes='testing-card'>
-      { !test?
+      { !test ?
         info && 
         <>
           <h2>{info.title}</h2>
