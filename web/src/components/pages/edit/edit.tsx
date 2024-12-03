@@ -10,6 +10,7 @@ import * as testService from '../../../service/word.service';
 import { useDispatch } from 'react-redux';
 import { callErrorToast } from '../../../store/slice/toast';
 import { Protection } from '../../protection/protection';
+import { types } from '../../../const/types';
 
 const Edit = () => {
   const [imageError, setImageError] = useState(false);
@@ -61,7 +62,8 @@ const Edit = () => {
         cards.map((card, index) => (
           <Card classes='new-card' key={index+'-question'}>
             <h2>Питання {index+1}</h2>
-            {card.question}
+            <span>{card.question}</span>
+            <span>Тип: {types.find(type => type.value === card.questionType)?.label}</span>
             {card.questionType==='Text' ?
               <></>
               :
