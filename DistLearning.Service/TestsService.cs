@@ -245,7 +245,7 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
     {
         var textAnswers = cardAnswerAttempts
             .Where(a => !string.IsNullOrWhiteSpace(a.TextAnswer))
-            .GroupBy(a => a.TextAnswer)
+            .GroupBy(a => a.TextAnswer!.ToLowerInvariant())
             .Select(g => new TextAnswerResponse()
             {
                 Text = g.Key!,
