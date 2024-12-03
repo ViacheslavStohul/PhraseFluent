@@ -48,6 +48,7 @@
   }
 
   .own-answers {
+    margin-bottom: 15px;
     display: grid;
     width: 100%;
     gap: 5px;
@@ -55,14 +56,18 @@
     grid-template-rows: auto 0fr;
     transition: grid-template-rows 0.3s ease;
 
+    @media (min-width: 2000px) {
+      gap: 10px;
+    }
+
     .arrow {
-      width: 0.75em;
-      height: 0.75em;
-      border-right: 3px solid $second-color;
-      border-bottom: 3px solid $second-color;
+      width: 0.7em;
+      height: 0.7em;
+      border-right: 0.2em solid $second-color;
+      border-bottom: 0.2em solid $second-color;
       cursor: pointer;
       transition: 0.3s ease;
-      transform: rotate(45deg) translateY(2px);
+      transform: rotate(-45deg);
       margin-right: 10px;
     }
 
@@ -75,16 +80,20 @@
       flex-direction: row;
     }
 
-    .content.open {
-      display: block;
+    .answer-content{
+      overflow: hidden;
     }
+
     
     &.open {
       grid-template-rows: auto 1fr;
 
+      .answer-content {
+        display: bloc;
+      }
 
       .arrow {
-        transform: rotate(-135deg) translateY(-2px);
+        transform: rotate(45deg);
       }
     }
   }
