@@ -5,11 +5,28 @@
   flex-direction: column;
   gap: 10px;
 
+  @media (min-width: 2000px) {
+    gap: 25px;
+    font-size: 1.5rem;
+  }
+
+  .beginning {
+    margin-top: 20px;
+
+    @media (min-width: 2000px) {
+      margin-top: 40px;
+    }
+  }
+
   .answer-block {
     display: flex;
     flex-direction: column;
     width: 100%;
     gap: 5px;
+
+    @media (min-width: 2000px) {
+      gap: 15px;
+    }
 
     .progress-bar {
       width: 100%;
@@ -17,6 +34,10 @@
       height: 10px;
       background-color: $bg-color;
       overflow: hidden;
+
+      @media (min-width: 2000px) {
+        height: 25px;
+      }
 
       .bar {
         height: 100%;

@@ -14,7 +14,7 @@ const QuestionStats = ({question}: IProps) => {
     <Card classes='stats-card'>
       <strong>{question.question}</strong>
       {question.answerOptions && question.answerOptions.length > 0 &&
-        <span>Варіанти відповідей:</span>
+        <span className='beginning'>Варіанти відповідей:</span>
       }
       {question.answerOptions && question.answerOptions.length > 0&&
         question.answerOptions.map(answer => (
@@ -27,13 +27,12 @@ const QuestionStats = ({question}: IProps) => {
         ))
       }
       {question.textAnswers && question.textAnswers.length > 0 &&
-      <span>Власні відповіді:</span>
+      <span className='beginning'>Власні відповіді:</span>
       }
       {question.textAnswers && question.textAnswers.length > 0 &&
         question.textAnswers.map(answer => (
           <div className='answer-block'>
-            <span>{answer.text}</span>
-            <strong>{answer.count}</strong>
+            <span>{answer.text} - {answer.count}</span>
           </div>
         ))
       }
