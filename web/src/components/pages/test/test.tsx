@@ -150,7 +150,7 @@ const TestPage = () => {
       </div>
       }
       <div className='right'>
-        <button onClick={submit} disabled={test?.card.questionType === 'Text' && (!text || text.length < 2) || (test?.card.questionType !== 'Text' && (!test?.card?.answerOptions || test?.card?.answerOptions.every(option => !option.isCorrect)))}>Наступне питання</button>
+        <button onClick={submit} disabled={(test?.card.questionType !== 'Text' && (!test?.card?.answerOptions || test?.card?.answerOptions.every(option => !option.isCorrect)))}>Наступне питання</button>
       </div>
       </>
       :
