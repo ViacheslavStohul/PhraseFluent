@@ -30,6 +30,9 @@
 		<None Update="Certs/certificate.pfx">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
+      <None Update="Certs/certificate.crt">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
 	</ItemGroup>
 
 </Project>
