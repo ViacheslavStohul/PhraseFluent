@@ -19,7 +19,7 @@ namespace DistLearning.Service;
 public partial class AuthorizationService(
     IOptions<TokenConfiguration> tokenConfiguration,
     IUserRepository userRepository,
-    SymmetricSecurityKey signingKey,
+    X509SecurityKey signingKey,
     IMapper mapper) : IAuthorizationService
 {
     private readonly TokenConfiguration _tokenConfiguration = tokenConfiguration.Value;

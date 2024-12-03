@@ -13,6 +13,7 @@ using DistLearning.Service.Options;
 
 namespace DistLearning.API;
 
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.RateLimiting;
 
 internal static class Program
@@ -28,7 +29,7 @@ internal static class Program
         var tokenConfiguration = new TokenConfiguration();
         tokenOptionsSection.Bind(tokenConfiguration);
 
-        var key = GenerateSecurityKey();
+        var key = GenerateSecurityKey(tokenConfiguration.CertificatePassword);
 
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
@@ -204,11 +205,12 @@ internal static class Program
         app.Run();
     }
     
-    private static SymmetricSecurityKey GenerateSecurityKey()
+    private static X509SecurityKey GenerateSecurityKey(string password)
     {
-        var key = new byte[64];
-        using var rng = System.Security.Cryptography.RandomNumberGenerator.Create();
-        rng.GetBytes(key);
-        return new SymmetricSecurityKey(key);
+        var certificatePfx = File.ReadAllBytes("Certs/certificate.pfx");
+        
+        var certificate = new X509Certificate2(certificatePfx, password);
+        
+        return new X509SecurityKey(certificate);
     }
 }

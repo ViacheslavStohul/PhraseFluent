@@ -7,4 +7,6 @@ public class TokenConfiguration
     public int ExpiryMinutes { get; set; }
     
     public int RefreshTokenExpirationDays { get; set; }
+    
+    public string CertificatePassword { get; set; } = string.Empty;
 }
