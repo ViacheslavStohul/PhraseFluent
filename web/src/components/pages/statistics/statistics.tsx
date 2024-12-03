@@ -1,21 +1,24 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './statistics.scss';
 import { callErrorToast } from '../../../store/slice/toast';
 import * as testService from '../../../service/word.service';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import Card from '../../layouts/card/card';
+import { Test } from '../../../interfaces/test';
+import QuestionStats from './question-stats/question-stats';
 
 const Statistics = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [searchParams] = useSearchParams();
+  const [test, setTest] = useState<Test>();
 
   useEffect(() => {
     let id = searchParams.get('id');
     if (id) {
       testService.statsTest(id).then((res)=>{
-        console.log(res);
+        setTest(res);
       }).catch((error) => {
         dispatch(callErrorToast({name: error.code, text: error.response?.data?.Message ?? error.response?.data?.Message ?? error.message}));
       });
@@ -26,9 +29,22 @@ const Statistics = () => {
   },[navigate, searchParams, dispatch]);
 
   return (
-    <Card>
-      <span></span>
-    </Card>
+    <div className='statistics'>
+    {
+      test &&
+      <>
+        <Card classes='statistics-card'>
+          <h2>{test.title}</h2>
+          <p>{test.description}</p>
+        </Card>
+        {
+        test.cards.map(card => 
+          <QuestionStats question={card} key={card.uuid}/>
+        )
+        }
+      </>
+    }
+    </div>
   );
 }
 

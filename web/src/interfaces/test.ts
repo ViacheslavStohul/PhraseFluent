@@ -7,7 +7,8 @@ export interface Test {
   imageUrl: string;
   cardsCount: number;
   createdBy: IUser;
-  cards: any[];
+  cards: ICard[];
+  completedAttempts?: number;
 }
 
 export interface Option {
@@ -15,14 +16,17 @@ export interface Option {
   isCorrect?: boolean;
   uuid?: string;
   isAllowedText?: boolean;
+  selectionCount?: number;
+  selectionPercentage?: number;
 }
 
 export interface ICard {
   question: string;
   testUuid: string;
   questionType: string;
-  answerOptions: Option[];
+  answerOptions?: Option[];
   uuid?: string;
+  textAnswers?: Option[];
 }
 
 export interface createTestRequest {
