@@ -27,15 +27,13 @@ const QuestionStats = ({question}: IProps) => {
         ))
       }
       {question.textAnswers && question.textAnswers.length > 0 &&
-      <span>Власні відповідей:</span>
+      <span>Власні відповіді:</span>
       }
       {question.textAnswers && question.textAnswers.length > 0 &&
         question.textAnswers.map(answer => (
           <div className='answer-block'>
-            <span>{answer.optionText} - {answer.selectionCount}{'('+ answer.selectionPercentage+'%)'}</span>
-            <div className='progress-bar'>
-              <div className='bar' style={{width: answer.selectionPercentage + '%'}}></div>
-            </div>
+            <span>{answer.text}</span>
+            <strong>{answer.count}</strong>
           </div>
         ))
       }

@@ -20,13 +20,18 @@ export interface Option {
   selectionPercentage?: number;
 }
 
+export interface TextOption {
+  text: string;
+  count: string;
+}
+
 export interface ICard {
   question: string;
   testUuid: string;
   questionType: string;
   answerOptions?: Option[];
   uuid?: string;
-  textAnswers?: Option[];
+  textAnswers?: TextOption[];
 }
 
 export interface createTestRequest {
