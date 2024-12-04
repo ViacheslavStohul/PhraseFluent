@@ -36,6 +36,7 @@ const Statistics = () => {
         <Card classes='statistics-card'>
           <h2>{test.title}</h2>
           <p>{test.description}</p>
+          <span>Кількість опитуваних: {test.completedAttempts}</span>
         </Card>
         {
         test.cards.map(card => 
