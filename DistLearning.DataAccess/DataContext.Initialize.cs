@@ -34,8 +34,8 @@ public partial class DataContext
 
         foreach (var answer in unprocessedTextAnswers)
         {
-            answer.TextAnswer = answer.TextAnswer!.TrimStart(' ');
-            answer.TextAnswer = answer.TextAnswer!.TrimEnd(' ');
+            answer.TextAnswer = answer.TextAnswer!.TrimStart();
+            answer.TextAnswer = answer.TextAnswer!.TrimEnd();
         }
         
         completeMigrations.Add(migrationId);
