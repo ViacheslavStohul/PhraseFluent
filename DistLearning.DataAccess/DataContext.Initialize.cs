@@ -30,7 +30,11 @@ public partial class DataContext
         
         if (completeMigrations.Contains(migrationId)) return;
 
-        var unprocessedTextAnswers = AnswerAttempts.Where(x => x.TextAnswer != null && (x.TextAnswer.EndsWith(' ') || x.TextAnswer.StartsWith(' '))).ToList();
+        var unprocessedTextAnswers = AnswerAttempts
+            .Where(x => x.TextAnswer != null)
+            .AsEnumerable()
+            .Where(x => x.TextAnswer!.StartsWith(' ') || x.TextAnswer.EndsWith(' '));
+
 
         foreach (var answer in unprocessedTextAnswers)
         {
