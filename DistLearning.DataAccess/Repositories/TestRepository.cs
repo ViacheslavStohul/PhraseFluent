@@ -66,8 +66,7 @@ public class TestRepository(DataContext dataContext) : BaseRepository(dataContex
             .Include(x => x.AnswerOption)
             .Include(x => x.Card)
             .Include(x => x.TestAttempt)
-            .ThenInclude(x => x.Test)
-            .Where(x => x.Card.Test.Id == testId && x.TestAttempt.Completed)
+            .Where(x => x.TestAttempt.TestId == testId && x.TestAttempt.Completed)
             .ToListAsync();
     }
 }
