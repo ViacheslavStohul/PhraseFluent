@@ -15,6 +15,7 @@ namespace DistLearning.API;
 
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.RateLimiting;
+using RequestTiming;
 
 internal static class Program
 {
@@ -192,6 +193,7 @@ internal static class Program
         app.MapGet("/", () => Results.Ok("Ok"));
 
         app.UseExceptionHandling();
+        app.UseLoggingTimingCalculation();
 
         using (var serviceScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope())
         {
