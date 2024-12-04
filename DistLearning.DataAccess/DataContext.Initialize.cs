@@ -11,9 +11,7 @@ public partial class DataContext
         await using var transaction = await Database.BeginTransactionAsync();
         try
         {
-            var completedMigrations = await CompleteInitializers.Select(x => x.CompleteInitializerId).ToListAsync();
-
-            await RenderTextAnswers(completedMigrations);
+            var completedMigrations = CompleteInitializers.Select(x => x.CompleteInitializerId);
             
             await transaction.CommitAsync();
         }
@@ -22,28 +20,5 @@ public partial class DataContext
             await transaction.RollbackAsync();
             throw;
         }
-    }
-
-    private async Task RenderTextAnswers(List<Guid> completeMigrations)
-    {
-        var migrationId = Guid.Parse("A0A9CA66-181D-471C-8F37-A818AD924904");
-        
-        if (completeMigrations.Contains(migrationId)) return;
-
-        var unprocessedTextAnswers = AnswerAttempts
-            .Where(x => x.TextAnswer != null)
-            .AsEnumerable()
-            .Where(x => x.TextAnswer!.StartsWith(' ') || x.TextAnswer.EndsWith(' '));
-
-
-        foreach (var answer in unprocessedTextAnswers)
-        {
-            answer.TextAnswer = answer.TextAnswer!.TrimStart();
-            answer.TextAnswer = answer.TextAnswer!.TrimEnd();
-        }
-        
-        completeMigrations.Add(migrationId);
-
-        await SaveChangesAsync();
     }
 }
