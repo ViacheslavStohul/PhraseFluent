@@ -27,6 +27,7 @@
     &.selected{
       background-color: rgba($second-color, 0.2);
       border-radius: 0.3em;
+      padding: 4px;
     }
 
     @media (min-width: 2000px) {
