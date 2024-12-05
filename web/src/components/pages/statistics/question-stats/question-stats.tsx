@@ -5,10 +5,11 @@ import Card from '../../../layouts/card/card';
 
 interface IProps {
   question: ICard;
+  check: (id: string) => void;
 }
 
 
-const QuestionStats = ({question}: IProps) => {
+const QuestionStats = ({question, check}: IProps) => {
   const [open, setOpen] = useState<boolean>(false);
 
   return (
@@ -19,7 +20,7 @@ const QuestionStats = ({question}: IProps) => {
       }
       {question.answerOptions && question.answerOptions.length > 0&&
         question.answerOptions.map(answer => (
-          <div className='answer-block'>
+          <div className='answer-block' onClick={() => check(answer.uuid ?? '')} key={answer.uuid}>
             <span>{answer.optionText} - {answer.selectionCount}{'('+ answer.selectionPercentage+'%)'}</span>
             <div className='progress-bar'>
               <div className='bar' style={{width: answer.selectionPercentage + '%'}}></div>

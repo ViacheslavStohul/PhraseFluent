@@ -13,11 +13,12 @@ const Statistics = () => {
   const dispatch = useDispatch();
   const [searchParams] = useSearchParams();
   const [test, setTest] = useState<Test>();
+  const [answerOption, setAnswerOption] = useState<string>();
 
   useEffect(() => {
     let id = searchParams.get('id');
     if (id) {
-      testService.statsTest(id).then((res)=>{
+      testService.statsTest(id, answerOption).then((res)=>{
         setTest(res);
       }).catch((error) => {
         dispatch(callErrorToast({name: error.code, text: error.response?.data?.Message ?? error.response?.data?.Message ?? error.message}));
@@ -26,7 +27,7 @@ const Statistics = () => {
       navigate('/');
       return;
     }
-  },[navigate, searchParams, dispatch]);
+  },[navigate, searchParams, dispatch, answerOption]);
 
   return (
     <div className='statistics'>
@@ -39,7 +40,7 @@ const Statistics = () => {
         </Card>
         {
         test.cards.map(card => 
-          <QuestionStats question={card} key={card.uuid}/>
+          <QuestionStats question={card} key={card.uuid} check={(uuid) => setAnswerOption(prev => prev === uuid ? undefined : uuid)}/>
         )
         }
       </>
