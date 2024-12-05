@@ -61,12 +61,12 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
         return mapper.Map<TestResponse>(testToAdd);
     }
 
-    public async Task<TestWithStatisticResponse> GetTestWithStatisticsAsync(Guid testUuid)
+    public async Task<TestWithStatisticResponse> GetTestWithStatisticsAsync(Guid testUuid, Guid? answerOptionUuid)
     {
         var test = await testRepository.TestWithCards(testUuid);
         ArgumentNullException.ThrowIfNull(test);
         
-        var answerAttempts = await testRepository.GetAnswerAttemptsForTest(test.Id);
+        var answerAttempts = await testRepository.GetAnswerAttemptsForTest(test.Id, answerOptionUuid);
 
         var testDto = new TestWithStatisticResponse
         {

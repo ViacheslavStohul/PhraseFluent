@@ -13,5 +13,5 @@ public interface ITestRepository : IBaseRepository
 
     Task<Card?> GetCardWithOptionsById(long cardId);
 
-    Task<List<AnswerAttempt>> GetAnswerAttemptsForTest(long testId);
+    Task<List<AnswerAttempt>> GetAnswerAttemptsForTest(long testId, Guid? answerOptionUuid);
 }
