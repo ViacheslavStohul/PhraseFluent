@@ -24,6 +24,11 @@
     width: 100%;
     gap: 5px;
 
+    &.selected{
+      background-color: rgba($second-color, 0.2);
+      border-radius: 0.3em;
+    }
+
     @media (min-width: 2000px) {
       gap: 15px;
     }
@@ -101,4 +106,8 @@
       }
     }
   }
+}
+
+.pointer {
+  cursor: pointer;
 }

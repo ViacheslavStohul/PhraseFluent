@@ -41,7 +41,7 @@ const Statistics = () => {
         </Card>
         {
         test.cards.map(card => 
-          <QuestionStats question={card} key={card.uuid} check={(uuid) => setAnswerOption(prev => prev === uuid ? undefined : uuid)}/>
+          <QuestionStats question={card} key={card.uuid} selected={answerOption} check={(uuid) => setAnswerOption(prev => prev === uuid ? undefined : uuid)}/>
         )
         }
       </>
