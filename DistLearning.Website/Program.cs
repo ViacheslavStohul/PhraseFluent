@@ -15,6 +15,7 @@ namespace DistLearning.API;
 
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.RateLimiting;
+using RequestTiming;
 
 internal static class Program
 {
@@ -101,7 +102,7 @@ internal static class Program
                     partitionKey: "global",
                     factory: _ => new FixedWindowRateLimiterOptions
                     {
-                        PermitLimit = 300,
+                        PermitLimit = 3000,
                         Window = TimeSpan.FromMinutes(1),
                         QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
                         QueueLimit = 0 
@@ -112,9 +113,8 @@ internal static class Program
                     partitionKey: "global",
                     factory: _ => new FixedWindowRateLimiterOptions
                     {
-                        PermitLimit = 10,
-                        //Window = TimeSpan.FromHours(1),
-                        Window = TimeSpan.FromSeconds(1),
+                        PermitLimit = 100,
+                        Window = TimeSpan.FromHours(1),
                         QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
                         QueueLimit = 0
                     }));
@@ -142,8 +142,7 @@ internal static class Program
         services.AddCors(options =>
         {
             options.AddDefaultPolicy(
-               // conf => conf.WithOrigins("http://195.138.81.28:3000")
-                conf => conf.WithOrigins("*")
+               conf => conf.WithOrigins("http://195.138.81.28:3000")
                     .AllowAnyMethod()
                     .AllowAnyHeader());
         });
@@ -194,6 +193,7 @@ internal static class Program
         app.MapGet("/", () => Results.Ok("Ok"));
 
         app.UseExceptionHandling();
+        app.UseLoggingTimingCalculation();
 
         using (var serviceScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope())
         {

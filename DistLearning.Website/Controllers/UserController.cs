@@ -16,7 +16,7 @@ public class UserController (IUserService userService) : BaseController
     [SwaggerResponse(200, Description = "Changes user avatar")]
     public async Task<IActionResult> UpdateUserImage(string imageUrl)
     {
-        await userService.UpdateUserImage(imageUrl, UserId.Value);
+        await userService.UpdateUserImage(imageUrl, UserId);
         return Ok();
     }
 

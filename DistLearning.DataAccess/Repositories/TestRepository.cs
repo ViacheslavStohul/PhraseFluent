@@ -59,15 +59,21 @@ public class TestRepository(DataContext dataContext) : BaseRepository(dataContex
             .FirstOrDefaultAsync(x => x.Id == cardId);
     }
     
-    public Task<List<AnswerAttempt>> GetAnswerAttemptsForTest(long testId)
+    public Task<List<AnswerAttempt>> GetAnswerAttemptsForTest(long testId, Guid? answerOptionUuid)
     {
-        return _dataContext
+        var data = _dataContext
             .AnswerAttempts
             .Include(x => x.AnswerOption)
             .Include(x => x.Card)
             .Include(x => x.TestAttempt)
-            .ThenInclude(x => x.Test)
-            .Where(x => x.Card.Test.Id == testId && x.TestAttempt.Completed)
-            .ToListAsync();
+            .Where(x => x.TestAttempt.TestId == testId && x.TestAttempt.Completed);
+
+        if (answerOptionUuid != null)
+        {
+            data = data.Where(x => x.TestAttempt.AnswerAttempts
+                .Any(a => a.AnswerOption!.Uuid == answerOptionUuid));
+        }
+
+        return data.ToListAsync();
     }
 }

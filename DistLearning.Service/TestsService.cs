@@ -61,12 +61,12 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
         return mapper.Map<TestResponse>(testToAdd);
     }
 
-    public async Task<TestWithStatisticResponse> GetTestWithStatisticsAsync(Guid testUuid)
+    public async Task<TestWithStatisticResponse> GetTestWithStatisticsAsync(Guid testUuid, Guid? answerOptionUuid)
     {
         var test = await testRepository.TestWithCards(testUuid);
         ArgumentNullException.ThrowIfNull(test);
         
-        var answerAttempts = await testRepository.GetAnswerAttemptsForTest(test.Id);
+        var answerAttempts = await testRepository.GetAnswerAttemptsForTest(test.Id, answerOptionUuid);
 
         var testDto = new TestWithStatisticResponse
         {
@@ -251,6 +251,7 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
                 Text = g.Key!,
                 Count = g.Count()
             })
+            .OrderByDescending(x => x.Count)
             .ToList();
 
         cardDto.TextAnswers = textAnswers;
@@ -278,6 +279,19 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
         
         testDto.Cards.Add(cardDto);
     }
+    
+    private static string? NormalizeAnswerString(string? initial)
+    {
+        if (string.IsNullOrEmpty(initial))
+        {
+            return null;
+        }
+        
+        initial = initial.TrimStart();
+        initial = initial.TrimEnd();
+
+        return initial;
+    }
 
     private async Task AddTestAttemptToDb(CardAnswerRequest request, long testAttemptId, Card card)
     {
@@ -300,7 +314,7 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
 
                 if (selectedOption.IsAllowedText && !string.IsNullOrEmpty(request.AnswerString))
                 {
-                    answerAttempt.TextAnswer = request.AnswerString;
+                    answerAttempt.TextAnswer = NormalizeAnswerString(request.AnswerString);
                 }
                 testRepository.Add(answerAttempt);
             }
@@ -312,9 +326,9 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
                 Uuid = Guid.NewGuid(),
                 TestAttemptId = testAttemptId,
                 CardId = card.Id,
+                TextAnswer = NormalizeAnswerString(request.AnswerString),
                 TestAttempt = null,
                 Card = null,
-                TextAnswer = request.AnswerString
             };
 
             testRepository.Add(answerAttempt);

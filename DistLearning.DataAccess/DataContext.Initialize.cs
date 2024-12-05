@@ -2,6 +2,8 @@
 
 namespace DistLearning.DataAccess;
 
+using Microsoft.EntityFrameworkCore;
+
 public partial class DataContext 
 {
     public async Task Initialize()
@@ -9,7 +11,8 @@ public partial class DataContext
         await using var transaction = await Database.BeginTransactionAsync();
         try
         {
-            var transactions = CompleteInitializers.Select(x => x.CompleteInitializerId);
+            var completedMigrations = CompleteInitializers.Select(x => x.CompleteInitializerId);
+            
             await transaction.CommitAsync();
         }
         catch

@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DistLearning.Service", "Dis
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DistLearning.DataAccess", "DistLearning.DataAccess\DistLearning.DataAccess.csproj", "{27B52DC5-5764-4825-9AA5-BD938375B743}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DistLearning.Service.Fixture", "DistLearning.Service.Fixture\DistLearning.Service.Fixture.csproj", "{6D79914B-56E5-465D-A81D-0D65071A0461}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{27B52DC5-5764-4825-9AA5-BD938375B743}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{27B52DC5-5764-4825-9AA5-BD938375B743}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{27B52DC5-5764-4825-9AA5-BD938375B743}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D79914B-56E5-465D-A81D-0D65071A0461}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D79914B-56E5-465D-A81D-0D65071A0461}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D79914B-56E5-465D-A81D-0D65071A0461}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D79914B-56E5-465D-A81D-0D65071A0461}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

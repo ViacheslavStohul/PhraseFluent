@@ -87,9 +87,9 @@ public class TestController (ITestsService testsService) : BaseController
     [HttpGet("/statistics")]
     [SwaggerResponse(200, "Gets test statistics", typeof(TestWithStatisticResponse))]
     [ProducesResponseType(typeof(TestWithStatisticResponse), 200)]
-    public async Task<IActionResult> GetTestStatistics([FromQuery] Guid testUuid)
+    public async Task<IActionResult> GetTestStatistics([FromQuery] Guid testUuid, [FromQuery] Guid? answerOptionUuid = null)
     {
-        var statistics = await testsService.GetTestWithStatisticsAsync(testUuid).ConfigureAwait(false);
+        var statistics = await testsService.GetTestWithStatisticsAsync(testUuid, answerOptionUuid).ConfigureAwait(false);
 
         return Ok(statistics);
     }
