@@ -22,7 +22,7 @@ public class LogRequestTimingMiddleware(RequestDelegate next, ILogger<LogRequest
             stopwatch.Stop();
             var elapsedMilliseconds = stopwatch.ElapsedMilliseconds;
 
-            LogMessage(logger, $"{elapsedMilliseconds} - {context.Request.Path} - {context.Request.Method}", null);
+            LogMessage(logger, $"{DateTime.Now}: {elapsedMilliseconds} - {context.Request.Path} - {context.Request.Method}", null);
         }
     }
 }
