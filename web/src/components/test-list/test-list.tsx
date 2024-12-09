@@ -2,7 +2,7 @@ import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import './test-list.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { callErrorToast } from '../../store/slice/toast';
-import * as langService from '../../service/word.service';
+import * as testService from '../../service/word.service';
 import { InputFieldComponent } from '../fields/input-field/input-field';
 import { debounce } from 'lodash';
 import { Test } from '../../interfaces/test';
@@ -20,16 +20,14 @@ interface TestListProps {
 const TestList:FC<TestListProps> = ({title}) => {
   const dispatch = useDispatch();
   const user = useSelector(AuthSelectors.selectUser);
-  const [request, setRequest] = useState<langService.ListRequest>({Page: 1, Size: 20});
+  const [request, setRequest] = useState<testService.ListRequest>({Page: 1, Size: 20});
   const [tests, setTests] = useState<Test[]>([]);
   const navigate = useNavigate();
   const totalItems = useRef(0);
-  const { ref, inView } = useInView({
-    threshold: 0,
-  });
+  const { ref, inView } = useInView({threshold: 0});
 
   useEffect(()=>{
-    langService.getList(request).then(testList=>{
+    testService.getList(request).then(testList=>{
       if (request.Page === 1) {
         setTests(testList.items ?? []);
       } else {
@@ -42,7 +40,7 @@ const TestList:FC<TestListProps> = ({title}) => {
 
   const handleSearch = useCallback((value: string) => {
     setRequest((prev) => ({ ...prev, Title: value, Page: 1 }));
-  }, [setRequest]);
+  }, []);
 
   useEffect(()=>{
     setRequest((prev)=> {

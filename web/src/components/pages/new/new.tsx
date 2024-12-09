@@ -52,7 +52,7 @@ const NewTest = () => {
       <Card classes='new-test'>
       <div className='new-test-fields'>
         <div className='new-test-header'>
-        <h2>Create Test</h2>
+        <h2>Створення опитування</h2>
         </div>
         <InputFieldComponent 
           labelText='Заголовок'
@@ -79,7 +79,7 @@ const NewTest = () => {
           disabled={!newTest.title || isSubmited}
           onClick = {createNew}>
             <PlusSVG/>
-          Створити тест
+          Створити опитування
         </button>
         </div>
       </div>
