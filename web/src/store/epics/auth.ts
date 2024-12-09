@@ -14,7 +14,7 @@ const AuthFetchEpic: Epic<any> = (action$) =>
         .then(({data}) => {
           return AuthActions.authSuccess(data);
         })
-        .catch((error) => callErrorToast({name: error.code, text: error.response?.data?.Message ?? error.message}))
+        .catch((error) => callErrorToast({name: 'Виникла помилка!', text: error.response?.data?.Message ?? error.message}))
     )
 );
 
@@ -50,7 +50,7 @@ const AuthSuccessEpic: Epic<any> = (action$) =>
     ofType(AuthActions.authSuccess.type),
     mergeMap(() =>
       of(
-        callToast({name: 'Successful authorization', text: 'You authorized successfully', type: ToastType.Success}),
+        callToast({name: 'Успішна авторизація!', text: 'Ви успішно авторизувались', type: ToastType.Success}),
         AuthActions.getUserFetch()
       )
     )

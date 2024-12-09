@@ -192,8 +192,8 @@ internal static class Program
 
         app.MapGet("/", () => Results.Ok("Ok"));
 
-        app.UseExceptionHandling();
         app.UseLoggingTimingCalculation();
+        app.UseExceptionHandling();
 
         using (var serviceScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope())
         {
