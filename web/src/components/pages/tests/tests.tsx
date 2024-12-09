@@ -7,7 +7,7 @@ const Tests = () => {
 
   return (
     <>
-      <TestList title='Усі тести'/>
+      <TestList title='Усі опитування'/>
     </>
   );
 }

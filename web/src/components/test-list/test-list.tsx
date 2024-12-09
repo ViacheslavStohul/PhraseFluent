@@ -71,7 +71,7 @@ const TestList:FC<TestListProps> = ({title}) => {
           type='button'
           onClick = {()=>navigate('/new')}>
             <PlusSVG/>
-          Створити тест
+          Створити опитування
         </button>
         }
       </div>
