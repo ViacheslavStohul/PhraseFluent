@@ -7,7 +7,7 @@
 }
 
 nav {
-  background-color: #38356c;
+  background-color: $nav-color;
   color: white;
   padding: 0 2rem;
   position: fixed;
@@ -95,10 +95,10 @@ nav .nav-links a, nav .nav-links .exit {
 }
 
 .nav-links a.active {
-  background-color: #5946ac;
+  background-color: $second-color;
 }
 
 .nav-links a:hover, nav .exit:hover {
   text-decoration: none;
-  background-color: #5946ac;
+  background-color: $second-color;
 }

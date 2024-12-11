@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { useDispatch} from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import * as testService from '../../../service/word.service';
+import * as testService from '../../../service/test.service';
 import { callErrorToast } from '../../../store/slice/toast';
 import './test.scss';
 import Card from '../../layouts/card/card';
@@ -78,7 +78,7 @@ const TestPage = () => {
     testService.nextTest({
       cardUuid: test?.card?.uuid ?? '',
       testAttemptUuid: test?.testAttemptUuid ?? '',
-      answerString: text? text : undefined,
+      answerString: text,
       pickedOptions: test?.card?.answerOptions?.filter(option => option.isCorrect).map(option => option.uuid??'') ?? undefined
     }).then((res)=>{
       window.scrollTo(0, 0);

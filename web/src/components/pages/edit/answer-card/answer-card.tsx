@@ -5,16 +5,16 @@ import { InputFieldComponent } from '../../../fields/input-field/input-field';
 
 interface IProps {
   option: Option;
-  emit?: (value: Option) => void;
+  onChange?: (value: Option) => void;
   onDelete?: () => void;
 }
 
 
-const AnswerCard = ({option, onDelete, emit}: IProps) => {
+const AnswerCard = ({option, onDelete, onChange}: IProps) => {
 
   const setText = (value: string) => {
-    if (!emit) return;
-      emit({
+    if (!onChange) return;
+    onChange({
         ...option,
         optionText: value
       });
@@ -22,7 +22,7 @@ const AnswerCard = ({option, onDelete, emit}: IProps) => {
 
   return (
     <div className='answer-card'>
-      { emit && onDelete ?
+      { onChange && onDelete ?
       <>
       <InputFieldComponent 
        labelText='Текст варіанту'

@@ -6,14 +6,11 @@ import { callErrorToast, callToast } from "../slice/toast";
 import { ToastType } from "../../enum/toast";
 
 
-const AuthFetchEpic: Epic<any> = (action$) =>
-  action$.pipe(
+const AuthFetchEpic: Epic<any> = (action$) => action$.pipe(
     ofType(AuthActions.authFetch.type),
     switchMap((action) =>
       AuthService.Auth(action.payload)
-        .then(({data}) => {
-          return AuthActions.authSuccess(data);
-        })
+        .then(({data}) => AuthActions.authSuccess(data))
         .catch((error) => callErrorToast({name: 'Виникла помилка!', text: error.response?.data?.Message ?? error.message}))
     )
 );
@@ -45,8 +42,7 @@ const RegisterSuccessEpic: Epic<any> = (action$) =>
     )
 );
 
-const AuthSuccessEpic: Epic<any> = (action$) =>
-  action$.pipe(
+const AuthSuccessEpic: Epic<any> = (action$) => action$.pipe(
     ofType(AuthActions.authSuccess.type),
     mergeMap(() =>
       of(

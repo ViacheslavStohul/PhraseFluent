@@ -5,7 +5,7 @@ import { createTestRequest } from '../../../interfaces/test';
 import { InputFieldComponent } from '../../fields/input-field/input-field';
 import PlusSVG from '../../svg/plus';
 import { Protection } from '../../protection/protection';
-import * as langService from '../../../service/word.service';
+import * as langService from '../../../service/test.service';
 import { callErrorToast } from '../../../store/slice/toast';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';

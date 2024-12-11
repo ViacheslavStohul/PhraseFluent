@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import Card from '../../../layouts/card/card';
 import { ICard,Option } from '../../../../interfaces/test';
-import * as langService from '../../../../service/word.service';
+import * as testService from '../../../../service/test.service';
 import { callErrorToast } from '../../../../store/slice/toast';
 import { useDispatch } from 'react-redux';
 import { InputFieldComponent } from '../../../fields/input-field/input-field';
@@ -23,17 +23,12 @@ const CreateQuestionCard = ({emit, testId}: IProps) => {
 
   const createCard = () => {
     const newCard = card;
-    if (custom){
+    if (custom)
       newCard.answerOptions = [...(newCard.answerOptions ?? []), {optionText: 'Інше:', isAllowedText: true} ];
-    }
-    langService.createCard({...newCard, testUuid: testId} as ICard)
-    .then(()=>{
+    testService.createCard({...newCard, testUuid: testId} as ICard).then(()=>{
       emit({...newCard, testUuid: testId} as ICard);
       setCard(prev => ({questionType: prev.questionType}));
-    })
-    .catch((error) => {
-      dispatch(callErrorToast({name: error.code, text: error.response?.data?.Message ?? error.response?.data?.Message ?? error.message}));
-    });
+    }).catch((error) => dispatch(callErrorToast({name: error.code, text: error.response?.data?.Message ?? error.response?.data?.Message ?? error.message})));
   }
 
   const handleChange = (
@@ -50,15 +45,15 @@ const CreateQuestionCard = ({emit, testId}: IProps) => {
     }
   };
 
-  const isDisabled = () => {
-    return !card.question || 
+  const isDisabled = useMemo(() => 
+    !card.question || 
     card.question.length < 2 || 
     !card.questionType ||
     ( card.questionType !== 'Text' &&
     (!card.answerOptions || 
     card.answerOptions.length === 0 ||
-    card.answerOptions.some(option => option.optionText.length < 1)));
-  }
+    card.answerOptions.some(option => option.optionText.length < 1))
+  ),[card]);
 
   const changeOption = (option: Option, index?: number) => {
     setCard((prevCard) => ({
@@ -106,28 +101,22 @@ const CreateQuestionCard = ({emit, testId}: IProps) => {
           options={types}
           onChange={(value) => handleChange('questionType',value?.value??'')}/>
         </div>
-      {
-        card.questionType === 'TestOneAnswer' || card.questionType === 'TestManyAnswers'?
+      { card.questionType === 'TestOneAnswer' || card.questionType === 'TestManyAnswers' &&
+        <>
           <div className='answer-grid'>
-            {
-              card.answerOptions && card.answerOptions.map((option, index)=> (
-                <AnswerCard option={option} emit={(value)=> changeOption(value, index)} onDelete={()=> deleteOption(index)} key={index}/>
-              ))
-            }
+            { card.answerOptions && card.answerOptions.map((option, index)=> (
+                <AnswerCard option={option} onChange={(value)=> changeOption(value, index)} onDelete={()=> deleteOption(index)} key={index}/>))}
           </div>
-        :
-        <></>
+          <Checkbox label='Додати власну відповідь' checked={custom} onChange={() => setCustom(!custom)}/>
+        </>
       }
-        { (card.questionType === 'TestOneAnswer' || card.questionType === 'TestManyAnswers') &&
-        <Checkbox label='Додати власну відповідь' checked={custom} onChange={() => setCustom(!custom)}/>
-        }
       <div className='buttons'>
         { (card.questionType === 'TestOneAnswer' || card.questionType === 'TestManyAnswers') &&
         <button onClick={()=> changeOption({optionText:''})}>
           Додати варіант відповіді
         </button>
         }
-      <button onClick={createCard} disabled={isDisabled()}>
+      <button onClick={createCard} disabled={isDisabled}>
         Створити питання
       </button>
       </div>

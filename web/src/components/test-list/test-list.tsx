@@ -2,7 +2,7 @@ import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import './test-list.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { callErrorToast } from '../../store/slice/toast';
-import * as testService from '../../service/word.service';
+import * as testService from '../../service/test.service';
 import { InputFieldComponent } from '../fields/input-field/input-field';
 import { debounce } from 'lodash';
 import { Test } from '../../interfaces/test';

@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useRef } from 'react';
+import React, { ChangeEvent, } from 'react';
 import './input-field.scss';
 
 export interface IInputFieldProps {
@@ -10,8 +10,6 @@ export interface IInputFieldProps {
   isRequired?: boolean;
   placeholder?: string;
   disabled?: boolean;
-  regex?: RegExp;
-  focus?: boolean;
   name: string;
   maxLength?: number;
 }
@@ -19,26 +17,14 @@ export interface IInputFieldProps {
 export const InputFieldComponent = (
   props: IInputFieldProps
 ): React.JSX.Element => {
-  const { labelText, value, changed, readonly, type, isRequired, placeholder, regex, focus, name, disabled, maxLength } =
+  const { labelText, value, changed, readonly, type, isRequired, placeholder, name, disabled, maxLength } =
     props;
-  const inputRef = useRef<HTMLInputElement|null>(null);
 
   const onChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (changed){
-      if (regex?.test(event.target.value) || !regex){
         changed(event.target.value);
-      }
     }
   };
-
-  useEffect(()=>{
-    if (focus && inputRef.current){
-      inputRef.current.focus();
-    }
-    else if (inputRef.current){
-      inputRef.current.blur();
-    }
-  },[focus]);
 
   return (
     <div className='input-field'>
@@ -50,8 +36,7 @@ export const InputFieldComponent = (
     </label>
     <input
       maxLength={maxLength}
-      ref={inputRef}
-      className="required-field text-regular-m"
+      className="text-regular-m"
       type={type ?? 'text'}
       id={labelText}
       value={value}

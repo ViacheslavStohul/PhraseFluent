@@ -6,7 +6,7 @@ import Card from '../../layouts/card/card';
 import CreateQuestionCard from './create-question-card/create-question-card';
 import AnswerCard from './answer-card/answer-card';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import * as testService from '../../../service/word.service';
+import * as testService from '../../../service/test.service';
 import { useDispatch } from 'react-redux';
 import { callErrorToast } from '../../../store/slice/toast';
 import { Protection } from '../../protection/protection';

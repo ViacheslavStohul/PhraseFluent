@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './statistics.scss';
 import { callErrorToast } from '../../../store/slice/toast';
-import * as testService from '../../../service/word.service';
+import * as testService from '../../../service/test.service';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import Card from '../../layouts/card/card';

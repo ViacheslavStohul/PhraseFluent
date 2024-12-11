@@ -9,13 +9,7 @@ interface CustomCheckboxProps {
 }
 
 const Checkbox: React.FC<CustomCheckboxProps> = ({
-  label,
-  checked = false,
-  onChange,
-  isRadio = false,
-}) => {
-
-
+  label, checked = false, onChange, isRadio = false}) => {
   return (
     <label className="custom-checkbox">
       <input
