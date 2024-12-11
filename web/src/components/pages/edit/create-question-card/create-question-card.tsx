@@ -101,13 +101,13 @@ const CreateQuestionCard = ({emit, testId}: IProps) => {
           options={types}
           onChange={(value) => handleChange('questionType',value?.value??'')}/>
         </div>
-      { card.questionType === 'TestOneAnswer' || card.questionType === 'TestManyAnswers' &&
+      { (card.questionType === 'TestOneAnswer' || card.questionType === 'TestManyAnswers') &&
           <div className='answer-grid'>
             { card.answerOptions && card.answerOptions.map((option, index)=> (
                 <AnswerCard option={option} onChange={(value)=> changeOption(value, index)} onDelete={()=> deleteOption(index)} key={index}/>))}
           </div>
       }
-      { card.questionType === 'TestOneAnswer' || card.questionType === 'TestManyAnswers' &&
+      { (card.questionType === 'TestOneAnswer' || card.questionType === 'TestManyAnswers') &&
           <Checkbox label='Додати власну відповідь' checked={custom} onChange={() => setCustom(!custom)}/>
       }
       <div className='buttons'>
