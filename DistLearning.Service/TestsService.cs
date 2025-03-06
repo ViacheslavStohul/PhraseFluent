@@ -387,6 +387,11 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
             col++;
         }
         
+        var headerRange = worksheet.Range(1, 1, 1, test.Cards.Count);
+        headerRange.Style.Font.Bold = true;
+        headerRange.Style.Fill.BackgroundColor = XLColor.LightGray;
+        headerRange.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+        
         var row = 2;
         foreach (var group in attemptsGrouped)
         {
