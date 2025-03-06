@@ -9,6 +9,8 @@ using IMapper = AutoMapper.IMapper;
 
 namespace DistLearning.Service;
 
+using ClosedXML.Excel;
+
 public class TestsService(ITestRepository testRepository, IMapper mapper) : ITestsService
 {
     public async Task<PaginationResponse<TestResponse>> GetTestList(TestSearchRequest request)
@@ -85,6 +87,16 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
         }
         
         return testDto;
+    }
+
+    public async Task<byte[]> ExportTestToExcel(Guid testUuid)
+    {
+        var test = await testRepository.TestWithCards(testUuid).ConfigureAwait(false);
+        ArgumentNullException.ThrowIfNull(test);
+        
+        var answerAttempts = await testRepository.GetAnswerAttemptsForTest(test.Id, null).ConfigureAwait(false);
+
+        return ExportToExcel(test, answerAttempts);
     }
 
     public async Task<CardResponse> CreateCard(Guid? userId, AddCardRequest request)
@@ -358,5 +370,46 @@ public class TestsService(ITestRepository testRepository, IMapper mapper) : ITes
             Questions = allQuestions,
             CurrentQuestion = currentQuestion
         };
+    }
+
+    private byte[] ExportToExcel(Test test, List<AnswerAttempt> answerAttempts)
+    {
+        ArgumentNullException.ThrowIfNull(test.Cards);
+        var attemptsGrouped = answerAttempts.GroupBy(a => a.TestAttemptId).ToList();
+        using var workbook = new XLWorkbook();
+        
+        var worksheet = workbook.Worksheets.Add("Статистика");
+        
+        var col = 1;
+        foreach (var card in test.Cards)
+        {
+            worksheet.Cell(1, col).Value = card.Question;
+            col++;
+        }
+        
+        var row = 2;
+        foreach (var group in attemptsGrouped)
+        {
+            col = 1;
+            foreach (var card in test.Cards)
+            {
+                var attemptForCard = group.FirstOrDefault(a => a.CardId == card.Id);
+                if (attemptForCard != null)
+                {
+                    var answerText = attemptForCard.AnswerOption?.OptionText;
+                    if (string.IsNullOrEmpty(answerText))
+                    {
+                        answerText = attemptForCard.TextAnswer;
+                    }
+                    worksheet.Cell(row, col).Value = answerText;
+                }
+                col++;
+            }
+            row++;
+        }
+
+        using var stream = new MemoryStream();
+        workbook.SaveAs(stream);
+        return stream.ToArray();
     }
 }

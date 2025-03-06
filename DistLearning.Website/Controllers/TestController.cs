@@ -93,4 +93,19 @@ public class TestController (ITestsService testsService) : BaseController
 
         return Ok(statistics);
     }
+    
+    [HttpGet("/statistics/excel")]
+    [Produces("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")]
+    [SwaggerResponse(200, "Gets test statistics as an Excel file", typeof(FileContentResult))]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> ExportStatisticsToExcel([FromQuery] Guid testUuid)
+    {
+        var statistics = await testsService.ExportTestToExcel(testUuid).ConfigureAwait(false);
+
+        return File(
+            statistics, 
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", 
+            "statistics.xlsx"
+        );
+    }
 }

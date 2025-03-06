@@ -18,4 +18,6 @@ public interface ITestsService
     Task<TestWithStatisticResponse> GetTestWithStatisticsAsync(Guid testUuid, Guid? answerOptionUuid);
 
     Task<TestResponse> GetTestInfo(Guid testUuid, Guid? userUuid);
+
+    Task<byte[]> ExportTestToExcel(Guid testUuid);
 }
