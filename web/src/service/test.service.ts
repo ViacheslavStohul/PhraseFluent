@@ -34,6 +34,26 @@ export const statsTest = async (id: string, optionId?: string): Promise<Test> =>
   return data;
 }
 
+export const statsExcel = async (id: string): Promise<void> => {
+  try {
+    const response = await axios.get(`/statistics/excel?testUuid=${id}`, {
+      responseType: "blob",
+    });
+
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", `statistics_${id}.xlsx`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+  } catch (error) {
+    console.error("Error downloading the file:", error);
+  }
+}
+
+
 export const nextTest = async (next: NextTestRequest): Promise<BeginTestResponse> => {
   const { data } = await axios.post(`/next`, next);
   return data;

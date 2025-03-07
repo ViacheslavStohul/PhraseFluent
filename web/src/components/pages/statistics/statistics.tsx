@@ -29,6 +29,15 @@ const Statistics = () => {
     }
   },[navigate, searchParams, dispatch, answerOption]);
 
+  const download = () => {
+    let id = searchParams.get('id');
+    if (id) {
+      testService.statsExcel(id).then(()=>{}).catch((error) => {
+        dispatch(callErrorToast({name: error.code, text: error.response?.data?.Message ?? error.response?.data?.Message ?? error.message}));
+      });
+    }
+  };
+
   return (
     <div className='statistics'>
     {
@@ -38,6 +47,7 @@ const Statistics = () => {
           <h2>{test.title}</h2>
           <p>{test.description}</p>
           <span>Кількість опитуваних: {test.completedAttempts}</span>
+          <button onClick={download}>Завантажити</button>
         </Card>
         {
         test.cards.map(card => 
